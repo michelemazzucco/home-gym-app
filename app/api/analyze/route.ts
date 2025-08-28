@@ -37,36 +37,49 @@ export async function POST(request: NextRequest) {
     
     // Determine image type for data URL
     const imageType = image.type || 'image/jpeg'
-    
-    console.log('Image converted to base64, length:', base64Image.length)
 
     const workoutPerWeek = 3
     const weeks = 12
 
     const prompt = `You are a professional trainer. 
     
-    Redact a full body program, something that could be appraciated by a someone that would like to get in shape.
+    Redact a full body program, something that could be appreciated by a someone that would like to get in shape staying at home.
 
     The workout plan should be: 
-    - Detailed, progressive, and specifically use only the equipment identified in the image, if there are no equipment, use bodyweight exercises or object that could be used as equipment if in the picture (e.g. a chairt, a water bottle, etc.)
+    - Detailed, progressive, and specifically use only the equipment identified in the image, if there are no equipment, use bodyweight exercises or object that could be used as equipment if in the picture (e.g. a chair, a water bottle, etc.)
     - Balanced, and include a mix of strength and flexibility exercises.
     - Specific to the equipment identified in the image.
     - The workout plan should be specific for a ${difficulty} level.
     - The workout plan should be 30 minutes long.
     - The workout plan should be specific to the equipment identified in the image.
     - The workout plan should be specific to the difficulty level.
+    - Grouped in blocks of 2-3 weeks each.
     ${workoutPerWeek} session per week, with ${weeks} duration.
     
-    No emoji, no sarcasm, plain text only. 
     
-    Please respond in JSON format with:
+    Also, the output should:
+    - Not contain emoji
+    - Not contain sarcasm
+    - Not contain codeblock
+    - Not contain Markdown
+    - JSON only
+    - Following the JSON format below:
     {
       "equipment": ["item1", "item2", ...],
-      "workout": "detailed 12-week workout plan text"
+      "plan": [{
+        "title": "block title",
+        "sessions": [{
+          "title": "sessiontitle",
+          "exercizes": [{
+            "name": "exercise name",
+            "sets": "sets",
+            "reps": "reps",
+            "rest": "rest",
+          }, ...]
+        }, ...]
+      }, ...]
     }`
-
-    console.log('Making OpenAI API call...')
-
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -86,8 +99,8 @@ export async function POST(request: NextRequest) {
               {
                 type: 'image_url',
                 image_url: {
-                  url: `data:${imageType};base64,${base64Image}`
-                  
+                  url: `data:${imageType};base64,${base64Image}`,
+                  detail: 'low'
                 }
               }
             ]
@@ -96,8 +109,6 @@ export async function POST(request: NextRequest) {
         max_tokens: 2000,
       }),
     })
-
-    console.log('OpenAI response status:', response.status)
 
     if (!response.ok) {
       const errorData = await response.text()
@@ -117,7 +128,6 @@ export async function POST(request: NextRequest) {
     }
 
     const data = await response.json()
-    console.log('OpenAI response:', JSON.stringify(data, null, 2))
     
     const content = data.choices[0]?.message?.content
 

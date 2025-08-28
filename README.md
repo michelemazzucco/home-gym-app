@@ -6,7 +6,7 @@ A Next.js app that analyzes photos of home gym equipment and provides AI-powered
 
 - 📸 Take photos or upload images of your gym equipment
 - 🏋️ Select difficulty level (beginner, intermediate, advanced)
-- 🤖 AI-powered equipment identification using OpenAI GPT-4 Vision
+- 🤖 AI-powered equipment identification using OpenAI gpt-4o-mini
 - 📋 Generate personalized 12-week workout plans
 - 📋 Copy workout plans to clipboard
 
@@ -46,5 +46,5 @@ npm run dev
 
 - Next.js 15 with App Router
 - TypeScript
-- OpenAI GPT-4 Vision API
+- OpenAI gpt-4o-mini model
 - HTML5 Camera API

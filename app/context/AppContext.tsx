@@ -4,7 +4,7 @@ import { createContext, useContext, useState, ReactNode } from 'react'
 
 type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 
-interface Exercise {
+interface Exercize {
   name: string
   sets: string
   reps: string
@@ -13,7 +13,7 @@ interface Exercise {
 
 interface Session {
   title: string
-  exercises: Exercise[]
+  exercizes: Exercize[]
 }
 
 interface WorkoutBlock {
@@ -24,7 +24,6 @@ interface WorkoutBlock {
 interface WorkoutResult {
   equipment: string[]
   plan: WorkoutBlock[]
-  difficulty: DifficultyLevel
 }
 
 interface AppState {

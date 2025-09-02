@@ -74,10 +74,10 @@ export async function POST(request: NextRequest) {
             "name": "exercise name",
             "sets": "sets",
             "reps": "reps",
-            "rest": "rest",
-          }, ...]
-        }, ...]
-      }, ...]
+            "rest": "rest"
+          }]
+        }]
+      }]
     }`
     
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -136,10 +136,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No response from OpenAI' }, { status: 500 })
     }
 
-    console.log(content)
-    console.log(JSON.parse(content))
-
-    return NextResponse.json(JSON.parse(content))
+    // Try to parse as JSON, fall back to raw content if parsing fails
+    try {
+      const parsedContent = JSON.parse(content)
+      return NextResponse.json(parsedContent)
+    } catch (parseError) {
+      console.error('Failed to parse OpenAI response as JSON:', parseError)
+      // Return the raw content as fallback to maintain previous behavior
+      return NextResponse.json({ content })
+    }
 
   } catch (error) {
     console.error('Error processing request:', error)

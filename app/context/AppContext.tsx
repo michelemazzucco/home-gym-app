@@ -29,6 +29,8 @@ interface WorkoutResult {
 interface AppState {
   selectedImage: File | null
   difficulty: DifficultyLevel
+  sessionsPerWeek: number
+  weeks: number
   loading: boolean
   workoutResult: WorkoutResult | null
 }
@@ -37,6 +39,8 @@ interface AppContextType {
   state: AppState
   setSelectedImage: (image: File | null) => void
   setDifficulty: (difficulty: DifficultyLevel) => void
+  setSessionsPerWeek: (sessions: number) => void
+  setWeeks: (weeks: number) => void
   setLoading: (loading: boolean) => void
   setWorkoutResult: (result: WorkoutResult | null) => void
   resetState: () => void
@@ -48,6 +52,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>({
     selectedImage: null,
     difficulty: 'beginner',
+    sessionsPerWeek: 3,
+    weeks: 12,
     loading: false,
     workoutResult: null
   })
@@ -58,6 +64,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const setDifficulty = (difficulty: DifficultyLevel) => {
     setState(prev => ({ ...prev, difficulty }))
+  }
+
+  const setSessionsPerWeek = (sessions: number) => {
+    setState(prev => ({ ...prev, sessionsPerWeek: sessions }))
+  }
+
+  const setWeeks = (weeks: number) => {
+    setState(prev => ({ ...prev, weeks }))
   }
 
   const setLoading = (loading: boolean) => {
@@ -72,6 +86,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState({
       selectedImage: null,
       difficulty: 'beginner',
+      sessionsPerWeek: 3,
+      weeks: 12,
       loading: false,
       workoutResult: null
     })
@@ -82,6 +98,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       state,
       setSelectedImage,
       setDifficulty,
+      setSessionsPerWeek,
+      setWeeks,
       setLoading,
       setWorkoutResult,
       resetState

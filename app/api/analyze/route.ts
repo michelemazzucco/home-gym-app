@@ -5,6 +5,8 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData()
     const image = formData.get('image') as File
     const difficulty = formData.get('difficulty') as string
+    const sessionsPerWeekRaw = formData.get('sessionsPerWeek') as string | null
+    const weeksRaw = formData.get('weeks') as string | null
 
     if (!image) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 })
@@ -38,8 +40,16 @@ export async function POST(request: NextRequest) {
     // Determine image type for data URL
     const imageType = image.type || 'image/jpeg'
 
-    const workoutPerWeek = 3
-    const weeks = 12
+    const workoutPerWeek = (() => {
+      const n = Number(sessionsPerWeekRaw)
+      if (!Number.isFinite(n)) return 3
+      return Math.max(1, Math.min(14, Math.floor(n)))
+    })()
+    const weeks = (() => {
+      const n = Number(weeksRaw)
+      if (!Number.isFinite(n)) return 12
+      return Math.max(1, Math.min(52, Math.floor(n)))
+    })()
 
     const prompt = `You are a professional trainer. 
     
@@ -53,7 +63,7 @@ export async function POST(request: NextRequest) {
     - The workout plan should be 30 minutes long.
     - The workout plan should be specific to the equipment identified in the image.
     - The workout plan should be specific to the difficulty level.
-    - Grouped in blocks of 2-3 weeks each.
+    - If plan is more than 4 weeks, group in blocks of 2 weeks each, otherwise, group in blocks of 1 week each.
     ${workoutPerWeek} session per week, with ${weeks} duration.
     
     

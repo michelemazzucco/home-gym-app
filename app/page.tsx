@@ -6,7 +6,7 @@ import { useApp } from './context/AppContext'
 import { Loader } from './components/Loader'
 
 export default function Home() {
-  const { state, setSelectedImage, setDifficulty, setLoading, setWorkoutResult } = useApp()
+  const { state, setSelectedImage, setDifficulty, setSessionsPerWeek, setWeeks, setLoading, setWorkoutResult } = useApp()
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -108,6 +108,8 @@ export default function Home() {
       const formData = new FormData()
       formData.append('image', state.selectedImage)
       formData.append('difficulty', state.difficulty)
+      formData.append('sessionsPerWeek', String(state.sessionsPerWeek))
+      formData.append('weeks', String(state.weeks))
 
       const response = await fetch('/api/analyze', {
         method: 'POST',
@@ -183,6 +185,32 @@ export default function Home() {
                 <option value="intermediate">Intermediate</option>
                 <option value="advanced">Advanced</option>
               </select>
+            </div>
+
+            <div>
+              <label htmlFor="sessionsPerWeek">Sessions per week:</label>
+              <input
+                id="sessionsPerWeek"
+                type="number"
+                value={state.sessionsPerWeek}
+                onChange={(e) => {
+                  const value = Number(e.target.value)
+                  setSessionsPerWeek(Number.isFinite(value) ? value : 3)
+                }}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="weeks">Number of weeks:</label>
+              <input
+                id="weeks"
+                type="number"
+                value={state.weeks}
+                onChange={(e) => {
+                  const value = Number(e.target.value)
+                  setWeeks(Number.isFinite(value) ? value : 12)
+                }}
+              />
             </div>
 
             {state.selectedImage && (

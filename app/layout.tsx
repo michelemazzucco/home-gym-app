@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { AppProvider } from './context/AppContext'
 
 export const metadata: Metadata = {
   title: 'Home Gym App',
@@ -12,7 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AppProvider>
+          {children}
+        </AppProvider>
+      </body>
     </html>
   )
 }

@@ -1,23 +1,18 @@
 'use client'
 
 import { useState, useRef } from 'react'
-
-type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
-
-interface WorkoutResult {
-  content: string
-}
+import { useRouter } from 'next/navigation'
+import { useApp } from './context/AppContext'
+import { Loader } from './components/Loader'
 
 export default function Home() {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null)
-  const [difficulty, setDifficulty] = useState<DifficultyLevel>('beginner')
-  const [result, setResult] = useState<WorkoutResult | null>(null)
-  const [loading, setLoading] = useState(false)
+  const { state, setSelectedImage, setDifficulty, setLoading, setWorkoutResult } = useApp()
+  const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [stream, setStream] = useState<MediaStream | null>(null)
   const [showCamera, setShowCamera] = useState(false)
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user') // 'user' = front, 'environment' = back
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
 
   const startCamera = async () => {
     try {
@@ -106,13 +101,13 @@ export default function Home() {
   }
 
   const analyzeImage = async () => {
-    if (!selectedImage) return
+    if (!state.selectedImage) return
 
     setLoading(true)
     try {
       const formData = new FormData()
-      formData.append('image', selectedImage)
-      formData.append('difficulty', difficulty)
+      formData.append('image', state.selectedImage)
+      formData.append('difficulty', state.difficulty)
 
       const response = await fetch('/api/analyze', {
         method: 'POST',
@@ -124,7 +119,8 @@ export default function Home() {
       }
 
       const data = await response.json()
-      setResult(data)
+      setWorkoutResult(data)
+      router.push('/result')
     } catch (error) {
       console.error('Error analyzing image:', error)
       alert('Error analyzing image. Please try again.')
@@ -133,15 +129,8 @@ export default function Home() {
     }
   }
 
-  const copyToClipboard = () => {
-    if (!result) return
-    
-    const text = `${result.content}`
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Copied to clipboard!')
-    }).catch(() => {
-      alert('Failed to copy to clipboard')
-    })
+  if (state.loading) {
+    return <Loader />
   }
 
   return (
@@ -172,11 +161,11 @@ export default function Home() {
               </button>
             </div>
 
-            {selectedImage && (
+            {state.selectedImage && (
               <div>
-                <p>Selected: {selectedImage.name}</p>
+                <p>Selected: {state.selectedImage.name}</p>
                 <img 
-                  src={URL.createObjectURL(selectedImage)} 
+                  src={URL.createObjectURL(state.selectedImage)} 
                   alt="Selected equipment"
                   style={{ maxWidth: '300px', height: 'auto' }}
                 />
@@ -187,8 +176,8 @@ export default function Home() {
               <label htmlFor="difficulty">Difficulty Level:</label>
               <select
                 id="difficulty"
-                value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value as DifficultyLevel)}
+                value={state.difficulty}
+                onChange={(e) => setDifficulty(e.target.value as 'beginner' | 'intermediate' | 'advanced')}
               >
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
@@ -196,9 +185,9 @@ export default function Home() {
               </select>
             </div>
 
-            {selectedImage && (
-              <button onClick={analyzeImage} disabled={loading}>
-                {loading ? 'Analyzing...' : 'Get Workout Plan'}
+            {state.selectedImage && (
+              <button onClick={analyzeImage} disabled={state.loading}>
+                Get Workout Plan
               </button>
             )}
           </div>
@@ -221,21 +210,6 @@ export default function Home() {
               </button>
               <button onClick={stopCamera}>Cancel</button>
             </div>
-          </div>
-        )}
-
-        {result && (
-          <div>
-            <h2>Workout Plan</h2>
-            
-            <div>
-              <h3>12-Week Workout Plan:</h3>
-              <pre style={{ whiteSpace: 'pre-wrap' }}>{result.content}</pre>
-            </div>
-            
-            <button onClick={copyToClipboard}>
-              Copy to Clipboard
-            </button>
           </div>
         )}
       </main>

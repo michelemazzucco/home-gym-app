@@ -136,7 +136,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No response from OpenAI' }, { status: 500 })
     }
 
-    return NextResponse.json({ content })
+    console.log(content)
+    console.log(JSON.parse(content))
+
+    return NextResponse.json(JSON.parse(content))
 
   } catch (error) {
     console.error('Error processing request:', error)

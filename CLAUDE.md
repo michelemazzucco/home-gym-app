@@ -21,6 +21,7 @@ This is a Next.js 15 application that uses OpenAI's gpt-4o-mini model to analyze
 - **Single Page Application**: All functionality contained in the root page component
 - **API Route**: Single `/api/analyze` endpoint handles image processing and OpenAI integration
 - **Client-Side State**: React hooks manage camera, file uploads, and workout results
+- **UI Components**: Uses Base UI components from https://base-ui.com/llms.txt
 
 ### Key Components
 

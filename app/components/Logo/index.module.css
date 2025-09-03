@@ -1,0 +1,17 @@
+.Logo {
+    font-style: italic;
+    font-weight: 800;
+    font-size: 48px;
+    letter-spacing: -0.01em;
+  
+    color: #FFFFFF;
+  
+    text-shadow: 4px 4px 0px rgba(255, 255, 255, 0.25);
+}
+
+.LogoWrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+}

@@ -15,9 +15,12 @@ export async function POST(request: NextRequest) {
     // Check image size limit (7.5MB to account for base64 expansion)
     const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
     if (image.size > maxSize) {
-      return NextResponse.json({ 
-        error: `Image too large. Maximum size is 7.5MB, your image is ${(image.size / 1024 / 1024).toFixed(2)}MB` 
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          error: `Image too large. Maximum size is 7.5MB, your image is ${(image.size / 1024 / 1024).toFixed(2)}MB`,
+        },
+        { status: 400 }
+      )
     }
 
     if (!process.env.OPENAI_API_KEY) {
@@ -28,15 +31,18 @@ export async function POST(request: NextRequest) {
     const bytes = await image.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64Image = buffer.toString('base64')
-    
+
     // Check base64 size limit (10MB in base64)
     const maxBase64Size = 10 * 1024 * 1024 // 10MB in characters
     if (base64Image.length > maxBase64Size) {
-      return NextResponse.json({ 
-        error: `Image too large after encoding. Base64 size is ${(base64Image.length / 1024 / 1024).toFixed(2)}MB, maximum is 10MB` 
-      }, { status: 400 })
+      return NextResponse.json(
+        {
+          error: `Image too large after encoding. Base64 size is ${(base64Image.length / 1024 / 1024).toFixed(2)}MB, maximum is 10MB`,
+        },
+        { status: 400 }
+      )
     }
-    
+
     // Determine image type for data URL
     const imageType = image.type || 'image/jpeg'
 
@@ -89,11 +95,11 @@ export async function POST(request: NextRequest) {
         }]
       }]
     }`
-    
+
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -104,17 +110,17 @@ export async function POST(request: NextRequest) {
             content: [
               {
                 type: 'text',
-                text: prompt
+                text: prompt,
               },
               {
                 type: 'image_url',
                 image_url: {
                   url: `data:${imageType};base64,${base64Image}`,
-                  detail: 'low'
-                }
-              }
-            ]
-          }
+                  detail: 'low',
+                },
+              },
+            ],
+          },
         ],
         max_tokens: 2000,
       }),
@@ -123,22 +129,28 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const errorData = await response.text()
       console.error('OpenAI API error:', response.status, errorData)
-      
+
       try {
         const parsedError = JSON.parse(errorData)
         const errorMessage = parsedError?.error?.message || errorData
-        return NextResponse.json({ 
-          error: `OpenAI API error (${response.status}): ${errorMessage}` 
-        }, { status: 500 })
+        return NextResponse.json(
+          {
+            error: `OpenAI API error (${response.status}): ${errorMessage}`,
+          },
+          { status: 500 }
+        )
       } catch {
-        return NextResponse.json({ 
-          error: `OpenAI API error (${response.status}): ${errorData}` 
-        }, { status: 500 })
+        return NextResponse.json(
+          {
+            error: `OpenAI API error (${response.status}): ${errorData}`,
+          },
+          { status: 500 }
+        )
       }
     }
 
     const data = await response.json()
-    
+
     const content = data.choices[0]?.message?.content
 
     if (!content) {
@@ -155,7 +167,6 @@ export async function POST(request: NextRequest) {
       // Return the raw content as fallback to maintain previous behavior
       return NextResponse.json({ content })
     }
-
   } catch (error) {
     console.error('Error processing request:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

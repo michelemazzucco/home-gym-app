@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react'
 
-type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
+export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 
 interface Exercize {
   name: string
@@ -55,31 +55,31 @@ export function AppProvider({ children }: { children: ReactNode }) {
     sessionsPerWeek: 3,
     weeks: 12,
     loading: false,
-    workoutResult: null
+    workoutResult: null,
   })
 
   const setSelectedImage = (image: File | null) => {
-    setState(prev => ({ ...prev, selectedImage: image }))
+    setState((prev) => ({ ...prev, selectedImage: image }))
   }
 
   const setDifficulty = (difficulty: DifficultyLevel) => {
-    setState(prev => ({ ...prev, difficulty }))
+    setState((prev) => ({ ...prev, difficulty }))
   }
 
   const setSessionsPerWeek = (sessions: number) => {
-    setState(prev => ({ ...prev, sessionsPerWeek: sessions }))
+    setState((prev) => ({ ...prev, sessionsPerWeek: sessions }))
   }
 
   const setWeeks = (weeks: number) => {
-    setState(prev => ({ ...prev, weeks }))
+    setState((prev) => ({ ...prev, weeks }))
   }
 
   const setLoading = (loading: boolean) => {
-    setState(prev => ({ ...prev, loading }))
+    setState((prev) => ({ ...prev, loading }))
   }
 
   const setWorkoutResult = (result: WorkoutResult | null) => {
-    setState(prev => ({ ...prev, workoutResult: result }))
+    setState((prev) => ({ ...prev, workoutResult: result }))
   }
 
   const resetState = () => {
@@ -89,21 +89,23 @@ export function AppProvider({ children }: { children: ReactNode }) {
       sessionsPerWeek: 3,
       weeks: 12,
       loading: false,
-      workoutResult: null
+      workoutResult: null,
     })
   }
 
   return (
-    <AppContext.Provider value={{
-      state,
-      setSelectedImage,
-      setDifficulty,
-      setSessionsPerWeek,
-      setWeeks,
-      setLoading,
-      setWorkoutResult,
-      resetState
-    }}>
+    <AppContext.Provider
+      value={{
+        state,
+        setSelectedImage,
+        setDifficulty,
+        setSessionsPerWeek,
+        setWeeks,
+        setLoading,
+        setWorkoutResult,
+        resetState,
+      }}
+    >
       {children}
     </AppContext.Provider>
   )

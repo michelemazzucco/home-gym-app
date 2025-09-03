@@ -35,12 +35,10 @@ export default function ResultPage() {
 
       <main>
         <div>
-          <div style={{ whiteSpace: 'pre-wrap' }}>
-            {JSON.stringify(state.workoutResult)}
-          </div>
+          <div style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(state.workoutResult)}</div>
         </div>
 
-        <button 
+        <button
           onClick={() => {
             navigator.clipboard.writeText(JSON.stringify(state.workoutResult))
             alert('Workout plan copied to clipboard!')

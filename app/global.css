@@ -1,0 +1,27 @@
+.root {
+  isolation: isolate;
+}
+
+:root {
+
+}
+
+body,
+html {
+  font-family: var(--font-barlow-condensed);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {  
+  background: linear-gradient(180deg, #030d2e 0%, #15054b 100%);
+  color: #fff;
+  height: 100vh;
+}
+
+.app-wrapper {
+  height: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+}

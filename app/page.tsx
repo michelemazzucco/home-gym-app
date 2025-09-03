@@ -2,11 +2,25 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { useApp } from './context/AppContext'
-import { Loader } from './components/Loader'
+import { useApp, type DifficultyLevel } from './context/AppContext'
+import { Select, NumberField, Loader, Logo } from './components'
+
+const levels = [
+  { value: 'beginner', label: 'Beginner' },
+  { value: 'intermediate', label: 'Intermediate' },
+  { value: 'advanced', label: 'Advanced' },
+]
 
 export default function Home() {
-  const { state, setSelectedImage, setDifficulty, setSessionsPerWeek, setWeeks, setLoading, setWorkoutResult } = useApp()
+  const {
+    state,
+    setSelectedImage,
+    setDifficulty,
+    setSessionsPerWeek,
+    setWeeks,
+    setLoading,
+    setWorkoutResult,
+  } = useApp()
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -17,7 +31,7 @@ export default function Home() {
   const startCamera = async () => {
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode }
+        video: { facingMode },
       })
       setStream(mediaStream)
       setShowCamera(true)
@@ -33,14 +47,14 @@ export default function Home() {
   const switchCamera = async () => {
     const newFacingMode = facingMode === 'user' ? 'environment' : 'user'
     setFacingMode(newFacingMode)
-    
+
     if (stream) {
       // Stop current stream
-      stream.getTracks().forEach(track => track.stop())
-      
+      stream.getTracks().forEach((track) => track.stop())
+
       try {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: newFacingMode }
+          video: { facingMode: newFacingMode },
         })
         setStream(mediaStream)
         if (videoRef.current) {
@@ -61,20 +75,26 @@ export default function Home() {
       const ctx = canvas.getContext('2d')
       if (ctx) {
         ctx.drawImage(videoRef.current, 0, 0)
-        canvas.toBlob((blob) => {
-          if (blob) {
-            const file = new File([blob], 'camera-photo.jpg', { type: 'image/jpeg' })
-            setSelectedImage(file)
-            stopCamera()
-          }
-        }, 'image/jpeg', 0.8) // Add quality parameter to ensure proper JPEG
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const file = new File([blob], 'camera-photo.jpg', {
+                type: 'image/jpeg',
+              })
+              setSelectedImage(file)
+              stopCamera()
+            }
+          },
+          'image/jpeg',
+          0.8
+        ) // Add quality parameter to ensure proper JPEG
       }
     }
   }
 
   const stopCamera = () => {
     if (stream) {
-      stream.getTracks().forEach(track => track.stop())
+      stream.getTracks().forEach((track) => track.stop())
       setStream(null)
     }
     setShowCamera(false)
@@ -89,11 +109,13 @@ export default function Home() {
         alert(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
         return
       }
-      
+
       // Check file size (7.5MB limit to account for base64 expansion)
       const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
       if (file.size > maxSize) {
-        alert(`Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`)
+        alert(
+          `Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`
+        )
         return
       }
       setSelectedImage(file)
@@ -136,21 +158,20 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className="app-wrapper">
       <header>
-        <h1>Home Gym App</h1>
+        <Logo />
+        <h2>Workouts based on what there is around you</h2>
       </header>
 
       <main>
         {!showCamera && (
           <div>
-            <h2>Upload or Take Photo</h2>
-            
             <div>
-              <button onClick={startCamera}>
+              {/* <button onClick={startCamera}>
                 Take Photo
-              </button>
-              
+              </button> */}
+
               <input
                 ref={fileInputRef}
                 type="file"
@@ -158,16 +179,14 @@ export default function Home() {
                 onChange={handleImageUpload}
                 style={{ display: 'none' }}
               />
-              <button onClick={() => fileInputRef.current?.click()}>
-                Upload Photo
-              </button>
+              <button onClick={() => fileInputRef.current?.click()}>Upload Photo</button>
             </div>
 
             {state.selectedImage && (
               <div>
                 <p>Selected: {state.selectedImage.name}</p>
-                <img 
-                  src={URL.createObjectURL(state.selectedImage)} 
+                <img
+                  src={URL.createObjectURL(state.selectedImage)}
                   alt="Selected equipment"
                   style={{ maxWidth: '300px', height: 'auto' }}
                 />
@@ -175,41 +194,28 @@ export default function Home() {
             )}
 
             <div>
-              <label htmlFor="difficulty">Difficulty Level:</label>
-              <select
-                id="difficulty"
-                value={state.difficulty}
-                onChange={(e) => setDifficulty(e.target.value as 'beginner' | 'intermediate' | 'advanced')}
-              >
-                <option value="beginner">Beginner</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-              </select>
+              <label>Difficulty Level:</label>
+              <Select
+                options={levels}
+                onChange={(value) => setDifficulty(value as DifficultyLevel)}
+              />
             </div>
 
             <div>
               <label htmlFor="sessionsPerWeek">Sessions per week:</label>
-              <input
+              <NumberField
                 id="sessionsPerWeek"
-                type="number"
-                value={state.sessionsPerWeek}
-                onChange={(e) => {
-                  const value = Number(e.target.value)
-                  setSessionsPerWeek(Number.isFinite(value) ? value : 3)
-                }}
+                defaultValue={3}
+                onChange={(value) => setSessionsPerWeek(value)}
               />
             </div>
 
             <div>
               <label htmlFor="weeks">Number of weeks:</label>
-              <input
+              <NumberField
                 id="weeks"
-                type="number"
-                value={state.weeks}
-                onChange={(e) => {
-                  const value = Number(e.target.value)
-                  setWeeks(Number.isFinite(value) ? value : 12)
-                }}
+                defaultValue={12}
+                onChange={(value) => setSessionsPerWeek(value)}
               />
             </div>
 

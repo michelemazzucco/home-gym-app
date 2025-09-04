@@ -10,6 +10,7 @@ const compat = new FlatCompat({ baseDirectory: __dirname })
 export default [
   // Next.js core rules (includes React, TS, etc.)
   ...compat.extends('next/core-web-vitals'),
+  ...compat.extends('next/typescript'),
 
   // Ignore build output and config files
   { ignores: ['node_modules/**', '.next/**', 'out/**', 'dist/**', 'eslint.config.*'] },

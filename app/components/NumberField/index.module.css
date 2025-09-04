@@ -1,21 +1,21 @@
-.Field {
+.field {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 0.25rem;
 }
 
-.ScrubArea {
+.scrubArea {
   cursor: ew-resize;
   font-weight: bold;
   user-select: none;
 }
 
-.ScrubAreaCursor {
+.scrubAreaCursor {
   filter: drop-shadow(0 1px 1px #0008);
 }
 
-.Label {
+.label {
   cursor: ew-resize;
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -23,11 +23,11 @@
   color: var(--color-gray-900);
 }
 
-.Group {
+.group {
   display: flex;
 }
 
-.Input {
+.input {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -54,8 +54,8 @@
   }
 }
 
-.Decrement,
-.Increment {
+.decrement,
+.increment {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -83,12 +83,12 @@
   }
 }
 
-.Decrement {
+.decrement {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.Increment {
+.increment {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }

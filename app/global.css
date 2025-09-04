@@ -3,7 +3,18 @@
 }
 
 :root {
+  --lch-orange: 0.6349 0.1637 49.66;
+  --lch-blue-900: 0.1753 0.0686 264.48;
+  --lch-blue-500: 0.2118 0.1159 280.97;
+  --lch-white: 1 0 0;
+  
+  --accent: oklch(var(--lch-orange));
+  --background-900: oklch(var(--lch-blue-900));
+  --background-500:  oklch(var(--lch-blue-500));
+  --text-primary: oklch(var(--lch-white));
+  --text-primary-shadow: oklch(var(--lch-white) / .25);
 
+  --main-background: 180deg, var(--background-900) 0%, var(--background-500) 100%;
 }
 
 body,
@@ -14,14 +25,68 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+/* 3. Enable keyword animations */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    interpolate-size: allow-keywords;
+  }
+}
+
+body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 6. Improve media defaults */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 7. Inherit fonts for form controls */
+input, button, textarea, select {
+  font: inherit;
+}
+
+/* 8. Avoid text overflows */
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+/* 9. Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-wrap: balance;
+}
+
+/*
+  10. Create a root stacking context
+*/
+#root, #__next {
+  isolation: isolate;
+}
+
 body {  
-  background: linear-gradient(180deg, #030d2e 0%, #15054b 100%);
+  background: linear-gradient(var(--main-background));
   color: #fff;
   height: 100vh;
 }
 
 .app-wrapper {
-  height: 100%;
   max-width: 480px;
   margin: 0 auto;
 }

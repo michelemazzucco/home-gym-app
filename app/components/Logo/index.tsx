@@ -2,9 +2,9 @@ import styles from './index.module.css'
 
 export const Logo = () => {
   return (
-    <div className={styles.LogoWrapper}>
+    <div className={styles.logoWrapper}>
       <DecorationLeft />
-      <h1 className={styles.Logo}>HOMEGYM</h1>
+      <h1 className={styles.logo}>HOMEGYM</h1>
       <DecorationRight />
     </div>
   )
@@ -22,8 +22,20 @@ const DecorationLeft = () => {
 const DecorationRight = () => {
   return (
     <svg width="42" height="9" viewBox="0 0 42 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <line y1="-0.5" x2="42" y2="-0.5" transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 42 1)" stroke="#757291" />
-      <line y1="-0.5" x2="26" y2="-0.5" transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 30 9)" stroke="#757291" />
+      <line
+        y1="-0.5"
+        x2="42"
+        y2="-0.5"
+        transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 42 1)"
+        stroke="#757291"
+      />
+      <line
+        y1="-0.5"
+        x2="26"
+        y2="-0.5"
+        transform="matrix(-1 -8.74228e-08 -8.74228e-08 1 30 9)"
+        stroke="#757291"
+      />
     </svg>
   )
 }

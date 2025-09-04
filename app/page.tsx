@@ -3,7 +3,8 @@
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useApp, type DifficultyLevel } from './context/AppContext'
-import { Select, NumberField, Loader, Logo } from './components'
+import { Select, NumberField, Loader, Logo, Button } from './components'
+import Image from 'next/image'
 
 const levels = [
   { value: 'beginner', label: 'Beginner' },
@@ -185,7 +186,7 @@ export default function Home() {
             {state.selectedImage && (
               <div>
                 <p>Selected: {state.selectedImage.name}</p>
-                <img
+                <Image
                   src={URL.createObjectURL(state.selectedImage)}
                   alt="Selected equipment"
                   style={{ maxWidth: '300px', height: 'auto' }}
@@ -219,11 +220,10 @@ export default function Home() {
               />
             </div>
 
-            {state.selectedImage && (
-              <button onClick={analyzeImage} disabled={state.loading}>
-                Get Workout Plan
-              </button>
-            )}
+
+            <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>
+              Let&apos;s go!
+            </Button>
           </div>
         )}
 

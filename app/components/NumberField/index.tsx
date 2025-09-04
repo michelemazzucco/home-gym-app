@@ -12,19 +12,19 @@ export function NumberField({
   onChange: (value: number) => void
 }) {
   return (
-    <ReactNumberField.Root id={id} defaultValue={defaultValue} className={styles.Field}>
-      <ReactNumberField.ScrubArea className={styles.ScrubArea}>
-        <ReactNumberField.ScrubAreaCursor className={styles.ScrubAreaCursor}>
+    <ReactNumberField.Root id={id} defaultValue={defaultValue} className={styles.field}>
+      <ReactNumberField.ScrubArea className={styles.scrubArea}>
+        <ReactNumberField.ScrubAreaCursor className={styles.scrubAreaCursor}>
           <CursorGrowIcon />
         </ReactNumberField.ScrubAreaCursor>
       </ReactNumberField.ScrubArea>
 
-      <ReactNumberField.Group className={styles.Group}>
-        <ReactNumberField.Decrement className={styles.Decrement}>
+      <ReactNumberField.Group className={styles.group}>
+        <ReactNumberField.Decrement className={styles.decrement}>
           <MinusIcon />
         </ReactNumberField.Decrement>
-        <ReactNumberField.Input className={styles.Input} />
-        <ReactNumberField.Increment className={styles.Increment}>
+        <ReactNumberField.Input className={styles.input} />
+        <ReactNumberField.Increment className={styles.increment}>
           <PlusIcon />
         </ReactNumberField.Increment>
       </ReactNumberField.Group>

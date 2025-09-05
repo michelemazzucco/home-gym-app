@@ -1,5 +1,7 @@
 /* 1. Use a more-intuitive box-sizing model */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -23,39 +25,58 @@ body {
 }
 
 /* 6. Improve media defaults */
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
 /* 7. Inherit fonts for form controls */
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
 /* 8. Avoid text overflows */
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 /* 9. Improve line wrapping */
 p {
   text-wrap: pretty;
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   text-wrap: balance;
 }
 
 /*
   10. Create a root stacking context
 */
-#root, #__next {
+#root,
+#__next {
   isolation: isolate;
 }
 
-body {  
+body {
   background: linear-gradient(var(--main-background));
   color: #fff;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .root {
@@ -68,14 +89,19 @@ body {
   --lch-blue-800: 0.1841 0.0823 271.94;
   --lch-blue-500: 0.2118 0.1159 280.97;
   --lch-white: 1 0 0;
-  
+
   --accent: oklch(var(--lch-orange));
   --background-900: oklch(var(--lch-blue-900));
   --background-800: oklch(var(--lch-blue-800));
-  --background-500:  oklch(var(--lch-blue-500));
+  --background-500: oklch(var(--lch-blue-500));
   --text-primary: oklch(var(--lch-white));
-  --text-primary-shadow: oklch(var(--lch-white) / .25);
-  --text-secondary: oklch(var(--lch-white) / .75);
+  --text-primary-shadow: oklch(var(--lch-white) / 0.25);
+  --text-secondary: oklch(var(--lch-white) / 0.75);
+  
+  --field-background: oklch(var(--lch-white) / 0.05);
+  --field-background-hover: oklch(var(--lch-white) / 0.075);
+  --field-border: oklch(var(--lch-white) / 0.3);
+  --field-border-hover: oklch(var(--lch-white) / 0.4);
 
   --main-background: 180deg, var(--background-900) 0%, var(--background-500) 100%;
 
@@ -88,6 +114,10 @@ body {
   --spacing-xs: 1.5rem;
   --spacing-xxs: 1rem;
   --spacing-xxxs: 0.5rem;
+
+  --app-width: calc(var(--base-space) * 28);
+
+  --border-radius: .5rem;
 }
 
 body,
@@ -104,14 +134,21 @@ h2 {
   font-weight: 500;
 }
 
-h3, h4, h5, h6 {
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400;
 }
 
 .app-wrapper {
-  max-width: min(calc(var(--base-space) * 32), 100%);
+  max-width: calc(var(--base-space) * 28);
+  width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-xxs);
+  gap: var(--spacing-xs);
+  display: flex;
+  flex-direction: column;
 }
 
 .app-header {
@@ -133,22 +170,53 @@ h3, h4, h5, h6 {
   }
 }
 
+.app-main__button-container {
+  position: fixed;
+  bottom: var(--spacing-sm);
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .dropzone {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px dashed rgba(255, 255, 255, 0.4);
-  border-radius: 12px;
-  height: 200px;
+  background: var(--field-background);
+  border: 1px dashed var(--field-border);
+  border-radius: var(--border-radius);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
-}
+  transition:
+  border-color 150ms ease,
+  background 150ms ease,
+  box-shadow 150ms ease;
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 1.5 / 1;
+  height: auto;
+  width: 100%;
+  padding: var(--spacing-xxs);
 
-.dropzone--active {
-  border-color: var(--accent);
-  background: color-mix(in oklch, var(--background-900), var(--accent) 15%);
-  box-shadow: 0 0 0 4px color-mix(in oklch, var(--accent), transparent 85%);
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    height: auto;
+    width: auto;
+    margin: 0 auto;
+    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, .25);
+    border-radius: 4px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .dropzone--active,
+  &:hover {
+    background: var(--field-background-hover);
+    border-color: var(--field-border-hover);
+  }
 }
 
 .dropzone__text {
@@ -158,4 +226,13 @@ h3, h4, h5, h6 {
 
 .dropzone__preview {
   margin-top: var(--spacing-sm);
+}
+
+.label {
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.2em;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }

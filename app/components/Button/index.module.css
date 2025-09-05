@@ -1,28 +1,32 @@
 .button {
-    padding: var(--spacing-xxs) var(--spacing-xs);
-    border-radius: 48px;
-    height: 48px;
-    display: flex;
-    border: none;
-    line-height: 1.1em;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0px 12px 8px rgba(0, 0, 0, 0.1), inset 0px 1px 2px rgba(255, 255, 255, 0.25);
-    min-width: min(160px, 100%);
-    cursor: pointer;
-    gap: var(--spacing-xxxs);
+  padding: var(--spacing-xxs) var(--spacing-xs);
+  border-radius: 48px;
+  height: 48px;
+  display: flex;
+  border: none;
+  line-height: 1.1em;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0px 12px 8px rgba(0, 0, 0, 0.1),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.25);
+  min-width: min(160px, 100%);
+  cursor: pointer;
+  gap: var(--spacing-xxxs);
 }
 
 .primary {
-    composes: button;
-    background-color: var(--accent);
-    color: var(--text-primary);
+  composes: button;
+  background-color: var(--accent);
+  color: var(--text-primary);
 }
 
 .secondary {
-    composes: button;
-    background: var(--background-800);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0px 12px 8px rgba(0, 0, 0, 0.1), inset 0px 1px 2px rgba(255, 255, 255, 0.25);
-    color: var(--text-primary);
+  composes: button;
+  background: var(--background-800);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0px 12px 8px rgba(0, 0, 0, 0.1),
+    inset 0px 1px 2px rgba(255, 255, 255, 0.25);
+  color: var(--text-primary);
 }

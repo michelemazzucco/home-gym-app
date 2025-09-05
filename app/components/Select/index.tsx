@@ -11,34 +11,38 @@ interface SelectProps {
   options: OptionProps[]
   value?: string
   onChange?: (value: string) => void
+  label?: string
 }
 
-export function Select({ options, onChange }: SelectProps) {
+export function Select({ options, onChange, label }: SelectProps) {
   return (
-    <ReactSelect.Root items={options} defaultValue={options[0].value} onValueChange={onChange}>
-      <ReactSelect.Trigger className={styles.Select}>
-        <ReactSelect.Value />
-        <ReactSelect.Icon className={styles.SelectIcon}>
-          <ChevronUpDownIcon />
-        </ReactSelect.Icon>
-      </ReactSelect.Trigger>
-      <ReactSelect.Portal>
-        <ReactSelect.Positioner className={styles.Positioner} sideOffset={8}>
-          <ReactSelect.ScrollUpArrow className={styles.ScrollArrow} />
-          <ReactSelect.Popup className={styles.Popup}>
-            {options.map(({ label, value }) => (
-              <ReactSelect.Item key={label} value={value} className={styles.Item}>
-                <ReactSelect.ItemIndicator className={styles.ItemIndicator}>
-                  <CheckIcon className={styles.ItemIndicatorIcon} />
-                </ReactSelect.ItemIndicator>
-                <ReactSelect.ItemText className={styles.ItemText}>{label}</ReactSelect.ItemText>
-              </ReactSelect.Item>
-            ))}
-          </ReactSelect.Popup>
-          <ReactSelect.ScrollDownArrow className={styles.ScrollArrow} />
-        </ReactSelect.Positioner>
-      </ReactSelect.Portal>
-    </ReactSelect.Root>
+    <>
+      {label && <label className={styles.label}>{label}</label>}
+      <ReactSelect.Root items={options} defaultValue={options[0].value} onValueChange={onChange}>
+        <ReactSelect.Trigger className={styles.select}>
+          <ReactSelect.Value />
+          <ReactSelect.Icon className={styles.SelectIcon}>
+            <ChevronUpDownIcon />
+          </ReactSelect.Icon>
+        </ReactSelect.Trigger>
+        <ReactSelect.Portal>
+          <ReactSelect.Positioner className={styles.Positioner} sideOffset={8}>
+            <ReactSelect.ScrollUpArrow className={styles.ScrollArrow} />
+            <ReactSelect.Popup className={styles.Popup}>
+              {options.map(({ label, value }) => (
+                <ReactSelect.Item key={label} value={value} className={styles.Item}>
+                  <ReactSelect.ItemIndicator className={styles.ItemIndicator}>
+                    <CheckIcon className={styles.ItemIndicatorIcon} />
+                  </ReactSelect.ItemIndicator>
+                  <ReactSelect.ItemText className={styles.ItemText}>{label}</ReactSelect.ItemText>
+                </ReactSelect.Item>
+              ))}
+            </ReactSelect.Popup>
+            <ReactSelect.ScrollDownArrow className={styles.ScrollArrow} />
+          </ReactSelect.Positioner>
+        </ReactSelect.Portal>
+      </ReactSelect.Root>
+    </>
   )
 }
 

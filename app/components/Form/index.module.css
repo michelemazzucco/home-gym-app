@@ -1,0 +1,16 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.fieldsContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--spacing-xs);
+}
+
+.fieldFullWidth {
+  grid-column: 1 / 3;
+}

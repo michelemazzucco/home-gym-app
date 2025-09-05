@@ -84,7 +84,7 @@ export default function Home() {
         <h2 className="app-header__subtitle">
           Workouts based on what
           <br />
-          there is around you
+          there&apos;s around you
         </h2>
       </header>
 

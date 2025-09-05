@@ -1,0 +1,34 @@
+.workoutBlock {
+  --text-primary: oklch(var(--lch-blue-800));
+
+  display: flex;
+  flex-direction: column;
+  gap: 1lh;
+  color: var(--text-primary);
+  margin-bottom: 2lh;
+}
+
+.workoutBlockTitle {
+  font-size: 1.75rem;
+  font-weight: 500;
+  margin-bottom: .15lh;
+}
+
+.sessionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: .05lh;
+}
+
+.exercize {
+    padding-left: var(--spacing-xxs);
+}
+
+.exercizeName {
+  font-weight: 600;
+}
+
+.exercizeDetails {
+    --text-secondary: oklch(var(--lch-blue-800) / 0.6);
+    color: var(--text-secondary);
+}

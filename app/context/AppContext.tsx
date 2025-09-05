@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 
@@ -16,7 +16,7 @@ interface Session {
   exercizes: Exercize[]
 }
 
-interface WorkoutBlock {
+export interface WorkoutBlock {
   title: string
   sessions: Session[]
 }
@@ -48,6 +48,32 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
+const STORAGE_KEY = 'homegym-workout-result'
+
+// Helper functions for localStorage
+const saveToStorage = (workoutResult: WorkoutResult | null) => {
+  if (typeof window !== 'undefined') {
+    if (workoutResult) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(workoutResult))
+    } else {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+  }
+}
+
+const loadFromStorage = (): WorkoutResult | null => {
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      return stored ? JSON.parse(stored) : null
+    } catch (error) {
+      console.error('Error loading from localStorage:', error)
+      return null
+    }
+  }
+  return null
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AppState>({
     selectedImage: null,
@@ -57,6 +83,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     loading: false,
     workoutResult: null,
   })
+
+  // Load workout result from localStorage on mount
+  useEffect(() => {
+    const storedResult = loadFromStorage()
+    if (storedResult) {
+      setState((prev) => ({ ...prev, workoutResult: storedResult }))
+    }
+  }, [])
 
   const setSelectedImage = (image: File | null) => {
     setState((prev) => ({ ...prev, selectedImage: image }))
@@ -80,6 +114,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const setWorkoutResult = (result: WorkoutResult | null) => {
     setState((prev) => ({ ...prev, workoutResult: result }))
+    saveToStorage(result)
   }
 
   const resetState = () => {
@@ -91,6 +126,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       loading: false,
       workoutResult: null,
     })
+    saveToStorage(null) // Clear localStorage
   }
 
   return (

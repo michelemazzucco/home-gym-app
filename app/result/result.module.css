@@ -1,0 +1,39 @@
+.plan {
+  --top-space: 2rem;
+  --line-thickness: 1px;
+  --side-line-color: var(--accent);
+  --main-line-color: oklch(0.1841 0.0823 271.94 / 0.1);
+  --paper-color: oklch(var(--lch-white));
+
+  background-color: #fff;
+  padding: var(--spacing-xs);
+  padding-left: 3.25rem;
+  padding-top: 2lh;
+  border-radius: var(--border-radius);
+  border-radius: 8px;
+  width: 100%;
+  line-height: 1lh;
+  letter-spacing: -.01em;
+
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent,
+      transparent 1.75rem,
+      var(--side-line-color) 1.75rem,
+      var(--side-line-color) 1.8rem,
+      transparent 1.8rem
+    ),
+    linear-gradient(
+      var(--paper-color),
+      var(--paper-color) var(--top-space),
+      transparent var(--top-space)
+    ),
+    repeating-linear-gradient(
+      transparent,
+      transparent calc(1lh - var(--line-thickness)),
+      var(--main-line-color) calc(1lh - var(--line-thickness)),
+      var(--main-line-color) 1lh,
+      transparent 1lh
+    );
+}

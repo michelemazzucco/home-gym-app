@@ -5,6 +5,7 @@
     letter-spacing: -0.01em;
     color: #FFFFFF;
     text-shadow: 4px 4px 0px var(--text-primary-shadow);
+    line-height: 1em;
 }
 
 .logoWrapper {

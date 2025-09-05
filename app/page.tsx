@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useApp, type DifficultyLevel } from './context/AppContext'
 import { Select, NumberField, Loader, Logo, Button } from './components'
 import Image from 'next/image'
+import { CameraIcon } from '@heroicons/react/16/solid'
 
 const levels = [
   { value: 'beginner', label: 'Beginner' },
@@ -24,102 +25,112 @@ export default function Home() {
   } = useApp()
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const [stream, setStream] = useState<MediaStream | null>(null)
   const [showCamera, setShowCamera] = useState(false)
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
+  const [isDragging, setIsDragging] = useState(false)
+  const dragCounterRef = useRef(0)
 
-  const startCamera = async () => {
-    try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode },
-      })
-      setStream(mediaStream)
-      setShowCamera(true)
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream
-      }
-    } catch (error) {
-      console.error('Error accessing camera:', error)
-      alert('Could not access camera. Please upload a photo instead.')
-    }
-  }
-
-  const switchCamera = async () => {
-    const newFacingMode = facingMode === 'user' ? 'environment' : 'user'
-    setFacingMode(newFacingMode)
-
-    if (stream) {
-      // Stop current stream
-      stream.getTracks().forEach((track) => track.stop())
-
-      try {
-        const mediaStream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: newFacingMode },
-        })
-        setStream(mediaStream)
-        if (videoRef.current) {
-          videoRef.current.srcObject = mediaStream
-        }
-      } catch (error) {
-        console.error('Error switching camera:', error)
-        alert('Could not switch camera.')
+  // Prevent the browser from opening the file when dropping outside the dropzone
+  useEffect(() => {
+    const preventIfFileDrag = (event: DragEvent) => {
+      const types = event.dataTransfer?.types
+      if (types && Array.from(types).includes('Files')) {
+        event.preventDefault()
       }
     }
-  }
 
-  const capturePhoto = () => {
-    if (videoRef.current) {
-      const canvas = document.createElement('canvas')
-      canvas.width = videoRef.current.videoWidth
-      canvas.height = videoRef.current.videoHeight
-      const ctx = canvas.getContext('2d')
-      if (ctx) {
-        ctx.drawImage(videoRef.current, 0, 0)
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              const file = new File([blob], 'camera-photo.jpg', {
-                type: 'image/jpeg',
-              })
-              setSelectedImage(file)
-              stopCamera()
-            }
-          },
-          'image/jpeg',
-          0.8
-        ) // Add quality parameter to ensure proper JPEG
-      }
-    }
-  }
+    window.addEventListener('dragover', preventIfFileDrag)
+    window.addEventListener('drop', preventIfFileDrag)
 
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach((track) => track.stop())
-      setStream(null)
+    return () => {
+      window.removeEventListener('dragover', preventIfFileDrag)
+      window.removeEventListener('drop', preventIfFileDrag)
     }
-    setShowCamera(false)
+  }, [])
+
+  const stopCamera = () => setShowCamera(false)
+
+  const validateAndSetFile = (file: File) => {
+    // Check file type - OpenAI only supports these formats
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      alert(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
+      return
+    }
+
+    // Check file size (7.5MB limit to account for base64 expansion)
+    const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
+    if (file.size > maxSize) {
+      alert(
+        `Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`
+      )
+      return
+    }
+
+    setSelectedImage(file)
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      // Check file type - OpenAI only supports these formats
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-      if (!allowedTypes.includes(file.type)) {
-        alert(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
-        return
-      }
+      validateAndSetFile(file)
+    }
+    // Allow re-selecting the same file later
+    event.currentTarget.value = ''
+  }
 
-      // Check file size (7.5MB limit to account for base64 expansion)
-      const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
-      if (file.size > maxSize) {
-        alert(
-          `Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`
-        )
-        return
+  const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    dragCounterRef.current += 1
+    setIsDragging(true)
+  }
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    event.dataTransfer.dropEffect = 'copy'
+    setIsDragging(true)
+  }
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    dragCounterRef.current -= 1
+    if (dragCounterRef.current <= 0) {
+      setIsDragging(false)
+    }
+  }
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    setIsDragging(false)
+    dragCounterRef.current = 0
+
+    const files = event.dataTransfer.files
+    if (files && files.length > 0) {
+      const file = files[0]
+      if (file) {
+        validateAndSetFile(file)
       }
-      setSelectedImage(file)
+      event.dataTransfer.clearData()
+      return
+    }
+
+    // Fallback for browsers that populate items instead of files
+    const items = event.dataTransfer.items
+    if (items && items.length > 0) {
+      for (let index = 0; index < items.length; index += 1) {
+        const item = items[index]
+        if (item.kind === 'file') {
+          const file = item.getAsFile()
+          if (file) {
+            validateAndSetFile(file)
+            break
+          }
+        }
+      }
+      event.dataTransfer.clearData()
     }
   }
 
@@ -160,19 +171,35 @@ export default function Home() {
 
   return (
     <div className="app-wrapper">
-      <header>
+      <header className="app-header">
         <Logo />
-        <h2>Workouts based on what there is around you</h2>
+        <h2 className="app-header__subtitle">
+          Workouts based on what
+          <br />
+          there is around you
+        </h2>
       </header>
 
-      <main>
+      <main className="app-main">
         {!showCamera && (
           <div>
-            <div>
-              {/* <button onClick={startCamera}>
-                Take Photo
-              </button> */}
-
+            <div
+              className={`dropzone ${isDragging ? 'dropzone--active' : ''}`}
+              onDragEnter={handleDragEnter}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current?.click()}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  fileInputRef.current?.click()
+                }
+              }}
+              aria-label="Upload an image by clicking or dragging and dropping"
+            >
               <input
                 ref={fileInputRef}
                 type="file"
@@ -180,19 +207,28 @@ export default function Home() {
                 onChange={handleImageUpload}
                 style={{ display: 'none' }}
               />
-              <button onClick={() => fileInputRef.current?.click()}>Upload Photo</button>
+              <Button variant="secondary">
+                <CameraIcon width={16} height={16} />
+                Take a picture or select one
+              </Button>
+              {/*<Button
+                variant="secondary"
+                onClick={() => setShowCamera(true)}
+                disabled={state.loading}
+              >
+                Take Photo
+              </Button>*/}
+              {state.selectedImage && (
+                <div className="dropzone__preview">
+                  <p>Selected: {state.selectedImage.name}</p>
+                  <Image
+                    src={URL.createObjectURL(state.selectedImage)}
+                    alt="Selected equipment"
+                    style={{ maxWidth: '300px', height: 'auto', margin: '0 auto' }}
+                  />
+                </div>
+              )}
             </div>
-
-            {state.selectedImage && (
-              <div>
-                <p>Selected: {state.selectedImage.name}</p>
-                <Image
-                  src={URL.createObjectURL(state.selectedImage)}
-                  alt="Selected equipment"
-                  style={{ maxWidth: '300px', height: 'auto' }}
-                />
-              </div>
-            )}
 
             <div>
               <label>Difficulty Level:</label>
@@ -213,39 +249,26 @@ export default function Home() {
 
             <div>
               <label htmlFor="weeks">Number of weeks:</label>
-              <NumberField
-                id="weeks"
-                defaultValue={12}
-                onChange={(value) => setSessionsPerWeek(value)}
-              />
+              <NumberField id="weeks" defaultValue={12} onChange={(value) => setWeeks(value)} />
             </div>
 
-
-            <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>
-              Let&apos;s go!
-            </Button>
-          </div>
-        )}
-
-        {showCamera && (
-          <div>
-            <h2>Take Photo</h2>
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              style={{ maxWidth: '100%', height: 'auto' }}
-            />
             <div>
-              <button onClick={capturePhoto}>Capture</button>
-              <button onClick={switchCamera}>
-                Switch to {facingMode === 'user' ? 'Back' : 'Front'} Camera
-              </button>
-              <button onClick={stopCamera}>Cancel</button>
+              <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>
+                Let&apos;s go!
+              </Button>
             </div>
           </div>
         )}
+
+        {/* showCamera && (
+          <CameraCapture
+            onCapture={(file) => {
+              validateAndSetFile(file)
+              stopCamera()
+            }}
+            onClose={stopCamera}
+          />
+        ) */}
       </main>
     </div>
   )

@@ -1,0 +1,24 @@
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sparkles {
+    font-size: var(--spacing-xl);
+    color: var(--accent);
+}
+
+.title {
+    font-size: var(--spacing-xs);
+}
+
+.subtitle {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-secondary);
+}

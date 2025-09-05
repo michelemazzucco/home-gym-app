@@ -1,7 +1,9 @@
 .formContainer {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--spacing-xs);
+  flex: 1;
 }
 
 .fieldsContainer {

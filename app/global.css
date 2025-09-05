@@ -145,10 +145,19 @@ h6 {
   max-width: calc(var(--base-space) * 28);
   width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-sm) var(--spacing-xxs);
-  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-xxs);
+  gap: var(--spacing-sm);
   display: flex;
   flex-direction: column;
+  height: 100dvh;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .app-header {
@@ -171,13 +180,10 @@ h6 {
 }
 
 .app-main__button-container {
-  position: fixed;
-  bottom: var(--spacing-sm);
-  left: 0;
-  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
 }
 
 .dropzone {
@@ -195,10 +201,14 @@ h6 {
   height: 0;
   overflow: hidden;
   position: relative;
-  aspect-ratio: 1.5 / 1;
+  aspect-ratio: 1.7 / 1;
   height: auto;
   width: 100%;
   padding: var(--spacing-xxs);
+
+  @media (min-width: 768px) {
+    aspect-ratio: 1.5 / 1;
+  }
 
   img {
     max-width: 100%;
@@ -228,11 +238,3 @@ h6 {
   margin-top: var(--spacing-sm);
 }
 
-.label {
-  font-size: .75rem;
-  font-weight: 400;
-  line-height: 1.2em;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}

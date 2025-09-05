@@ -90,7 +90,7 @@ export default function Home() {
 
       <main className="app-main">
         {!showCamera && (
-          <div>
+          <>
             <Form
               setWeeks={setWeeks}
               setDifficulty={setDifficulty}
@@ -102,7 +102,7 @@ export default function Home() {
                 Let&apos;s go!
               </Button>
             </div>
-          </div>
+          </>
         )}
 
         {/* showCamera && (

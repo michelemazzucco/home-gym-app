@@ -17,8 +17,17 @@ interface SelectProps {
 export function Select({ options, onChange, label }: SelectProps) {
   return (
     <>
-      {label && <label className={styles.label}>{label}</label>}
-      <ReactSelect.Root items={options} defaultValue={options[0].value} onValueChange={onChange}>
+      {label && (
+        <label htmlFor={label} className={styles.label}>
+          {label}
+        </label>
+      )}
+      <ReactSelect.Root
+        items={options}
+        defaultValue={options[0].value}
+        onValueChange={onChange}
+        id={label}
+      >
         <ReactSelect.Trigger className={styles.select}>
           <ReactSelect.Value />
           <ReactSelect.Icon className={styles.SelectIcon}>

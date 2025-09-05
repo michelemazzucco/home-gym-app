@@ -2,6 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { useApp } from '../context/AppContext'
+import { Button, Logo } from '../components'
+import styles from './result.module.css'
+import { WorkoutBlock } from '../components'
 
 export default function ResultPage() {
   const { state, resetState } = useApp()
@@ -27,25 +30,41 @@ export default function ResultPage() {
   }
 
   return (
-    <div>
-      <header>
-        <h1>Workout Results</h1>
-        <button onClick={handleBackToMain}>← Back to Main</button>
+    <div className="app-wrapper result-page">
+      <header className="app-header">
+        <Logo />
       </header>
 
       <main>
         <div>
-          <div style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(state.workoutResult)}</div>
+          <h3>Detected equipment:</h3>
+          <ul>
+            {state.workoutResult.equipment.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
 
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(JSON.stringify(state.workoutResult))
-            alert('Workout plan copied to clipboard!')
-          }}
-        >
-          Copy Workout Plan
-        </button>
+        <div className={styles.plan}>
+          {state.workoutResult.plan.map((block) => (
+            <WorkoutBlock key={block.title} block={block} />
+          ))}
+        </div>
+
+        <div className="app-main__button-container fixed">
+          <Button variant="secondary" onClick={handleBackToMain}>
+            Create a new one
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              navigator.clipboard.writeText(JSON.stringify(state.workoutResult))
+              alert('Workout plan copied to clipboard!')
+            }}
+          >
+            Copy Workout Plan
+          </Button>
+        </div>
       </main>
     </div>
   )

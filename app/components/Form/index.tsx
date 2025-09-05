@@ -116,7 +116,7 @@ export const Form = ({
   return (
     <div className={styles.formContainer}>
       <div
-        className={`dropzone ${isDragging ? 'dropzone--active' : ''}`}
+        className={`${styles.dropzone} ${isDragging ? styles.dropzoneActive : ''}`}
         onDragEnter={handleDragEnter}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}

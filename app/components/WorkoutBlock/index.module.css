@@ -3,21 +3,23 @@
 
   display: flex;
   flex-direction: column;
-  gap: 1lh;
+  gap: 1.75rem;
   color: var(--text-primary);
-  margin-bottom: 2lh;
+  margin-bottom: 1.75rem;
 }
 
 .workoutBlockTitle {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  margin-bottom: .15lh;
+
+  /* Not the cleanest hack, but wanted to have the right hierarchy for the title */
+  position: relative;
+  top: -.175rem;
 }
 
 .sessionTitle {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
-  margin-bottom: .05lh;
 }
 
 .exercize {

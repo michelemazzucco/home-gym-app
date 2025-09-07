@@ -97,11 +97,6 @@ export default function Home() {
               setSessionsPerWeek={setSessionsPerWeek}
               validateAndSetFile={validateAndSetFile}
             />
-            <div className="app-main__button-container">
-              <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>
-                Let&apos;s go!
-              </Button>
-            </div>
           </>
         )}
 
@@ -115,6 +110,11 @@ export default function Home() {
           />
         ) */}
       </main>
+      <footer className="app-main__button-container">
+        <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>
+          Let&apos;s go!
+        </Button>
+      </footer>
     </div>
   )
 }

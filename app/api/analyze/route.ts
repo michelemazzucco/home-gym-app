@@ -70,6 +70,8 @@ export async function POST(request: NextRequest) {
     - The workout plan should be specific to the equipment identified in the image.
     - The workout plan should be specific to the difficulty level.
     - If plan is more than 4 weeks, group in blocks of 2 weeks each, otherwise, group in blocks of 1 week each.
+    - Title of the block should contain weeks and focus for the block, for example: "Week 1-2: Foundation" 
+    
     ${workoutPerWeek} session per week, with ${weeks} duration.
     
     

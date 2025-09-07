@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Select as ReactSelect } from '@base-ui-components/react/select'
 import styles from './index.module.css'
+import { Label } from '../Label'
 
 interface OptionProps {
   value: string
@@ -17,11 +18,7 @@ interface SelectProps {
 export function Select({ options, onChange, label }: SelectProps) {
   return (
     <>
-      {label && (
-        <label htmlFor={label} className={styles.label}>
-          {label}
-        </label>
-      )}
+      {label && <Label htmlFor={label}>{label}</Label>}
       <ReactSelect.Root
         items={options}
         defaultValue={options[0].value}

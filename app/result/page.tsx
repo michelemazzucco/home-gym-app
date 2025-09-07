@@ -5,6 +5,7 @@ import { useApp } from '../context/AppContext'
 import { Button, Logo } from '../components'
 import styles from './result.module.css'
 import { WorkoutBlock } from '../components'
+import { Label } from '../components'
 
 export default function ResultPage() {
   const { state, resetState } = useApp()
@@ -37,7 +38,7 @@ export default function ResultPage() {
 
       <main>
         <div>
-          <h3>Detected equipment:</h3>
+          <Label>Detected equipment:</Label>
           <ul>
             {state.workoutResult.equipment.map((item) => (
               <li key={item}>{item}</li>

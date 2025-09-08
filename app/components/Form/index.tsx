@@ -167,17 +167,25 @@ export const Form = ({
         </div>
 
         <div>
-          <label htmlFor="sessionsPerWeek">Sessions per week:</label>
           <NumberField
             id="sessionsPerWeek"
             defaultValue={3}
             onChange={(value) => setSessionsPerWeek(value)}
+            max={7}
+            min={1}
+            label="Sesh per week"
           />
         </div>
 
         <div>
-          <label htmlFor="weeks">Number of weeks:</label>
-          <NumberField id="weeks" defaultValue={12} onChange={(value) => setWeeks(value)} />
+          <NumberField
+            id="weeks"
+            defaultValue={8}
+            onChange={(value) => setWeeks(value)}
+            max={12}
+            min={4}
+            label="Plan duration"
+          />
         </div>
       </div>
     </div>

@@ -1,0 +1,16 @@
+.badge {
+  --text-primary: var(--background-900);
+
+  background: oklch(0.9327 0.008 286.24);
+  box-shadow:
+    0px 12px 8px rgba(0, 0, 0, 0.1),
+    inset 0px 1px 1px rgba(255, 255, 255, 1);
+  border-radius: 20px;
+  padding: 0 var(--spacing-xxs);
+  line-height: 1.4em;
+  text-transform: capitalize;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  height: var(--spacing-sm);
+}

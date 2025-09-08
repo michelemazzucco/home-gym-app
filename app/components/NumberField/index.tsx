@@ -1,24 +1,38 @@
 import React from 'react'
 import { NumberField as ReactNumberField } from '@base-ui-components/react/number-field'
 import styles from './index.module.css'
+import { Label } from '../Label'
 
 export function NumberField({
   id,
   defaultValue,
   onChange,
+  max,
+  min,
+  label,
 }: {
   id: string
   defaultValue: number
   onChange: (value: number) => void
+  max?: number
+  min?: number
+  label?: string
 }) {
   return (
-    <ReactNumberField.Root id={id} defaultValue={defaultValue} className={styles.field}>
+    <ReactNumberField.Root
+      id={id}
+      defaultValue={defaultValue}
+      className={styles.field}
+      max={max}
+      min={min}
+      onValueChange={(value) => onChange(value ?? defaultValue)}
+    >
+      {label && <Label htmlFor={id}>{label}</Label>}
       <ReactNumberField.ScrubArea className={styles.scrubArea}>
         <ReactNumberField.ScrubAreaCursor className={styles.scrubAreaCursor}>
           <CursorGrowIcon />
         </ReactNumberField.ScrubAreaCursor>
       </ReactNumberField.ScrubArea>
-
       <ReactNumberField.Group className={styles.group}>
         <ReactNumberField.Decrement className={styles.decrement}>
           <MinusIcon />

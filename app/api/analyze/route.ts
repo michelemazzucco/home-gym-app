@@ -61,27 +61,27 @@ export async function POST(request: NextRequest) {
     
     Redact a full body program, something that could be appreciated by a someone that would like to get in shape staying at home.
 
-    The workout plan should be: 
+    Plan must have ${weeks} weeks duration, with ${workoutPerWeek} session per week.
+
+    The workout plan must be: 
     - Detailed, progressive, and specifically use only the equipment identified in the image, if there are no equipment, use bodyweight exercises or object that could be used as equipment if in the picture (e.g. a chair, a water bottle, etc.)
     - Balanced, and include a mix of strength and flexibility exercises.
     - Specific to the equipment identified in the image.
-    - The workout plan should be specific for a ${difficulty} level.
-    - The workout plan should be 30 minutes long.
-    - The workout plan should be specific to the equipment identified in the image.
-    - The workout plan should be specific to the difficulty level.
-    - If plan is more than 4 weeks, group in blocks of 2 weeks each, otherwise, group in blocks of 1 week each.
-    - Title of the block should contain weeks and focus for the block, for example: "Week 1-2: Foundation" 
+    - Be specific for a ${difficulty} level.
+    - Be 30 minutes long.
+
+    About blocks
+    - The workout should be grouped in 3 blocks max - e.g. 12 weeks duration 4 weeks blocks, 5 weeks duration: 1 x 3 weeks 1 x 2 weeks blocks, and so on.
+    - If plan duration is 4 weeks, 2 blocks.
+    - The title of the block should contain the weeks and the focus of the block, for example: "Week 1-3: Foundation"
     
-    ${workoutPerWeek} session per week, with ${weeks} duration.
-    
-    
-    Also, the output should:
+    Also, the output must:
     - Not contain emoji
     - Not contain sarcasm
     - Not contain codeblock
     - Not contain Markdown
-    - JSON only
-    - Following the JSON format below:
+    - Be JSON only, ensure is valid JSON, response limit MUST not break it.
+    - Be in the following JSON format:
     {
       "equipment": ["item1", "item2", ...],
       "plan": [{
@@ -154,6 +154,8 @@ export async function POST(request: NextRequest) {
     const data = await response.json()
 
     const content = data.choices[0]?.message?.content
+
+    console.log(content)
 
     if (!content) {
       console.error('No content in OpenAI response:', data)

@@ -89,7 +89,7 @@ h6 {
 
   --text-primary: oklch(var(--lch-white));
   --text-primary-shadow: oklch(var(--lch-white) / 0.25);
-  --text-secondary: oklch(var(--lch-white) / 0.75);
+  --text-secondary: oklch(var(--lch-white) / 0.8);
 
   --field-background: oklch(var(--lch-white) / 0.04);
   --field-background-hover: oklch(var(--lch-white) / 0.08);
@@ -193,7 +193,6 @@ h6 {
   justify-content: center;
   width: 100%;
   gap: var(--spacing-xxs);
-  
 
   &.fixed {
     position: fixed;
@@ -203,7 +202,7 @@ h6 {
     width: 100%;
     max-width: calc(var(--base-space) * 28 - var(--spacing-xxs) * 2);
     padding: var(--spacing-xs) var(--spacing-xxs);
-    margin: 0 auto; 
+    margin: 0 auto;
     background: linear-gradient(oklch(var(--lch-white) / 0), oklch(var(--lch-white) / 1));
   }
 }

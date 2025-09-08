@@ -14,23 +14,36 @@
 
   /* Not the cleanest hack, but wanted to have the right hierarchy for the title */
   position: relative;
-  top: -.175rem;
+  top: -0.175rem;
 }
 
 .sessionTitle {
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 600;
+  /* Not the cleanest hack, but wanted to have the right hierarchy for the title */
+  position: relative;
+  top: -0.075rem;
+}
+
+.exercizes {
+  padding-left: var(--spacing-xxs);
+  list-style-type: '>>';
 }
 
 .exercize {
-    padding-left: var(--spacing-xxs);
+  padding-left: var(--spacing-xxxs);
+
+  &::marker {
+    color: var(--accent);
+  }
 }
 
 .exercizeName {
   font-weight: 600;
+  position: relative;
 }
 
 .exercizeDetails {
-    --text-secondary: oklch(var(--lch-blue-800) / 0.6);
-    color: var(--text-secondary);
+  --text-secondary: oklch(var(--lch-blue-800) / 0.6);
+  color: var(--text-secondary);
 }

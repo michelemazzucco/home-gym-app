@@ -79,7 +79,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     selectedImage: null,
     difficulty: 'beginner',
     sessionsPerWeek: 3,
-    weeks: 12,
+    weeks: 8,
     loading: false,
     workoutResult: null,
   })

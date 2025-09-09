@@ -18,7 +18,7 @@
 }
 
 .dropzone {
-  background: var(--field-background);
+  background: var(--dropzone-background);
   border: 1px dashed var(--field-border);
   border-radius: var(--border-radius);
   position: relative;
@@ -33,6 +33,10 @@
   height: auto;
   width: 100%;
   padding: var(--spacing-xxs);
+  background: var(--field-background);
+  background-image: radial-gradient(oklch(var(--lch-white) / 0.05) 1px, transparent 0);
+  background-size: 1.2rem 1.2rem;
+  background-position: -1rem -1rem;
 
   @media (min-width: 768px) {
     aspect-ratio: 1.5 / 1;
@@ -51,9 +55,11 @@
   }
 }
 
-.dropzoneActive,
-.dropzone:hover {
-  background: var(--field-background-hover);
+@media (any-hover: hover) {
+  .dropzoneActive,
+  .dropzone:hover {
+    background: var(--field-background-hover);
+  }
 }
 
 .dropzoneActive::before,

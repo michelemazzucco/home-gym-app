@@ -92,7 +92,8 @@ h6 {
   --text-secondary: oklch(var(--lch-white) / 0.8);
 
   --field-background: oklch(var(--lch-white) / 0.04);
-  --field-background-hover: oklch(var(--lch-white) / 0.08);
+  --dropzone-background: linear-gradient(oklch(var(--lch-white) / 0.05), oklch(var(--lch-white) / 0.03));
+  --field-background-hover: linear-gradient(oklch(var(--lch-white) / 0.08), oklch(var(--lch-white) / 0.08));
   --field-border: oklch(var(--lch-white) / 0.2);
   --field-border-hover: oklch(var(--lch-white) / 0.3);
 
@@ -108,6 +109,7 @@ h6 {
   --app-width: calc(var(--base-space) * 28);
 
   --border-radius: 0.5rem;
+  --animation: cubic-bezier(.45, 0, .1, 1);
 }
 
 body {

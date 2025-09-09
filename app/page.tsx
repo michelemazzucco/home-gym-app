@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useApp } from './context/AppContext'
 import { Loader, Logo, Button, Form } from './components'
@@ -16,21 +15,14 @@ export default function Home() {
     setWorkoutResult,
   } = useApp()
   const router = useRouter()
-  //const [showCamera, setShowCamera] = useState(false)
-
-  const showCamera = false
-
-  //const stopCamera = () => setShowCamera(false)
 
   const validateAndSetFile = (file: File) => {
-    // Check file type - OpenAI only supports these formats
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
       alert(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
       return
     }
 
-    // Check file size (7.5MB limit to account for base64 expansion)
     const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
     if (file.size > maxSize) {
       alert(
@@ -68,7 +60,6 @@ export default function Home() {
     } catch (error) {
       console.error('Error analyzing image:', error)
       alert('Error analyzing image. Please try again.')
-    } finally {
       setLoading(false)
     }
   }
@@ -87,28 +78,13 @@ export default function Home() {
           there&apos;s around you
         </h2>
       </header>
-
       <main className="app-main">
-        {!showCamera && (
-          <>
-            <Form
-              setWeeks={setWeeks}
-              setDifficulty={setDifficulty}
-              setSessionsPerWeek={setSessionsPerWeek}
-              validateAndSetFile={validateAndSetFile}
-            />
-          </>
-        )}
-
-        {/* showCamera && (
-          <CameraCapture
-            onCapture={(file) => {
-              validateAndSetFile(file)
-              stopCamera()
-            }}
-            onClose={stopCamera}
-          />
-        ) */}
+        <Form
+          setWeeks={setWeeks}
+          setDifficulty={setDifficulty}
+          setSessionsPerWeek={setSessionsPerWeek}
+          validateAndSetFile={validateAndSetFile}
+        />
       </main>
       <footer className="app-main__button-container">
         <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>

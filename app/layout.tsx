@@ -4,8 +4,10 @@ import { Barlow_Condensed } from 'next/font/google'
 
 import './global.css'
 
+const title = 'Homegym'
+
 export const metadata: Metadata = {
-  title: 'HOMEGYM',
+  title,
   description: 'Workouts based on what there is around you',
 }
 
@@ -25,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/manifest.json" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-        <meta name="apple-mobile-web-app-title" content="HOMEGYM" />
+        <meta name="apple-mobile-web-app-title" content={title} />
       </head>
       <body className={barlowCondensed.variable}>
         <AppProvider>

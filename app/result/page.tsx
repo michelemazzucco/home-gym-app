@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { useApp } from '../context/AppContext'
 import { Button, Logo } from '../components'
 import styles from './result.module.css'
@@ -9,8 +10,12 @@ import { Label, EquipmentBadge } from '../components'
 import { getMarkdown } from '../utils'
 
 export default function ResultPage() {
-  const { state, resetState } = useApp()
+  const { state, resetState, setLoading } = useApp()
   const router = useRouter()
+
+  useEffect(() => {
+    setLoading(false)
+  }, [])
 
   const handleBackToMain = () => {
     resetState()
@@ -62,7 +67,7 @@ export default function ResultPage() {
 
         <div className="app-main__button-container fixed">
           <Button variant="secondary" onClick={handleBackToMain}>
-            Create a new one
+            Create new plan
           </Button>
           <Button
             variant="primary"
@@ -75,7 +80,7 @@ export default function ResultPage() {
               }
             }}
           >
-            Copy Workout Plan
+            Copy to clipboard
           </Button>
         </div>
       </main>

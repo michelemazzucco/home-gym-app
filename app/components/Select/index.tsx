@@ -27,20 +27,20 @@ export function Select({ options, onChange, label }: SelectProps) {
       >
         <ReactSelect.Trigger className={styles.select}>
           <ReactSelect.Value />
-          <ReactSelect.Icon className={styles.SelectIcon}>
+          <ReactSelect.Icon className={styles.selectIcon}>
             <ChevronUpDownIcon />
           </ReactSelect.Icon>
         </ReactSelect.Trigger>
         <ReactSelect.Portal>
-          <ReactSelect.Positioner className={styles.Positioner} sideOffset={8}>
+          <ReactSelect.Positioner className={styles.positioner} sideOffset={8}>
             <ReactSelect.ScrollUpArrow className={styles.ScrollArrow} />
-            <ReactSelect.Popup className={styles.Popup}>
+            <ReactSelect.Popup className={styles.popup}>
               {options.map(({ label, value }) => (
-                <ReactSelect.Item key={label} value={value} className={styles.Item}>
-                  <ReactSelect.ItemIndicator className={styles.ItemIndicator}>
-                    <CheckIcon className={styles.ItemIndicatorIcon} />
+                <ReactSelect.Item key={label} value={value} className={styles.item}>
+                  <ReactSelect.ItemIndicator className={styles.itemIndicator}>
+                    <CheckIcon className={styles.itemIndicatorIcon} />
                   </ReactSelect.ItemIndicator>
-                  <ReactSelect.ItemText className={styles.ItemText}>{label}</ReactSelect.ItemText>
+                  <ReactSelect.ItemText className={styles.itemText}>{label}</ReactSelect.ItemText>
                 </ReactSelect.Item>
               ))}
             </ReactSelect.Popup>

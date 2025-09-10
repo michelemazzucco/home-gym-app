@@ -37,8 +37,8 @@
     repeating-linear-gradient(
       transparent,
       transparent calc(1.75rem - 1px),
-      #E6E7EB calc(1.75rem - 1px),
-      #E6E7EB 1.75rem,
+      #e6e7eb calc(1.75rem - 1px),
+      #e6e7eb 1.75rem,
       transparent 1.75rem
     );
 }

@@ -9,6 +9,37 @@ import { WorkoutBlock } from '../components'
 import { Label, EquipmentBadge } from '../components'
 import { getMarkdown } from '../utils'
 
+const fallbackCopyText = (text: string) => {
+  // Create a temporary textarea element
+  const textArea = document.createElement('textarea')
+  textArea.value = text
+
+  // Make it invisible but not display:none (iOS needs it to be visible)
+  textArea.style.position = 'fixed'
+  textArea.style.left = '-999999px'
+  textArea.style.top = '-999999px'
+  textArea.style.opacity = '0'
+
+  document.body.appendChild(textArea)
+  textArea.focus()
+  textArea.select()
+
+  try {
+    // For iOS, we need to set the selection range
+    textArea.setSelectionRange(0, 99999)
+    const successful = document.execCommand('copy')
+    if (successful) {
+      alert('Workout plan copied to clipboard!')
+    } else {
+      alert('Failed to copy workout plan. Please try selecting and copying manually.')
+    }
+  } catch (err) {
+    alert('Copy not supported. Please select and copy the text manually.')
+  } finally {
+    document.body.removeChild(textArea)
+  }
+}
+
 export default function ResultPage() {
   const { state, resetState, setLoading } = useApp()
   const router = useRouter()
@@ -75,8 +106,21 @@ export default function ResultPage() {
               const workoutPlanElement = document.getElementById('workout-plan')
               if (workoutPlanElement) {
                 const plan = getMarkdown(workoutPlanElement.innerHTML)
-                navigator.clipboard.writeText(plan)
-                alert('Workout plan copied to clipboard!')
+                // Try modern clipboard API first
+                if (navigator.clipboard && window.isSecureContext) {
+                  navigator.clipboard
+                    .writeText(plan)
+                    .then(() => {
+                      alert('Workout plan copied to clipboard!')
+                    })
+                    .catch(() => {
+                      // Fallback for iOS and other browsers
+                      fallbackCopyText(plan)
+                    })
+                } else {
+                  // Fallback for iOS and other browsers
+                  fallbackCopyText(plan)
+                }
               }
             }}
           >

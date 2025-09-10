@@ -1,6 +1,6 @@
 {
-  "name": "HOMEGYM",
-  "short_name": "HOMEGYM",
+  "name": "Homegym",
+  "short_name": "Homegym",
   "description": "Workouts based on what there is around you",
   "start_url": "/",
   "display": "standalone",

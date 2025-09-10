@@ -77,7 +77,7 @@ h6 {
   --lch-orange: 0.6393 0.1669 49.17;
   --lch-blue-900: 0.1753 0.0686 264.48;
   --lch-blue-800: 0.1841 0.0823 271.94;
-  --lch-blue-500: 0.2118 0.1159 280.97;
+  --lch-blue-500: 0.2216 0.1231 280.82;
   --lch-white: 1 0 0;
 
   --accent: oklch(var(--lch-orange));
@@ -92,8 +92,11 @@ h6 {
   --text-secondary: oklch(var(--lch-white) / 0.8);
 
   --field-background: oklch(var(--lch-white) / 0.04);
-  --dropzone-background: linear-gradient(oklch(var(--lch-white) / 0.05), oklch(var(--lch-white) / 0.03));
-  --field-background-hover: linear-gradient(oklch(var(--lch-white) / 0.08), oklch(var(--lch-white) / 0.08));
+  --dropzone-background: linear-gradient(
+    oklch(var(--lch-white) / 0.05),
+    oklch(var(--lch-white) / 0.03)
+  );
+  --field-background-hover: oklch(var(--lch-white) / 0.05);
   --field-border: oklch(var(--lch-white) / 0.2);
   --field-border-hover: oklch(var(--lch-white) / 0.3);
 
@@ -109,7 +112,7 @@ h6 {
   --app-width: calc(var(--base-space) * 28);
 
   --border-radius: 0.5rem;
-  --animation: cubic-bezier(.45, 0, .1, 1);
+  --animation: cubic-bezier(0.45, 0, 0.1, 1);
 }
 
 body {
@@ -153,7 +156,7 @@ h6 {
   flex-direction: column;
 
   &:not(.result-page) {
-    height: clamp(600px, 100dvh, 800px);
+    height: clamp(600px, 100dvh, 850px);
     padding: var(--spacing-md) var(--spacing-xxs) var(--spacing-lg);
   }
 }
@@ -198,13 +201,13 @@ h6 {
 
   &.fixed {
     position: fixed;
+    box-sizing: border-box;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 100%;
+    width: calc(100% - var(--spacing-xxs) * 2);
     max-width: calc(var(--base-space) * 28 - var(--spacing-xxs) * 2);
-    padding: var(--spacing-xs) var(--spacing-xxs);
-    margin: 0 auto;
+    padding: var(--spacing-xxs) var(--spacing-xxs) var(--spacing-lg) var(--spacing-xxs);
     background: linear-gradient(oklch(var(--lch-white) / 0), oklch(var(--lch-white) / 1));
   }
 }

@@ -34,9 +34,10 @@
   width: 100%;
   padding: var(--spacing-xxs);
   background: var(--field-background);
-  background-image: radial-gradient(oklch(var(--lch-white) / 0.05) 1px, transparent 0);
+  background-image: radial-gradient(oklch(var(--lch-white) / 0.08) 1px, transparent 0);
   background-size: 1.2rem 1.2rem;
   background-position: -1rem -1rem;
+  transition: all 0.2s var(--animation);
 
   @media (min-width: 768px) {
     aspect-ratio: 1.5 / 1;
@@ -58,7 +59,8 @@
 @media (any-hover: hover) {
   .dropzoneActive,
   .dropzone:hover {
-    background: var(--field-background-hover);
+    border: 1px dashed var(--field-border-hover);
+    background-image: radial-gradient(oklch(var(--lch-white) / 0.1) 1px, transparent 0);
   }
 }
 

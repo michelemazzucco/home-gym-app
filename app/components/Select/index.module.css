@@ -12,9 +12,9 @@
   color: var(--text-primary);
   cursor: default;
 
-  @media (hover: hover) {
+  @media (any-hover: hover) {
     &:hover {
-      background-color: var(--field-background-hover);
+      background: var(--field-background-hover);
       border-color: var(--field-border-hover);
     }
   }
@@ -41,29 +41,30 @@
   display: block;
 }
 
-.SelectIcon {
+.selectIcon {
   display: flex;
 }
 
-.Positioner {
+.positioner {
   outline: none;
   z-index: 1;
   -webkit-user-select: none;
   user-select: none;
 }
 
-.Popup {
+.popup {
   box-sizing: border-box;
   padding-block: 0.25rem;
   border-radius: 0.375rem;
-  background-color: canvas;
   background-clip: padding-box;
-  color: var(--color-gray-900);
+  color: var(--text-primary);
   transform-origin: var(--transform-origin);
   transition:
     transform 150ms,
     opacity 150ms;
   overflow-y: auto;
+  background-color: var(--background-800);
+  border: 1px solid var(--field-border);
   max-height: var(--available-height);
 
   &[data-starting-style],
@@ -91,7 +92,7 @@
   }
 }
 
-.Arrow {
+.arrow {
   display: flex;
 
   &[data-side='top'] {
@@ -131,13 +132,13 @@
   }
 }
 
-.Item {
+.item {
   box-sizing: border-box;
   outline: 0;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1rem;
   padding-block: 0.5rem;
-  padding-left: 0.625rem;
+  padding-left: .75rem;
   padding-right: 1rem;
   min-width: var(--anchor-width);
   display: grid;
@@ -147,11 +148,11 @@
   cursor: default;
   -webkit-user-select: none;
   user-select: none;
-  scroll-margin-block: 0.25rem;
+  scroll-margin-block: .25rem;
 
   @media (pointer: coarse) {
-    padding-block: 0.625rem;
-    font-size: 0.925rem;
+    padding-block: 0.75rem;
+    font-size: 1rem;
   }
 
   [data-side='none'] & {
@@ -177,28 +178,28 @@
   }
 }
 
-.ItemIndicator {
+.itemIndicator {
   grid-column-start: 1;
 }
 
-.ItemIndicatorIcon {
+.itemIndicatorIcon {
   display: block;
   width: 0.75rem;
   height: 0.75rem;
 }
 
-.ItemText {
+.itemText {
   grid-column-start: 2;
-  color: #000;
+  color: var(--text-primary);
 }
 
-.ScrollArrow {
+.scrollArrow {
   width: 100%;
   background: canvas;
   z-index: 1;
   text-align: center;
   cursor: default;
-  border-radius: 0.375rem;
+  border-radius: var(--border-radius);
   height: 1rem;
   font-size: 0.75rem;
   display: flex;

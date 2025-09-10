@@ -13,7 +13,9 @@
   min-width: min(160px, 100%);
   cursor: pointer;
   gap: var(--spacing-xxxs);
-  transition: transform .2s var(--animation), box-shadow .2s var(--animation);
+  transition:
+    transform 0.2s var(--animation),
+    box-shadow 0.2s var(--animation);
 
   @media (any-hover: hover) {
     &:where(:not(:active):hover) {

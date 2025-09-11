@@ -41,10 +41,6 @@
   display: block;
 }
 
-.selectIcon {
-  display: flex;
-}
-
 .positioner {
   outline: none;
   z-index: 1;
@@ -180,12 +176,6 @@
 
 .itemIndicator {
   grid-column-start: 1;
-}
-
-.itemIndicatorIcon {
-  display: block;
-  width: 0.75rem;
-  height: 0.75rem;
 }
 
 .itemText {

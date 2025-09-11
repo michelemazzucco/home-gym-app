@@ -4,7 +4,6 @@ import { Toast } from '@base-ui-components/react/toast'
 export interface ToastOptions {
   title?: string
   description: string
-  type?: 'success' | 'error' | 'warning' | 'info'
 }
 
 export function useToast() {
@@ -16,7 +15,6 @@ export function useToast() {
     toastManager.add({
       title: config.title,
       description: config.description,
-      type: config.type,
     })
   }
 

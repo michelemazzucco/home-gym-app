@@ -1,4 +1,4 @@
-.Toast {
+.toast {
   --gap: 0.75rem;
   --offset-y: calc(
     var(--toast-offset-y) + (var(--toast-index) * var(--gap)) + var(--toast-swipe-movement-y)
@@ -75,20 +75,20 @@
   }
 }
 
-.Title {
+.title {
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.4rem;
   margin: 0;
 }
 
-.Description {
+.description {
   font-size: 1rem;
   line-height: 1.4rem;
   margin: 0;
 }
 
-.Close {
+.close {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
@@ -100,13 +100,4 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
-
-  &:hover {
-    background: red;
-  }
-}
-
-.Icon {
-  width: 1rem;
-  height: 1rem;
 }

@@ -6,17 +6,18 @@ import { CameraIcon } from '@heroicons/react/16/solid'
 import { NumberField } from '../NumberField'
 import { DifficultyLevel, useApp } from '../../context/AppContext'
 import styles from './index.module.css'
+import { useToast } from '@/app/hooks/useToast'
 
 interface FormProps {
   setWeeks: (weeks: number) => void
-  validateAndSetFile: (file: File) => void
+  setSelectedImage: (file: File) => void
   setDifficulty: (difficulty: DifficultyLevel) => void
   setSessionsPerWeek: (sessions: number) => void
 }
 
 export const Form = ({
   setWeeks,
-  validateAndSetFile,
+  setSelectedImage,
   setDifficulty,
   setSessionsPerWeek,
 }: FormProps) => {
@@ -24,7 +25,7 @@ export const Form = ({
   const dragCounterRef = useRef(0)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const { state } = useApp()
-
+  const { showToast } = useToast()
   const levels = [
     { value: 'beginner', label: 'Beginner' },
     { value: 'intermediate', label: 'Intermediate' },
@@ -48,6 +49,24 @@ export const Form = ({
       window.removeEventListener('drop', preventIfFileDrag)
     }
   }, [])
+
+  const validateAndSetFile = (file: File) => {
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      showToast(`Unsupported file type: ${file.type}. Supported types: JPEG, PNG, GIF, WebP only.`)
+      return
+    }
+
+    const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
+    if (file.size > maxSize) {
+      showToast(
+        `Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`
+      )
+      return
+    }
+
+    setSelectedImage(file)
+  }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]

@@ -46,9 +46,9 @@ interface AppContextType {
   resetState: () => void
 }
 
-const AppContext = createContext<AppContextType | undefined>(undefined)
-
 const STORAGE_KEY = 'homegym-workout-result'
+
+const AppContext = createContext<AppContextType | undefined>(undefined)
 
 // Helper functions for localStorage
 const saveToStorage = (workoutResult: WorkoutResult | null) => {
@@ -118,14 +118,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }
 
   const resetState = () => {
-    setState({
+    setState((prev) => ({
+      ...prev,
       selectedImage: null,
       difficulty: 'beginner',
       sessionsPerWeek: 3,
       weeks: 12,
       loading: false,
-      workoutResult: null,
-    })
+    }))
     saveToStorage(null) // Clear localStorage
   }
 

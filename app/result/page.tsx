@@ -56,6 +56,7 @@ export default function ResultPage() {
 
       <main>
         <EquipmentList equipment={state.workoutResult.equipment} />
+
         <div id="workout-plan" className={styles.plan}>
           {state.workoutResult.plan.map((block) => (
             <WorkoutBlock key={block.title} block={block} />

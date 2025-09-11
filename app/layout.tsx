@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { AppProvider } from './context/AppContext'
 import { Barlow_Condensed } from 'next/font/google'
+import { Toast } from '@base-ui-components/react/toast'
+import { ToastList } from './components'
 
 import './global.css'
 
@@ -30,9 +32,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-title" content={title} />
       </head>
       <body className={barlowCondensed.variable}>
-        <AppProvider>
-          <div className="root">{children}</div>
-        </AppProvider>
+        <Toast.Provider>
+          <AppProvider>
+            <div className="root">{children}</div>
+          </AppProvider>
+          <Toast.Portal>
+            <Toast.Viewport className="toast-viewport">
+              <ToastList />
+            </Toast.Viewport>
+          </Toast.Portal>
+        </Toast.Provider>
       </body>
     </html>
   )

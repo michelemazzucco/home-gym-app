@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useApp } from './context/AppContext'
+import { useToast } from './hooks/useToast'
 import { Loader, Logo, Button, Form } from './components'
 
 export default function Home() {
@@ -15,19 +16,18 @@ export default function Home() {
     setWorkoutResult,
   } = useApp()
   const router = useRouter()
+  const { showToast } = useToast()
 
   const validateAndSetFile = (file: File) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
-      alert(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
+      //showToast(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
       return
     }
 
     const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
     if (file.size > maxSize) {
-      alert(
-        `Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`
-      )
+      //showToast(`Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`)
       return
     }
 
@@ -59,7 +59,7 @@ export default function Home() {
       router.push('/result')
     } catch (error) {
       console.error('Error analyzing image:', error)
-      alert('Error analyzing image. Please try again.')
+      //showToast('Error analyzing image. Please try again.')
       setLoading(false)
     }
   }
@@ -87,7 +87,13 @@ export default function Home() {
         />
       </main>
       <footer className="app-main__button-container">
-        <Button variant="primary" onClick={analyzeImage} disabled={state.loading}>
+        <Button
+          variant="primary"
+          onClick={
+            !state.selectedImage ? () => showToast('Please select an image first') : analyzeImage
+          }
+          disabled={state.loading}
+        >
           Let&apos;s go!
         </Button>
       </footer>

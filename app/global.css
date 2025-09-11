@@ -211,3 +211,15 @@ h6 {
     background: linear-gradient(oklch(var(--lch-white) / 0), oklch(var(--lch-white) / 1));
   }
 }
+
+.toast-viewport {
+  position: fixed;
+  z-index: 10;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+  top: 1rem;
+  right: 0;
+  left: 0;
+  bottom: auto;
+}

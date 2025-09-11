@@ -18,22 +18,6 @@ export default function Home() {
   const router = useRouter()
   const { showToast } = useToast()
 
-  const validateAndSetFile = (file: File) => {
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
-    if (!allowedTypes.includes(file.type)) {
-      //showToast(`Unsupported file type: ${file.type}. OpenAI supports: JPEG, PNG, GIF, WebP only.`)
-      return
-    }
-
-    const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
-    if (file.size > maxSize) {
-      //showToast(`Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`)
-      return
-    }
-
-    setSelectedImage(file)
-  }
-
   const analyzeImage = async () => {
     if (!state.selectedImage) return
 
@@ -59,7 +43,7 @@ export default function Home() {
       router.push('/result')
     } catch (error) {
       console.error('Error analyzing image:', error)
-      //showToast('Error analyzing image. Please try again.')
+      showToast('Error analyzing image. Please try again.')
       setLoading(false)
     }
   }
@@ -83,14 +67,14 @@ export default function Home() {
           setWeeks={setWeeks}
           setDifficulty={setDifficulty}
           setSessionsPerWeek={setSessionsPerWeek}
-          validateAndSetFile={validateAndSetFile}
+          setSelectedImage={setSelectedImage}
         />
       </main>
       <footer className="app-main__button-container">
         <Button
           variant="primary"
           onClick={
-            !state.selectedImage ? () => showToast('Please select an image first') : analyzeImage
+            !state.selectedImage ? () => showToast('Upload an image to get started!') : analyzeImage
           }
           disabled={state.loading}
         >

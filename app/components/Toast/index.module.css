@@ -11,7 +11,7 @@
   background: var(--background-900);
   color: var(--text-primary);
   border: 1px solid var(--field-border);
-  padding: 1rem;
+  padding: var(--spacing-xxs);
   width: 300px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   background-clip: padding-box;
@@ -78,13 +78,13 @@
 .Title {
   font-weight: 500;
   font-size: 1rem;
-  line-height: 1.25rem;
+  line-height: 1.4rem;
   margin: 0;
 }
 
 .Description {
   font-size: 1rem;
-  line-height: 1.25rem;
+  line-height: 1.4rem;
   margin: 0;
 }
 
@@ -94,19 +94,19 @@
   right: 0.5rem;
   border: none;
   background: transparent;
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25rem;
 
   &:hover {
-    background-color: var(red);
+    background: red;
   }
 }
 
 .Icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1rem;
+  height: 1rem;
 }

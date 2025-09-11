@@ -8,8 +8,9 @@ import styles from './result.module.css'
 import { WorkoutBlock } from '../components'
 import { Label, EquipmentBadge } from '../components'
 import { getMarkdown } from '../utils'
+import { useToast } from '../hooks/useToast'
 
-const fallbackCopyText = (text: string) => {
+const fallbackCopyText = (text: string, showToast: (message: string) => void) => {
   // Create a temporary textarea element
   const textArea = document.createElement('textarea')
   textArea.value = text
@@ -29,12 +30,12 @@ const fallbackCopyText = (text: string) => {
     textArea.setSelectionRange(0, 99999)
     const successful = document.execCommand('copy')
     if (successful) {
-      alert('Workout plan copied to clipboard!')
+      showToast('Workout plan copied to clipboard!')
     } else {
-      alert('Failed to copy workout plan. Please try selecting and copying manually.')
+      showToast('Failed to copy workout plan.')
     }
   } catch (err) {
-    alert('Copy not supported. Please select and copy the text manually.')
+    showToast('Copy not supported.')
   } finally {
     document.body.removeChild(textArea)
   }
@@ -43,7 +44,7 @@ const fallbackCopyText = (text: string) => {
 export default function ResultPage() {
   const { state, resetState, setLoading } = useApp()
   const router = useRouter()
-
+  const { showToast } = useToast()
   useEffect(() => {
     setLoading(false)
   }, [])
@@ -111,15 +112,15 @@ export default function ResultPage() {
                   navigator.clipboard
                     .writeText(plan)
                     .then(() => {
-                      alert('Workout plan copied to clipboard!')
+                      showToast('Workout plan copied to clipboard!')
                     })
                     .catch(() => {
                       // Fallback for iOS and other browsers
-                      fallbackCopyText(plan)
+                      fallbackCopyText(plan, showToast)
                     })
                 } else {
                   // Fallback for iOS and other browsers
-                  fallbackCopyText(plan)
+                  fallbackCopyText(plan, showToast)
                 }
               }
             }}

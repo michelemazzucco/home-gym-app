@@ -4,7 +4,7 @@ Get workouts based on what's around you, powered by AI magic ✨
 
 _Inspired by [@Doriandarko](https://github.com/Doriandarko) poem-cam_
 
-## How to Use
+## How to Use 📒
 
 1. Take a photo or upload an image of your home gym equipment
 2. Select your preferences (level, sessions per week, and number of weeks)
@@ -12,7 +12,7 @@ _Inspired by [@Doriandarko](https://github.com/Doriandarko) poem-cam_
 4. View the identified equipment and generated workout plan
 5. Copy the plan to your clipboard for later use
 
-## 👀 Sneak peeks
+## Sneak peeks 👀
 
 ### Home
 ![Home page](docs/assets/home.png)
@@ -20,14 +20,13 @@ _Inspired by [@Doriandarko](https://github.com/Doriandarko) poem-cam_
 ### Result
 ![Result page](docs/assets/result.png)
 
+### Videos (mobile) 
 
-### 📹 Videos 
-
-You can also see the app in actions here:
+You can also see the app in action here:
 - Full workflow [here](https://www.dropbox.com/scl/fi/rljs59sgowvgg7mslxc65/full-workflow.MP4?rlkey=1v81p275zg7rtrcepqusmwlcn&e=1&st=7abjfk95&dl=0)
 - Example with a random object (i.e. chair) [here](https://www.dropbox.com/scl/fi/rljs59sgowvgg7mslxc65/full-workflow.MP4?rlkey=1v81p275zg7rtrcepqusmwlcn&st=7abjfk95&dl=0)
 
-## Setup
+## Setup ⚙️
 
 Wanna try this app? Here are the steps to have it working on your laptop :)
 

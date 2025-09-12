@@ -78,13 +78,14 @@ h6 {
   --lch-blue-900: 0.1753 0.0686 264.48;
   --lch-blue-800: 0.1841 0.0823 271.94;
   --lch-blue-500: 0.2216 0.1231 280.82;
+  --lch-gray-100: 0.92 0.008 286.24;
   --lch-white: 1 0 0;
 
   --accent: oklch(var(--lch-orange));
-
   --background-900: oklch(var(--lch-blue-900));
   --background-800: oklch(var(--lch-blue-800));
   --background-500: oklch(var(--lch-blue-500));
+  --background-100: oklch(var(--lch-gray-100));
   --main-background: 180deg, var(--background-900) 0%, var(--background-500) 100%;
 
   --text-primary: oklch(var(--lch-white));

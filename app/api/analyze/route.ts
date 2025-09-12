@@ -155,8 +155,6 @@ export async function POST(request: NextRequest) {
 
     const content = data.choices[0]?.message?.content
 
-    console.log(content)
-
     if (!content) {
       console.error('No content in OpenAI response:', data)
       return NextResponse.json({ error: 'No response from OpenAI' }, { status: 500 })

@@ -6,6 +6,10 @@
   gap: 1.75rem;
   color: var(--text-primary);
   margin-bottom: 1.75rem;
+
+  /* To have the text on top of the line */
+  position: relative;
+  top: 1px;
 }
 
 .workoutBlockTitle {
@@ -20,14 +24,15 @@
 .sessionTitle {
   font-size: 1.25rem;
   font-weight: 600;
+
   /* Not the cleanest hack, but wanted to have the right hierarchy for the title */
   position: relative;
   top: -0.075rem;
 }
 
 .exercizes {
-  padding-left: var(--spacing-xxs);
-  list-style-type: '>>';
+  padding-left: var(--spacing-xxxs);
+  list-style-type: '*';
 }
 
 .exercize {

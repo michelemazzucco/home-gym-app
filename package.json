@@ -16,6 +16,7 @@
     "@types/react": "^19.1.12",
     "@types/turndown": "^5.0.5",
     "classnames": "^2.5.1",
+    "is-mobile": "^5.0.0",
     "next": "^15.5.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

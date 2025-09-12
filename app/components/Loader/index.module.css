@@ -23,7 +23,7 @@
 }
 
 .loaderContainer {
-  justify-content: center;
+  justify-content: center !important;
   padding-bottom: var(--spacing-lg);
 }
 

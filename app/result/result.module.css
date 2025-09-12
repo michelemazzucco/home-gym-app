@@ -9,7 +9,7 @@
   padding: var(--spacing-xs);
   padding-left: 3.25rem;
   padding-top: 3.9rem;
-  padding-bottom: var(--spacing-xl);
+  padding-bottom: calc(var(--spacing-xl) + var(--spacing-sm));
   border-radius: var(--border-radius);
   border-radius: 8px;
   width: 100%;
@@ -20,13 +20,14 @@
     line-height: 1.75rem;
   }
 
+  /* Safari required to not use vars here, argh */
   background-image:
     linear-gradient(
       90deg,
       transparent,
       transparent 1.75rem,
-      var(--side-line-color) 1.75rem,
-      var(--side-line-color) 1.8rem,
+      #d9660e 1.75rem,
+      #d9660e 1.8rem,
       transparent 1.8rem
     ),
     linear-gradient(
@@ -37,7 +38,7 @@
     repeating-linear-gradient(
       transparent,
       transparent calc(1.75rem - 1px),
-      #e6e7eb calc(1.75rem - 1px),
+      #e6e7eb calc(1.75rem - 2px),
       #e6e7eb 1.75rem,
       transparent 1.75rem
     );

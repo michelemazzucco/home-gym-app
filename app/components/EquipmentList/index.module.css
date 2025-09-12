@@ -1,6 +1,13 @@
 .equipmentList {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: column;
+  gap: var(--spacing-xxxs);
   padding: var(--spacing-xxs) 0 var(--spacing-sm);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xxxs);
 }

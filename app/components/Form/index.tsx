@@ -7,6 +7,7 @@ import { NumberField } from '../NumberField'
 import { DifficultyLevel, useApp } from '../../context/AppContext'
 import styles from './index.module.css'
 import { useToast } from '@/app/hooks/useToast'
+import isMobile from 'is-mobile'
 
 interface FormProps {
   setWeeks: (weeks: number) => void
@@ -159,20 +160,17 @@ export const Form = ({
           onChange={handleImageUpload}
           style={{ display: 'none' }}
         />
-        {/*<Button
-            variant="secondary"
-            onClick={() => setShowCamera(true)}
-            disabled={state.loading}
-            >
-            Take Photo
-            </Button>*/}
         {state.selectedImage ? (
-          <img src={URL.createObjectURL(state.selectedImage)} alt="Selected equipment" />
+          <img
+            className={styles.selectedImage}
+            src={URL.createObjectURL(state.selectedImage)}
+            alt="Selected equipment"
+          />
         ) : (
           <>
             <Button variant="secondary">
               <CameraIcon width={16} height={16} />
-              Take a picture or select one
+              {isMobile() ? 'Take a picture or select one' : 'Upload an image'}
             </Button>
           </>
         )}

@@ -48,6 +48,7 @@
 .decrement,
 .increment {
   box-sizing: border-box;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +73,7 @@
   }
 
   &:active {
-    background-color: var(--field-border-hover);
+    background-color: var(--background-900);
   }
 }
 

@@ -4,6 +4,7 @@
   justify-content: center;
   gap: var(--spacing-xs);
   flex: 1;
+  width: 100%;
 }
 
 .fieldsContainer {
@@ -42,18 +43,18 @@
   @media (min-width: 768px) {
     aspect-ratio: 1.5 / 1;
   }
+}
 
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    height: auto;
-    width: auto;
-    margin: 0 auto;
-    box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.25);
-    border-radius: 4px;
-    object-fit: contain;
-    display: block;
-  }
+.selectedImage {
+  max-width: 100%;
+  max-height: 100%;
+  height: auto;
+  width: auto;
+  margin: 0 auto;
+  box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  object-fit: contain;
+  display: block;
 }
 
 @media (any-hover: hover) {

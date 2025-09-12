@@ -6,7 +6,7 @@ export const EquipmentList = ({ equipment }: { equipment: string[] }) => {
   return (
     <div className={styles.equipmentList}>
       <Label>Detected equipment</Label>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+      <div className={styles.badges}>
         {equipment.map((item) => (
           <EquipmentBadge name={item} key={item} />
         ))}

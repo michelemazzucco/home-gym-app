@@ -1,10 +1,10 @@
 .badge {
   --text-primary: var(--background-900);
 
-  background: oklch(0.9327 0.008 286.24);
+  background: var(--background-100);
   box-shadow:
-    0px 12px 8px rgba(0, 0, 0, 0.1),
-    inset 0px 1px 1px rgba(255, 255, 255, 1);
+    0px 12px 8px rgba(0, 0, 0, 0.4),
+    inset 0px 1px 1px oklch(var(--lch-white));
   border-radius: 20px;
   padding: 0 var(--spacing-xxs);
   line-height: 1.4em;

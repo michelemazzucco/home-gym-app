@@ -1,8 +1,8 @@
 # Homegym
 
-Get workouts based on what there's around you, powered by AI magic ✨
+Get workouts based on what's around you, powered by AI magic ✨
 
-_Inspired by @Doriandarko poem-cam_
+_Inspired by [@Doriandarko](https://github.com/Doriandarko) poem-cam_
 
 ## How to Use
 

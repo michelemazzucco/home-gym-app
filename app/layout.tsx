@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta name="apple-mobile-web-app-title" content={title} />
+        <link rel="icon" href="/favicon.png" />
       </head>
       <body className={barlowCondensed.variable}>
         <Toast.Provider>

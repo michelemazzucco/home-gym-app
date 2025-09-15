@@ -56,7 +56,10 @@ export default function Home() {
     <div className="app-wrapper">
       <header className="app-header">
         <Logo />
-        <h2 className="app-header__subtitle">Workouts based on what&apos;s around you</h2>
+        <h2 className="app-header__subtitle">
+          Workouts based
+          <br /> on what&apos;s around you
+        </h2>
       </header>
       <main className="app-main">
         <Form

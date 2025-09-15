@@ -8,8 +8,8 @@
   align-items: center;
   justify-content: center;
   box-shadow:
-    0px 12px 8px rgba(0, 0, 0, 0.15),
-    inset 0px 1px 1px rgba(255, 255, 255, 0.3);
+    0px 12px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1.5px 0 0 oklch(var(--lch-white) / 0.2);
   min-width: min(160px, 100%);
   cursor: pointer;
   gap: var(--spacing-xxxs);
@@ -22,7 +22,7 @@
       &:hover {
         transform: translateY(2px);
         box-shadow:
-          0px 8px 8px rgba(0, 0, 0, 0.15),
+          0px 8px 8px rgba(0, 0, 0, 0.2),
           inset 0px 1px 1px rgba(255, 255, 255, 0.3);
       }
     }
@@ -32,7 +32,7 @@
     transform: translateY(4px);
 
     box-shadow:
-      0px 2px 4px rgba(0, 0, 0, 0.15),
+      0px 2px 4px rgba(0, 0, 0, 0.3),
       inset 0px 1px 1px rgba(255, 255, 255, 0.3);
   }
 }
@@ -46,9 +46,6 @@
 .secondary {
   composes: button;
   background: var(--background-800);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow:
-    0px 12px 8px rgba(0, 0, 0, 0.15),
-    inset 0px 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid oklch(0.2605 0.101 280.82);
   color: var(--text-primary);
 }

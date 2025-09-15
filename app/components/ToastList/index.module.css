@@ -12,11 +12,10 @@
   gap: var(--spacing-xxxs);
   margin: 0 auto;
   box-sizing: border-box;
-  background: var(--background-900);
+  background: var(--background-100);
   color: var(--background-900);
   padding: var(--spacing-xxxs) var(--spacing-xxs);
   width: 300px;
-  background: oklch(0.9327 0.008 286.24);
   box-shadow:
     0px 12px 8px rgba(0, 0, 0, 0.4),
     inset 0px 1px 1px rgba(255, 255, 255, 1);
@@ -89,7 +88,7 @@
 }
 
 .description {
-  font-size: .825rem;
+  font-size: 0.825rem;
   line-height: 1.4rem;
   margin: 0;
 }

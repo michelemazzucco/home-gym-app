@@ -78,7 +78,7 @@ h6 {
   --lch-blue-900: 0.1753 0.0686 264.48;
   --lch-blue-800: 0.1841 0.0823 271.94;
   --lch-blue-500: 0.2216 0.1231 280.82;
-  --lch-gray-100: 0.92 0.008 286.24;
+  --lch-gray-100: 0.94 0.008 286.24;
   --lch-white: 1 0 0;
 
   --accent: oklch(var(--lch-orange));
@@ -97,7 +97,7 @@ h6 {
     oklch(var(--lch-white) / 0.05),
     oklch(var(--lch-white) / 0.03)
   );
-  --field-background-hover: oklch(var(--lch-white) / 0.05);
+  --field-background-hover: oklch(var(--lch-white) / 0.06);
   --field-border: oklch(var(--lch-white) / 0.2);
   --field-border-hover: oklch(var(--lch-white) / 0.3);
 
@@ -157,7 +157,7 @@ h6 {
   flex-direction: column;
 
   &:not(.result-page) {
-    height: clamp(600px, 100dvh, 850px);
+    height: clamp(600px, 100dvh, 800px);
     padding: var(--spacing-md) var(--spacing-xxs) var(--spacing-lg);
   }
 }
@@ -184,7 +184,7 @@ h6 {
 
   .app-header__subtitle {
     font-style: normal;
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1.3em;
     text-align: center;
     letter-spacing: 0.2em;

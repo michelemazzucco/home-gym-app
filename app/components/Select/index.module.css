@@ -170,7 +170,7 @@
     inset-block: 0;
     inset-inline: 0.25rem;
     border-radius: 0.25rem;
-    background-color: var(--color-gray-900);
+    background-color: var(--field-background-hover);
   }
 }
 

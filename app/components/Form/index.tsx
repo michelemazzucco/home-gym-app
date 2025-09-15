@@ -1,6 +1,5 @@
 'use client'
 import { useState, useRef, useEffect } from 'react'
-import Image from 'next/image'
 import { Button, Select } from '../'
 import { CameraIcon } from '@heroicons/react/16/solid'
 import { NumberField } from '../NumberField'

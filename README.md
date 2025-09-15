@@ -10,7 +10,8 @@ Many of us have accumulated home gym equipment, but finding workout plans that a
 
 ## My solution
 
-Create personalized workout plans based on your actual equipment. But let's be honest—sometimes we're too lazy to catalog everything we have. That's where AI comes in: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
+Create personalized workout plans based on your actual equipment. 
+But let's be honest—sometimes we're too lazy to list everything we have. That's where AI comes into play: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
 
 https://github.com/user-attachments/assets/e6e35d53-39c9-4694-bdea-4368c8caca4c
 

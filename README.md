@@ -22,7 +22,7 @@ The app works on mobile as well, giving you the chance to actually take the pict
 <img width="320" alt="Result page" src="docs/assets/pwa-result.PNG" />
 </div>
 
-See it in action here:
+#### See it in action here:
 - Full workflow [here](https://www.dropbox.com/scl/fi/rljs59sgowvgg7mslxc65/full-workflow.MP4?rlkey=1v81p275zg7rtrcepqusmwlcn&e=1&st=7abjfk95&dl=0)
 - Example with a random object (i.e. chair) [here](https://www.dropbox.com/scl/fi/rljs59sgowvgg7mslxc65/full-workflow.MP4?rlkey=1v81p275zg7rtrcepqusmwlcn&st=7abjfk95&dl=0)
 

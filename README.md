@@ -21,7 +21,7 @@ The app works on mobile as well, giving you the chance to actually take the pict
 <div>
 <img width="270" alt="Home page" src="docs/assets/pwa-home.PNG" />
 <img width="270" alt="Result page" src="docs/assets/pwa-loading.PNG" />
-<img width="270" alt="Result page" src="docs/assets/pwa-result.PNG" />
+<img width="270" alt="Result page" src="docs/assets/pwa-results.PNG" />
 </div>
 
 

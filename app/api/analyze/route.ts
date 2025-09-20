@@ -7,6 +7,7 @@ export async function POST(request: NextRequest) {
     const difficulty = formData.get('difficulty') as string
     const sessionsPerWeekRaw = formData.get('sessionsPerWeek') as string | null
     const weeksRaw = formData.get('weeks') as string | null
+    const apiKeyFromRequest = formData.get('apiKey') as string | null
 
     if (!image) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 })
@@ -23,8 +24,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      return NextResponse.json({ error: 'OpenAI API key not configured' }, { status: 500 })
+    // Use apiKey from request if provided, otherwise fall back to environment variable
+    const apiKey = apiKeyFromRequest || process.env.OPENAI_API_KEY
+
+    if (!apiKey) {
+      return NextResponse.json({ error: 'OpenAI API key not provided' }, { status: 400 })
     }
 
     // Convert image to base64
@@ -101,7 +105,7 @@ export async function POST(request: NextRequest) {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        Authorization: `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

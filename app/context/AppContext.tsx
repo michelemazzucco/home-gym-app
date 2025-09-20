@@ -33,6 +33,7 @@ interface AppState {
   weeks: number
   loading: boolean
   workoutResult: WorkoutResult | null
+  apiKey: string
 }
 
 interface AppContextType {
@@ -43,6 +44,7 @@ interface AppContextType {
   setWeeks: (weeks: number) => void
   setLoading: (loading: boolean) => void
   setWorkoutResult: (result: WorkoutResult | null) => void
+  setApiKey: (apiKey: string) => void
   resetState: () => void
 }
 
@@ -82,6 +84,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     weeks: 8,
     loading: false,
     workoutResult: null,
+    apiKey: '',
   })
 
   // Load workout result from localStorage on mount
@@ -117,6 +120,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     saveToStorage(result)
   }
 
+  const setApiKey = (apiKey: string) => {
+    setState((prev) => ({ ...prev, apiKey }))
+  }
+
   const resetState = () => {
     setState((prev) => ({
       ...prev,
@@ -139,6 +146,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setWeeks,
         setLoading,
         setWorkoutResult,
+        setApiKey,
         resetState,
       }}
     >

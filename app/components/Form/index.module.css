@@ -35,7 +35,7 @@
   width: 100%;
   padding: var(--spacing-xxs);
   background: var(--field-background);
-  background-image: radial-gradient(oklch(var(--lch-white) / 0.08) 1px, transparent 0);
+  background-image: radial-gradient(oklch(var(--lch-white) / 0.1) 1px, transparent 0);
   background-size: 1.2rem 1.2rem;
   background-position: -1rem -1rem;
   transition: all 0.2s var(--animation);
@@ -61,7 +61,7 @@
   .dropzoneActive,
   .dropzone:hover {
     border: 1px dashed var(--field-border-hover);
-    background-image: radial-gradient(oklch(var(--lch-white) / 0.1) 1px, transparent 0);
+    background-image: radial-gradient(oklch(var(--lch-white) / 0.15) 1px, transparent 0);
   }
 }
 

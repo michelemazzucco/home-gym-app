@@ -22,7 +22,9 @@ export default function Home() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    setOpen(true)
+    if (process.env.NODE_ENV !== 'development') {
+      setOpen(true)
+    }
   }, [setApiKey])
 
   const analyzeImage = async () => {

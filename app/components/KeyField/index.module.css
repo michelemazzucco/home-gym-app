@@ -1,57 +1,47 @@
-.field {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.scrubArea {
-  cursor: ew-resize;
-  font-weight: bold;
-  user-select: none;
-}
-
-.scrubAreaCursor {
-  filter: drop-shadow(0 1px 1px #0008);
-}
-
-.group {
-  display: flex;
-}
-
-.input {
+.Root {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   border-radius: 0;
-  border-top: 1px solid var(--field-border);
-  border-bottom: 1px solid var(--field-border);
-  border-left: none;
-  border-right: none;
   width: 100%;
   height: 2.5rem;
   font-family: inherit;
   font-size: 1rem;
   font-weight: normal;
-  background: transparent;
+  background-color: transparent;
+  display: flex;
+  text-align: left;
+}
 
-  text-align: center;
-  font-variant-numeric: tabular-nums;
+.Input,
+.Toggle {
+  all: unset;
+  box-sizing: border-box;
+  color: inherit;
+}
 
-  &:focus {
-    z-index: 1;
-    outline: 2px solid var(--field-border-hover);
-    outline-offset: -1px;
+.Input {
+  flex: 1;
+  border-top: 1px solid var(--field-border);
+  border-bottom: 1px solid var(--field-border);
+  border-left: 1px solid var(--field-border);
+  border-radius: var(--border-radius);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 0 var(--spacing-xxs);
+  &::selection {
+    background-color: var(--black-a6);
+    color: white;
   }
 }
 
-.decrement,
-.increment {
+.Toggle {
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 1 0 2.5rem;
+  width: 2.5rem;
   height: 2.5rem;
   margin: 0;
   outline: 0;
@@ -63,6 +53,8 @@
   color: var(--color-gray-900);
   user-select: none;
   transition: all 0.2s var(--animation);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 
   @media (hover: hover) {
     &:hover {
@@ -74,14 +66,4 @@
   &:active {
     background-color: var(--background-900);
   }
-}
-
-.decrement {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
-.increment {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
 }

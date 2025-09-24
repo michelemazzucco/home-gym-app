@@ -1,16 +1,16 @@
 .button {
-  padding: var(--spacing-xxs) var(--spacing-xs);
-  border-radius: 48px;
-  height: 48px;
+  padding: var(--spacing-xxxs) var(--spacing-xs);
+  border-radius: 2.75rem;
+  height: 2.75rem;
   display: flex;
   border: none;
   line-height: 1.1em;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0px 12px 8px rgba(0, 0, 0, 0.2),
+    0px 12px 8px rgba(0, 0, 0, 0.1),
     inset 0 1.5px 0 0 oklch(var(--lch-white) / 0.2);
-  min-width: min(160px, 100%);
+  min-width: min(120px, 100%);
   cursor: pointer;
   gap: var(--spacing-xxxs);
   transition:
@@ -48,4 +48,21 @@
   background: var(--background-800);
   border: 1px solid oklch(0.2605 0.101 280.82);
   color: var(--text-primary);
+}
+
+.text {
+  padding: 0;
+  border: 0;
+  height: auto;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  @media (any-hover: hover) {
+    &:where(:not(:active):hover) {
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
 }

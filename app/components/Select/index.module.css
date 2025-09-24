@@ -25,20 +25,9 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-blue);
+    outline: 2px solid var(--field-border-hover);
     outline-offset: -1px;
   }
-}
-
-.label {
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1.2em;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-xxxs);
-  display: block;
 }
 
 .positioner {

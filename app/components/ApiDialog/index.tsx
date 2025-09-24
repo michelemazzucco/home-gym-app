@@ -31,7 +31,7 @@ export const ApiDialog = ({
         <Dialog.Popup className={styles.popup}>
           <Dialog.Title className={styles.title}>Enter OpenAI API key</Dialog.Title>
           <Dialog.Description className={styles.description}>
-            To get started, please enter your API key. Your API key will not be saved anywhere.
+            To get started, please enter your API key &mdash; It will not be saved anywhere.
           </Dialog.Description>
           <div className={styles.content}>
             <KeyField
@@ -44,7 +44,7 @@ export const ApiDialog = ({
             />
           </div>
           <div className={styles.actions}>
-            <Button variant="secondary" onClick={() => setOpen(false)}>
+            <Button variant="text" onClick={() => setOpen(false)}>
               Cancel
             </Button>
             <Button variant="primary" onClick={handleSave} disabled={!localApiKey}>

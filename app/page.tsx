@@ -25,7 +25,7 @@ export default function Home() {
     if (process.env.NODE_ENV !== 'development') {
       setOpen(true)
     }
-  }, [setApiKey])
+  }, [])
 
   const analyzeImage = async () => {
     if (!state.selectedImage) return

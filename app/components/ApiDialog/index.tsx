@@ -34,7 +34,7 @@ export const ApiDialog = ({
             To get started, please enter your API key &mdash; It will not be saved anywhere.
           </Dialog.Description>
           <div className={styles.content}>
-            <KeyField value={localApiKey} onChange={setLocalApiKey} placeholder="sk-..." />
+            <KeyField value={localApiKey} onChange={setLocalApiKey} />
           </div>
           <div className={styles.actions}>
             <Button variant="text" onClick={() => setOpen(false)}>

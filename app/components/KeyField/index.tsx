@@ -10,7 +10,7 @@ export const KeyField = ({
 }: {
   value: string
   onChange: (value: string) => void
-  placeholder: string
+  placeholder?: string
 }) => (
   <PasswordToggleField.Root>
     <div className={styles.Root}>

@@ -29,9 +29,15 @@
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   padding: 0 var(--spacing-xxs);
+
   &::selection {
-    background-color: var(--black-a6);
     color: white;
+  }
+
+  &:focus-visible {
+    border-top: 1px solid var(--field-border-hover);
+    border-bottom: 1px solid var(--field-border-hover);
+    border-left: 1px solid var(--field-border-hover);
   }
 }
 

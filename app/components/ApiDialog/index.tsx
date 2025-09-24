@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import { Dialog } from '@base-ui-components/react/dialog'
-import { Button } from '../Button'
+import { Button, KeyField } from '../'
 import styles from './index.module.css'
 
 export const ApiDialog = ({
@@ -27,23 +27,23 @@ export const ApiDialog = ({
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
-        <Dialog.Backdrop className={styles.Backdrop} />
-        <Dialog.Popup className={styles.Popup}>
-          <Dialog.Title className={styles.Title}>Enter OpenAI API key</Dialog.Title>
-          <Dialog.Description className={styles.Description}>
+        <Dialog.Backdrop className={styles.backdrop} />
+        <Dialog.Popup className={styles.popup}>
+          <Dialog.Title className={styles.title}>Enter OpenAI API key</Dialog.Title>
+          <Dialog.Description className={styles.description}>
             To get started, please enter your API key. Your API key will not be saved anywhere.
           </Dialog.Description>
-          <div className={styles.Content}>
-            <input
+          <div className={styles.content}>
+            <KeyField
               id="apikey"
               type="password"
-              className={styles.Input}
+              className={styles.input}
               value={localApiKey}
               onChange={(e) => setLocalApiKey(e.target.value)}
               placeholder="sk-..."
             />
           </div>
-          <div className={styles.Actions}>
+          <div className={styles.actions}>
             <Button variant="secondary" onClick={() => setOpen(false)}>
               Cancel
             </Button>

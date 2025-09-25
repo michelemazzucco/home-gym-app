@@ -9,7 +9,7 @@ export const Button = ({
   ...props
 }: {
   children: React.ReactNode
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | 'text'
   onClick?: () => void
   disabled?: boolean
   props?: React.ComponentProps<'button'>

@@ -1,16 +1,16 @@
 .button {
-  padding: var(--spacing-xxs) var(--spacing-xs);
-  border-radius: 48px;
-  height: 48px;
+  padding: var(--spacing-xxxs) var(--spacing-xs);
+  border-radius: 2.75rem;
+  height: 2.75rem;
   display: flex;
   border: none;
   line-height: 1.1em;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0px 12px 8px rgba(0, 0, 0, 0.2),
+    0px 12px 8px rgba(0, 0, 0, 0.1),
     inset 0 1.5px 0 0 oklch(var(--lch-white) / 0.2);
-  min-width: min(160px, 100%);
+  min-width: min(120px, 100%);
   cursor: pointer;
   gap: var(--spacing-xxxs);
   transition:
@@ -20,7 +20,7 @@
   @media (any-hover: hover) {
     &:where(:not(:active):hover) {
       &:hover {
-        transform: translateY(2px);
+        transform: translateY(1px);
         box-shadow:
           0px 8px 8px rgba(0, 0, 0, 0.2),
           inset 0px 1px 1px rgba(255, 255, 255, 0.3);
@@ -35,12 +35,21 @@
       0px 2px 4px rgba(0, 0, 0, 0.3),
       inset 0px 1px 1px rgba(255, 255, 255, 0.3);
   }
+
+  &:disabled {
+    background: var(--background-300);
+  }
 }
 
 .primary {
   composes: button;
   background-color: var(--accent);
   color: var(--text-primary);
+
+  &:focus-visible {
+    outline: 1px solid var(--accent-light);
+    outline-offset: -1px;
+  }
 }
 
 .secondary {
@@ -48,4 +57,40 @@
   background: var(--background-800);
   border: 1px solid oklch(0.2605 0.101 280.82);
   color: var(--text-primary);
+}
+
+.primary,
+.text {
+  &:focus-visible {
+    outline: 1px solid var(--field-border-hover);
+    outline-offset: -1px;
+  }
+}
+
+.text {
+  composes: button;
+  padding: var(--spacing-xxxs) var(--spacing-xxxs);
+  border-radius: var(--border-radius);
+  box-shadow: none;
+  min-width: min(80px, 100%);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  &:focus-visible {
+    background: var(--background-800);
+  }
+
+  &:hover {
+    background: var(--background-800);
+    box-shadow: none;
+  }
+
+  @media (any-hover: hover) {
+    &:where(:not(:active):hover) {
+      &:hover {
+        color: var(--text-primary);
+      }
+    }
+  }
 }

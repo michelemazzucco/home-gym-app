@@ -74,18 +74,27 @@ h6 {
 }
 
 :root {
-  --lch-orange: 0.6393 0.1669 49.17;
+  --lch-orange-500: 0.61 0.17 47.73;
+  --lch-orange-700: 0.55 0.16 46.55;
+  --lch-orange-200: 0.76 0.17 49.94;
+  --lch-blue-1000: 0.15 0.06 262.26;
   --lch-blue-900: 0.1753 0.0686 264.48;
   --lch-blue-800: 0.1841 0.0823 271.94;
   --lch-blue-500: 0.2216 0.1231 280.82;
+  --lch-gray-300: 0.68 0.03 285.69;
   --lch-gray-100: 0.94 0.008 286.24;
   --lch-white: 1 0 0;
 
-  --accent: oklch(var(--lch-orange));
+  --accent: oklch(var(--lch-orange-500));
+  --accent-light: oklch(var(--lch-orange-200));
+  --accent-dark: oklch(var(--lch-orange-700));
+
+  --background-1000: oklch(var(--lch-blue-1000));
   --background-900: oklch(var(--lch-blue-900));
   --background-800: oklch(var(--lch-blue-800));
   --background-500: oklch(var(--lch-blue-500));
   --background-100: oklch(var(--lch-gray-100));
+  --background-300: oklch(var(--lch-gray-300));
   --main-background: 180deg, var(--background-900) 0%, var(--background-500) 100%;
 
   --text-primary: oklch(var(--lch-white));
@@ -100,6 +109,7 @@ h6 {
   --field-background-hover: oklch(var(--lch-white) / 0.06);
   --field-border: oklch(var(--lch-white) / 0.2);
   --field-border-hover: oklch(var(--lch-white) / 0.3);
+  --field-placeholder-color: oklch(var(--lch-gray-300));
 
   --base-space: 16px;
   --spacing-xl: 4rem;

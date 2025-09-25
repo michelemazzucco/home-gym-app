@@ -1,9 +1,10 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useApp } from './context/AppContext'
 import { useToast } from './hooks/useToast'
-import { Loader, Logo, Button, Form } from './components'
+import { Loader, Logo, Button, Form, ApiDialog } from './components'
 
 export default function Home() {
   const {
@@ -14,9 +15,17 @@ export default function Home() {
     setWeeks,
     setLoading,
     setWorkoutResult,
+    setApiKey,
   } = useApp()
   const router = useRouter()
   const { showToast } = useToast()
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') {
+      setOpen(true)
+    }
+  }, [])
 
   const analyzeImage = async () => {
     if (!state.selectedImage) return
@@ -28,6 +37,9 @@ export default function Home() {
       formData.append('difficulty', state.difficulty)
       formData.append('sessionsPerWeek', String(state.sessionsPerWeek))
       formData.append('weeks', String(state.weeks))
+      if (state.apiKey) {
+        formData.append('apiKey', state.apiKey)
+      }
 
       const response = await fetch('/api/analyze', {
         method: 'POST',
@@ -54,6 +66,7 @@ export default function Home() {
 
   return (
     <div className="app-wrapper">
+      <ApiDialog open={open} setOpen={setOpen} apiKey={state.apiKey} setApiKey={setApiKey} />
       <header className="app-header">
         <Logo />
         <h2 className="app-header__subtitle">

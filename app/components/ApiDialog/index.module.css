@@ -1,9 +1,8 @@
 .backdrop {
   position: fixed;
   inset: 0;
-  background-color: black;
+  background-color: var(--background-1000);
   opacity: 0.8;
-  backdrop-filter: blur(2px);
   transition: opacity 150ms cubic-bezier(0.45, 1.005, 0, 1.005);
 
   &[data-starting-style],
@@ -40,8 +39,13 @@
   font-weight: 500;
 }
 
+.emoji {
+  font-size: 1.5rem;
+  margin-bottom: var(--spacing-xxxs);
+}
+
 .description {
-  margin: 0 0 1.5rem;
+  margin: 0 0 var(--spacing-xs);
   font-size: 1rem;
   line-height: 1.5rem;
   color: var(--text-secondary);
@@ -50,40 +54,9 @@
 .actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-xxs);
 }
 
 .content {
-  margin-bottom: 1.5rem;
-}
-
-.label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--color-gray-700);
-}
-
-.input {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-gray-300);
-  border-radius: 0.375rem;
-  font-size: 1rem;
-  color: var(--color-gray-900);
-  background-color: white;
-  transition: border-color 0.15s;
-}
-
-.input:focus {
-  outline: none;
-  border-color: var(--color-primary-500);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.hint {
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  color: var(--color-gray-500);
+  margin-bottom: var(--spacing-xs);
 }

@@ -43,6 +43,11 @@
   @media (min-width: 768px) {
     aspect-ratio: 1.5 / 1;
   }
+
+  &:focus-visible {
+    outline: 1px solid var(--field-border-hover);
+    outline-offset: -1px;
+  }
 }
 
 .selectedImage {
@@ -63,37 +68,4 @@
     border: 1px dashed var(--field-border-hover);
     background-image: radial-gradient(oklch(var(--lch-white) / 0.15) 1px, transparent 0);
   }
-}
-
-.dropzoneActive::before,
-.dropzone:hover::before {
-  background:
-    repeating-linear-gradient(
-      0deg,
-      var(--field-border-hover) 0px,
-      var(--field-border-hover) 4px,
-      transparent 4px,
-      transparent 8px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      var(--field-border-hover) 0px,
-      var(--field-border-hover) 4px,
-      transparent 4px,
-      transparent 8px
-    ),
-    repeating-linear-gradient(
-      180deg,
-      var(--field-border-hover) 0px,
-      var(--field-border-hover) 4px,
-      transparent 4px,
-      transparent 8px
-    ),
-    repeating-linear-gradient(
-      270deg,
-      var(--field-border-hover) 0px,
-      var(--field-border-hover) 4px,
-      transparent 4px,
-      transparent 8px
-    );
 }

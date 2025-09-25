@@ -22,7 +22,7 @@ export default function Home() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV !== 'development') {
       setOpen(true)
     }
   }, [])

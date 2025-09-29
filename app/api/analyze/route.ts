@@ -23,11 +23,11 @@ export async function POST(request: NextRequest) {
 
     // Convert image to buffer and optimize with Sharp
     const bytes = await image.arrayBuffer()
-    const inputBuffer = Buffer.from(bytes)
+    const inputBuffer = Buffer.from(bytes as ArrayBuffer)
 
     // Target size: 1.5MB for raw image (will be ~2MB in base64) - safer for Vercel limits
     const maxSize = 1.5 * 1024 * 1024
-    let optimizedBuffer = inputBuffer
+    let optimizedBuffer: Buffer = inputBuffer
     let quality = 90
 
     // If image is too large, progressively resize/compress until under 1.5MB
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       // Calculate scale factor to reduce size
       const scaleFactor = Math.sqrt(maxSize / optimizedBuffer.length) * 0.9
 
-      optimizedBuffer = await sharp(inputBuffer)
+      const newBuffer = await sharp(inputBuffer)
         .resize({
           width: metadata.width ? Math.floor(metadata.width * scaleFactor) : undefined,
           height: metadata.height ? Math.floor(metadata.height * scaleFactor) : undefined,
@@ -46,6 +46,8 @@ export async function POST(request: NextRequest) {
         })
         .jpeg({ quality, mozjpeg: true })
         .toBuffer()
+
+      optimizedBuffer = newBuffer as Buffer
 
       quality -= 10
     }

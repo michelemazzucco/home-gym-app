@@ -57,14 +57,6 @@ export const Form = ({
       return
     }
 
-    const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
-    if (file.size > maxSize) {
-      showToast(
-        `Image too large. Maximum size is 7.5MB, your image is ${(file.size / 1024 / 1024).toFixed(2)}MB`
-      )
-      return
-    }
-
     setSelectedImage(file)
   }
 

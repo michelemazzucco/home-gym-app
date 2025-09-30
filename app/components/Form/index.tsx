@@ -50,14 +50,99 @@ export const Form = ({
     }
   }, [])
 
-  const validateAndSetFile = (file: File) => {
+  const compressImage = async (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = (event) => {
+        const img = new Image()
+        img.src = event.target?.result as string
+        img.onload = () => {
+          const canvas = document.createElement('canvas')
+          const ctx = canvas.getContext('2d')
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'))
+            return
+          }
+
+          // Target max size: 4MB to stay safely under Vercel's 4.5MB limit
+          const maxSizeBytes = 4 * 1024 * 1024
+          let quality = 0.9
+          let width = img.width
+          let height = img.height
+
+          // Scale down if image is very large
+          const maxDimension = 2048
+          if (width > maxDimension || height > maxDimension) {
+            if (width > height) {
+              height = (height / width) * maxDimension
+              width = maxDimension
+            } else {
+              width = (width / height) * maxDimension
+              height = maxDimension
+            }
+          }
+
+          canvas.width = width
+          canvas.height = height
+          ctx.drawImage(img, 0, 0, width, height)
+
+          const tryCompress = () => {
+            canvas.toBlob(
+              (blob) => {
+                if (!blob) {
+                  reject(new Error('Failed to compress image'))
+                  return
+                }
+
+                // If still too large and quality can be reduced, try again
+                if (blob.size > maxSizeBytes && quality > 0.5) {
+                  quality -= 0.1
+                  tryCompress()
+                  return
+                }
+
+                // If still too large even at minimum quality, reject
+                if (blob.size > maxSizeBytes) {
+                  reject(new Error('Image too large even after compression'))
+                  return
+                }
+
+                // Convert blob to File
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg',
+                  lastModified: Date.now(),
+                })
+
+                resolve(compressedFile)
+              },
+              'image/jpeg',
+              quality
+            )
+          }
+
+          tryCompress()
+        }
+        img.onerror = () => reject(new Error('Failed to load image'))
+      }
+      reader.onerror = () => reject(new Error('Failed to read file'))
+    })
+  }
+
+  const validateAndSetFile = async (file: File) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
       showToast(`Unsupported file type: ${file.type}. Supported types: JPEG, PNG, GIF, WebP only.`)
       return
     }
 
-    setSelectedImage(file)
+    try {
+      const compressedFile = await compressImage(file)
+      setSelectedImage(compressedFile)
+    } catch (error) {
+      showToast('Failed to process image. Please try another image.')
+      console.error('Image compression error:', error)
+    }
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {

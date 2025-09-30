@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import sharp from 'sharp'
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,38 +20,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'OpenAI API key not provided' }, { status: 400 })
     }
 
-    // Convert image to buffer and optimize with Sharp
+    // Convert image to buffer for base64 encoding
     const bytes = await image.arrayBuffer()
-    const inputBuffer = Buffer.from(bytes as ArrayBuffer)
-
-    // Target size: 1.5MB for raw image (will be ~2MB in base64) - safer for Vercel limits
-    const maxSize = 1.5 * 1024 * 1024
-    let optimizedBuffer: Buffer = inputBuffer
-    let quality = 90
-
-    // If image is too large, progressively resize/compress until under 1.5MB
-    while (optimizedBuffer.length > maxSize && quality > 10) {
-      const sharpInstance = sharp(inputBuffer)
-      const metadata = await sharpInstance.metadata()
-
-      // Calculate scale factor to reduce size
-      const scaleFactor = Math.sqrt(maxSize / optimizedBuffer.length) * 0.9
-
-      const newBuffer = await sharp(inputBuffer)
-        .resize({
-          width: metadata.width ? Math.floor(metadata.width * scaleFactor) : undefined,
-          height: metadata.height ? Math.floor(metadata.height * scaleFactor) : undefined,
-          fit: 'inside',
-        })
-        .jpeg({ quality, mozjpeg: true })
-        .toBuffer()
-
-      optimizedBuffer = newBuffer as Buffer
-
-      quality -= 10
-    }
-
-    const base64Image = optimizedBuffer.toString('base64')
+    const buffer = Buffer.from(bytes)
+    const base64Image = buffer.toString('base64')
 
     // Determine image type for data URL
     const imageType = image.type || 'image/jpeg'

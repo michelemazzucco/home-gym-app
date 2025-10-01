@@ -161,14 +161,14 @@ h6 {
   max-width: calc(var(--base-space) * 28);
   width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-md) var(--spacing-xxs) 0;
+  padding: var(--spacing-lg) var(--spacing-xxs) 0;
   gap: var(--spacing-xs);
   display: flex;
   flex-direction: column;
 
   &:not(.result-page) {
     height: clamp(600px, 100dvh, 800px);
-    padding: var(--spacing-md) var(--spacing-xxs) var(--spacing-lg);
+    padding: var(--spacing-lg) var(--spacing-xxs);
   }
 }
 

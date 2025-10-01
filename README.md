@@ -1,16 +1,16 @@
-# Homegym
+<h1 align="center"><p>🏋 Homegym 🏋</p></h1>
 
-Get workouts based on what's around you, powered by AI magic ✨
-
-_Inspired by [@Doriandarko](https://github.com/Doriandarko) poem-cam_
+<p align="center">Get workouts based on what's around you, powered by AI magic ✨<br>
+<i>Inspired by <a href="https://github.com/Doriandarko" target="_blank">@Doriandarko</a> poem-cam</i></p>
 
 ## The problem
 
-Many of us have accumulated home gym equipment, but finding workout plans that actually use what we own is surprisingly difficult. Most online plans either leave some equipment gathering dust or push you to buy more gear, cluttering up your garage or living space even further.
+Many of us have home gym equipment, but finding workout plans that actually use what we own is surprisingly difficult. Most online plans either leave some equipment gathering dust or push you to buy more gear, cluttering up your garage or living room even more.
 
 ## My solution
 
 Create personalized workout plans based on your actual equipment. 
+
 But let's be honest—sometimes we're too lazy to list everything we have. That's where AI comes into play: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
 
 https://github.com/user-attachments/assets/55849bfa-aaaf-4a01-a050-70a2b536265c

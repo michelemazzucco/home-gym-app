@@ -13,17 +13,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No image provided' }, { status: 400 })
     }
 
-    // Check image size limit (7.5MB to account for base64 expansion)
-    const maxSize = 7.5 * 1024 * 1024 // 7.5MB in bytes
-    if (image.size > maxSize) {
-      return NextResponse.json(
-        {
-          error: `Image too large. Maximum size is 7.5MB, your image is ${(image.size / 1024 / 1024).toFixed(2)}MB`,
-        },
-        { status: 400 }
-      )
-    }
-
     // Use apiKey from request if provided, otherwise fall back to environment variable
     const apiKey = apiKeyFromRequest || process.env.OPENAI_API_KEY
 
@@ -31,21 +20,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'OpenAI API key not provided' }, { status: 400 })
     }
 
-    // Convert image to base64
+    // Convert image to buffer for base64 encoding
     const bytes = await image.arrayBuffer()
     const buffer = Buffer.from(bytes)
     const base64Image = buffer.toString('base64')
-
-    // Check base64 size limit (10MB in base64)
-    const maxBase64Size = 10 * 1024 * 1024 // 10MB in characters
-    if (base64Image.length > maxBase64Size) {
-      return NextResponse.json(
-        {
-          error: `Image too large after encoding. Base64 size is ${(base64Image.length / 1024 / 1024).toFixed(2)}MB, maximum is 10MB`,
-        },
-        { status: 400 }
-      )
-    }
 
     // Determine image type for data URL
     const imageType = image.type || 'image/jpeg'

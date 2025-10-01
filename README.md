@@ -13,7 +13,7 @@ Create personalized workout plans based on your actual equipment.
 
 But let's be honest—sometimes we're too lazy to list everything we have. That's where AI comes into play: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
 
-https://github.com/user-attachments/assets/271fb81e-51d0-4c5d-a06a-24daba76f214
+https://github.com/user-attachments/assets/e4dbe6c5-2a18-4b87-9f4c-658b595d58a9
 
 ## Mobile PWA
 The app works on mobile as well, giving you the chance to actually take the picture from the app.

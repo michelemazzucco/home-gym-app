@@ -13,9 +13,9 @@ Create personalized workout plans based on your actual equipment.
 
 But let's be honest—sometimes we're too lazy to list everything we have. That's where AI comes into play: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
 
-https://github.com/user-attachments/assets/55849bfa-aaaf-4a01-a050-70a2b536265c
+https://github.com/user-attachments/assets/271fb81e-51d0-4c5d-a06a-24daba76f214
 
-### Mobile PWA
+## Mobile PWA
 The app works on mobile as well, giving you the chance to actually take the picture from the app.
 
 <div>
@@ -25,9 +25,7 @@ The app works on mobile as well, giving you the chance to actually take the pict
 </div>
 
 
-#### See it in action here:
-- Full workflow [here](https://www.dropbox.com/scl/fi/rljs59sgowvgg7mslxc65/full-workflow.MP4?rlkey=1v81p275zg7rtrcepqusmwlcn&e=1&st=7abjfk95&dl=0)
-- Example with a random object (i.e. chair) [here](https://www.dropbox.com/scl/fi/rljs59sgowvgg7mslxc65/full-workflow.MP4?rlkey=1v81p275zg7rtrcepqusmwlcn&st=7abjfk95&dl=0)
+See it in action [here](https://www.michelemazzucco.it/projects/homegym).
 
 ## How to Use
 

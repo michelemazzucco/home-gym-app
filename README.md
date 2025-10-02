@@ -24,8 +24,7 @@ The app works on mobile as well, giving you the chance to actually take the pict
 <img width="270" alt="Result page" src="docs/assets/pwa-results.PNG" />
 </div>
 
-
-See it in action [here](https://www.michelemazzucco.it/projects/homegym).
+👀 See it in action [here](https://www.michelemazzucco.it/projects/homegym).
 
 ## How to Use
 

@@ -39,46 +39,52 @@ export async function POST(request: NextRequest) {
       return Math.max(1, Math.min(52, Math.floor(n)))
     })()
 
-    const prompt = `You are a professional trainer. 
-    
-    Redact a full body program, something that could be appreciated by a someone that would like to get in shape staying at home.
+    const systemPrompt = `You are an experienced personal trainer specializing in home fitness programming. Apply these principles when designing every plan:
 
-    Plan must have ${weeks} weeks duration, with ${workoutPerWeek} session per week.
+PROGRESSIVE OVERLOAD
+Increase stimulus each week by adding reps, sets, or reducing rest — never increase all three at once. For beginners, add reps first. For intermediate/advanced, alternate between volume and intensity weeks.
 
-    The workout plan must be: 
-    - Detailed, progressive, and specifically use only the equipment identified in the image, if there are no equipment, use bodyweight exercises or object that could be used as equipment if in the picture (e.g. a chair, a water bottle, etc.)
-    - Balanced, and include a mix of strength and flexibility exercises.
-    - Specific to the equipment identified in the image.
-    - Be specific for a ${difficulty} level.
-    - Be 30 minutes long.
+EXERCISE ORDERING
+Always sequence: compound multi-joint movements first (e.g. squat, hinge, push, pull), isolation or accessory work last. Higher neurological demand = earlier in the session.
 
-    About blocks
-    - The workout should be grouped in 3 blocks max - e.g. 12 weeks duration 4 weeks blocks, 5 weeks duration: 1 x 3 weeks 1 x 2 weeks blocks, and so on.
-    - If plan duration is 4 weeks, 2 blocks.
-    - The title of the block should contain the weeks and the focus of the block, for example: "Week 1-3: Foundation"
-    
-    Also, the output must:
-    - Not contain emoji
-    - Not contain sarcasm
-    - Not contain codeblock
-    - Not contain Markdown
-    - Be JSON only, ensure is valid JSON, response limit MUST not break it.
-    - Be in the following JSON format:
-    {
-      "equipment": ["item1", "item2", ...],
-      "plan": [{
-        "title": "block title",
-        "sessions": [{
-          "title": "sessiontitle",
-          "exercizes": [{
-            "name": "exercise name",
-            "sets": "sets",
-            "reps": "reps",
-            "rest": "rest"
-          }]
-        }]
-      }]
-    }`
+SET AND REP SCHEMES BY DIFFICULTY
+- Beginner: 2-3 sets, 10-15 reps, full-body each session, long rest (90s). Focus on movement quality and consistency.
+- Intermediate: 3-4 sets, varied rep ranges — strength work at 5-8 reps, hypertrophy at 8-12, endurance at 15+. Rest 60-90s. Introduce push/pull/legs structure if frequency allows.
+- Advanced: 4-5 sets, periodized rep ranges across blocks, shorter rest (45-60s for hypertrophy), supersets allowed. Include intensity techniques like drop sets or tempo work in later blocks.
+
+BLOCK PERIODIZATION
+Each block should have a distinct focus that builds on the previous:
+- First block: foundation — master movement patterns, build work capacity, moderate volume.
+- Middle block(s): development — increase load or volume, introduce more complex variations.
+- Final block: peak or consolidation — higher intensity, lower volume, or test improvements.
+
+DELOAD
+For programs 8 weeks or longer, reduce volume by ~40% in the last week of each block (deload). Note this in the session title (e.g. "Deload — Light Week").
+
+REST PERIODS
+Strength focus: 2-3 min. Hypertrophy focus: 60-90s. Endurance/conditioning: 30-45s. Scale down for beginners who need more recovery.
+
+SESSION STRUCTURE (30 min)
+Each session should implicitly follow: 3-4 min movement prep → 20-22 min main work → 3-4 min cooldown/flexibility. Reflect this in exercise selection and volume, not as explicit sections.
+
+EQUIPMENT CREATIVITY
+If equipment is limited, use tempo (slow eccentric), isometric holds, unilateral variations, and bodyweight progressions to increase difficulty without adding load.`
+
+    const userPrompt = `Create a full-body home workout program for someone who wants to get in shape.
+
+Program details:
+- Duration: ${weeks} weeks, ${workoutPerWeek} sessions per week
+- Difficulty: ${difficulty}
+- Each session: 30 minutes
+
+Equipment: Use only what is visible in the image. If no equipment is present, use bodyweight exercises or improvised objects (e.g. chair, water bottle).
+
+The program must be:
+- Progressive across weeks
+- Balanced between strength and flexibility
+- Appropriate for the ${difficulty} level
+
+Blocks: Divide the program into 2-3 roughly equal blocks (e.g. a ${weeks}-week plan → ${Math.ceil(weeks / 3)}-week blocks). Each block title must include the week range and a focus theme, e.g. "Week 1-4: Foundation".`
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -90,11 +96,15 @@ export async function POST(request: NextRequest) {
         model: 'gpt-4o-mini',
         messages: [
           {
+            role: 'system',
+            content: systemPrompt,
+          },
+          {
             role: 'user',
             content: [
               {
                 type: 'text',
-                text: prompt,
+                text: userPrompt,
               },
               {
                 type: 'image_url',
@@ -107,6 +117,60 @@ export async function POST(request: NextRequest) {
           },
         ],
         max_tokens: 2000,
+        response_format: {
+          type: 'json_schema',
+          json_schema: {
+            name: 'workout_plan',
+            strict: true,
+            schema: {
+              type: 'object',
+              properties: {
+                equipment: {
+                  type: 'array',
+                  items: { type: 'string' },
+                },
+                plan: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      title: { type: 'string' },
+                      sessions: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            title: { type: 'string' },
+                            exercizes: {
+                              type: 'array',
+                              items: {
+                                type: 'object',
+                                properties: {
+                                  name: { type: 'string' },
+                                  sets: { type: 'string' },
+                                  reps: { type: 'string' },
+                                  rest: { type: 'string' },
+                                },
+                                required: ['name', 'sets', 'reps', 'rest'],
+                                additionalProperties: false,
+                              },
+                            },
+                          },
+                          required: ['title', 'exercizes'],
+                          additionalProperties: false,
+                        },
+                      },
+                    },
+                    required: ['title', 'sessions'],
+                    additionalProperties: false,
+                  },
+                },
+              },
+              required: ['equipment', 'plan'],
+              additionalProperties: false,
+            },
+          },
+        },
       }),
     })
 
@@ -135,22 +199,21 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json()
 
-    const content = data.choices[0]?.message?.content
+    const message = data.choices[0]?.message
+
+    if (message?.refusal) {
+      console.error('OpenAI refused the request:', message.refusal)
+      return NextResponse.json({ error: 'Request refused by model' }, { status: 422 })
+    }
+
+    const content = message?.content
 
     if (!content) {
       console.error('No content in OpenAI response:', data)
       return NextResponse.json({ error: 'No response from OpenAI' }, { status: 500 })
     }
 
-    // Try to parse as JSON, fall back to raw content if parsing fails
-    try {
-      const parsedContent = JSON.parse(content)
-      return NextResponse.json(parsedContent)
-    } catch (parseError) {
-      console.error('Failed to parse OpenAI response as JSON:', parseError)
-      // Return the raw content as fallback to maintain previous behavior
-      return NextResponse.json({ content })
-    }
+    return NextResponse.json(JSON.parse(content))
   } catch (error) {
     console.error('Error processing request:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

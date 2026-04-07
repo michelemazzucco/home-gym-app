@@ -237,11 +237,14 @@ export const Form = ({
           style={{ display: 'none' }}
         />
         {state.selectedImage ? (
-          <img
-            className={styles.selectedImage}
-            src={URL.createObjectURL(state.selectedImage)}
-            alt="Selected equipment"
-          />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className={styles.selectedImage}
+              src={URL.createObjectURL(state.selectedImage)}
+              alt="Selected equipment"
+            />
+          </>
         ) : (
           <>
             <Button variant="secondary">

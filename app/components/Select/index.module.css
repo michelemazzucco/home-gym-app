@@ -9,6 +9,7 @@
   padding: var(--spacing-xxxs) var(--spacing-xxs);
   color: var(--text-primary);
   cursor: default;
+  width: 100%;
 
   @media (any-hover: hover) {
     &:hover {

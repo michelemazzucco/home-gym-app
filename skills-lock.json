@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "fitness-coach": {
+      "source": "tatat/agents-playground",
+      "sourceType": "github",
+      "computedHash": "29ed91e0e7f56a5625e08712e2d54e2a7304210ad15bc4c615a32dc4ea4b8d8c"
+    }
+  }
+}

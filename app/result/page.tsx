@@ -17,7 +17,7 @@ export default function ResultPage() {
 
   useEffect(() => {
     setLoading(false)
-  }, [])
+  }, [setLoading])
 
   const handleBackToMain = () => {
     resetState()

@@ -24,7 +24,7 @@ export function Select({ options, onChange, label }: SelectProps) {
       <ReactSelect.Root
         items={options}
         defaultValue={options[0].value}
-        onValueChange={onChange}
+        onValueChange={(value) => value !== null && onChange?.(value)}
         id={label}
       >
         <ReactSelect.Trigger className={styles.select}>

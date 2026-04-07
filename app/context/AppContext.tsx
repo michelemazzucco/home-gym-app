@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode } from 'react'
 
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
 
@@ -77,23 +77,15 @@ const loadFromStorage = (): WorkoutResult | null => {
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AppState>({
+  const [state, setState] = useState<AppState>(() => ({
     selectedImage: null,
     difficulty: 'beginner',
     sessionsPerWeek: 3,
     weeks: 8,
     loading: false,
-    workoutResult: null,
+    workoutResult: loadFromStorage(),
     apiKey: '',
-  })
-
-  // Load workout result from localStorage on mount
-  useEffect(() => {
-    const storedResult = loadFromStorage()
-    if (storedResult) {
-      setState((prev) => ({ ...prev, workoutResult: storedResult }))
-    }
-  }, [])
+  }))
 
   const setSelectedImage = (image: File | null) => {
     setState((prev) => ({ ...prev, selectedImage: image }))

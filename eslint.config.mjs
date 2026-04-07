@@ -1,35 +1,40 @@
-import { FlatCompat } from '@eslint/eslintrc'
+import nextPlugin from '@next/eslint-plugin-next'
 import prettierPlugin from 'eslint-plugin-prettier'
-import { fileURLToPath } from 'url'
-import path from 'path'
-
-// Resolve directory for FlatCompat in ESM
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const compat = new FlatCompat({ baseDirectory: __dirname })
+import tsPlugin from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
+import reactHooksPlugin from 'eslint-plugin-react-hooks'
 
 export default [
-  // Next.js core rules (includes React, TS, etc.)
-  ...compat.extends('next/core-web-vitals'),
-  ...compat.extends('next/typescript'),
-
   // Ignore build output and config files
   { ignores: ['node_modules/**', '.next/**', 'out/**', 'dist/**', 'eslint.config.*'] },
 
-  // Project rules
+  // Next.js rules (replaces compat.extends('next/core-web-vitals'))
   {
-    files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
-      prettier: prettierPlugin,
+      '@next/next': nextPlugin,
     },
     rules: {
-      // No tabs; indentation is enforced by Prettier
-      'no-tabs': 'error',
-
-      // Defer style to Prettier; ensure no semicolons
-      'prettier/prettier': ['error', { semi: false, useTabs: false, tabWidth: 2 }],
+      ...nextPlugin.configs.recommended.rules,
+      ...nextPlugin.configs['core-web-vitals'].rules,
     },
   },
 
-  // Turn off stylistic rules that may conflict with Prettier
-  ...compat.extends('prettier'),
+  // TypeScript + Prettier rules
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+      'react-hooks': reactHooksPlugin,
+      prettier: prettierPlugin,
+    },
+    languageOptions: {
+      parser: tsParser,
+    },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      ...reactHooksPlugin.configs.recommended.rules,
+      'no-tabs': 'error',
+      'prettier/prettier': ['error', { semi: false, useTabs: false, tabWidth: 2 }],
+    },
+  },
 ]

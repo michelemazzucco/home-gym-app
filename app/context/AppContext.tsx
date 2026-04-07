@@ -48,32 +48,28 @@ interface AppContextType {
   resetState: () => void
 }
 
-const STORAGE_KEY = 'homegym-workout-result'
+const STORAGE_KEY = 'homegym-workout-result:v1'
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
 // Helper functions for localStorage
 const saveToStorage = (workoutResult: WorkoutResult | null) => {
-  if (typeof window !== 'undefined') {
+  try {
     if (workoutResult) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(workoutResult))
     } else {
       localStorage.removeItem(STORAGE_KEY)
     }
-  }
+  } catch {}
 }
 
 const loadFromStorage = (): WorkoutResult | null => {
-  if (typeof window !== 'undefined') {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY)
-      return stored ? JSON.parse(stored) : null
-    } catch (error) {
-      console.error('Error loading from localStorage:', error)
-      return null
-    }
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    return stored ? JSON.parse(stored) : null
+  } catch {
+    return null
   }
-  return null
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {

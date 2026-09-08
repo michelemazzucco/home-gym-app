@@ -6,7 +6,16 @@ import reactHooksPlugin from 'eslint-plugin-react-hooks'
 
 export default [
   // Ignore build output and config files
-  { ignores: ['node_modules/**', '.next/**', 'out/**', 'dist/**', 'eslint.config.*'] },
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'dist/**',
+      'eslint.config.*',
+      'next-env.d.ts',
+    ],
+  },
 
   // Next.js rules (replaces compat.extends('next/core-web-vitals'))
   {

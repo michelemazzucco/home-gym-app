@@ -218,7 +218,7 @@ export const describeExercize = ({ sets, reps, rest }: Exercize) =>
   `${sets} sets, ${reps} reps${rest === '0' ? '' : `, ${rest} rest`}`
 
 export const planToMarkdown = (equipment: string[], plan: WorkoutBlock[]) => {
-  const lines: string[] = ['# Home Gym workout plan', '']
+  const lines: string[] = ['# Homegym workout plan', '']
 
   if (equipment.length > 0) {
     lines.push(`**Equipment:** ${equipment.join(', ')}`, '')

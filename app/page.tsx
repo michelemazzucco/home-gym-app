@@ -141,7 +141,7 @@ export default function Home() {
   const handleShare = async () => {
     if (!plan) return
     try {
-      await navigator.share({ title: 'My Home Gym plan', text: planToMarkdown(equipment, plan) })
+      await navigator.share({ title: 'My Homegym plan', text: planToMarkdown(equipment, plan) })
     } catch (error) {
       if ((error as DOMException)?.name !== 'AbortError') {
         toast('Could not open the share sheet.')

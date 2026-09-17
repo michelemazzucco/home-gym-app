@@ -11,7 +11,8 @@ workout plan around it. The user works through three steps on a single page:
 2. Review the equipment the model found in the photo. Untick, remove or add items.
 3. Read the plan on a ruled-paper sheet, then copy or share it.
 
-The OpenAI API key can come from the user (via a dialog) or from an environment variable.
+The OpenAI API key comes from the `OPENAI_API_KEY` environment variable. The app never asks the
+user for one.
 
 ## Development Commands
 
@@ -37,8 +38,8 @@ next to the step indicator, so a mocked run is never mistaken for a real one.
 ### Core structure
 
 - **Next.js 15 App Router**, one page at `/` plus two API routes.
-- **Wizard state**: `app/context/AppContext.tsx` holds the step, the photo, the settings and the
-  API key. The confirmed equipment and the generated plan live in `localStorage` and are read
+- **Wizard state**: `app/context/AppContext.tsx` holds the step, the photo and the settings. The
+  confirmed equipment and the generated plan live in `localStorage` and are read
   through `useSyncExternalStore` (`app/lib/planStorage.ts`), so a reload lands the user back on
   their plan.
 - **Styling**: Tailwind v4. All design tokens are declared in the `@theme` block of
@@ -50,11 +51,10 @@ next to the step indicator, so a mocked run is never mistaken for a real one.
 
 The equipment step needs the equipment list before any plan exists, so the work is split:
 
-- `POST /api/equipment` - `multipart/form-data` with `image` and an optional `apiKey`. One vision
-  call at `detail: 'low'`. Returns `{ equipment: string[] }`.
-- `POST /api/plan` - JSON with `equipment`, `difficulty`, `sessionsPerWeek`, `weeks` and an
-  optional `apiKey`. No image, so it is cheaper and faster than the vision call. Returns
-  `{ plan: WorkoutBlock[] }`.
+- `POST /api/equipment` - `multipart/form-data` with `image`. One vision call at `detail: 'low'`.
+  Returns `{ equipment: string[] }`.
+- `POST /api/plan` - JSON with `equipment`, `difficulty`, `sessionsPerWeek` and `weeks`. No image,
+  so it is cheaper and faster than the vision call. Returns `{ plan: WorkoutBlock[] }`.
 
 Both go through `completeJson` in `app/lib/openai.ts`, which owns the fetch, the structured-output
 request and the error mapping. Error messages from OpenAI are passed through to the client and
@@ -91,7 +91,7 @@ app/
 │   ├── SiteHeader, StepIndicator
 │   ├── StepSettings, StepEquipment, StepPlanSummary
 │   ├── PhotoDropzone, PhotoPreview, PaperSheet, EquipmentBadges
-│   └── ApiKeyDialog, InfoDialog
+│   └── InfoDialog
 └── api/
     ├── equipment/route.ts
     └── plan/route.ts

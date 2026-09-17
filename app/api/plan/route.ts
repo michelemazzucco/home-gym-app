@@ -16,7 +16,7 @@ import {
   WEEKS_MIN,
   WorkoutBlock,
 } from '@/app/lib/workout'
-import { completeJson, resolveApiKey } from '@/app/lib/openai'
+import { completeJson, getApiKey } from '@/app/lib/openai'
 import { isMockMode, mockDelay, mockPlan } from '@/app/lib/mocks'
 
 export async function POST(request: NextRequest) {
@@ -53,9 +53,12 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    const apiKey = resolveApiKey(body.apiKey)
+    const apiKey = getApiKey()
     if (!apiKey) {
-      return NextResponse.json({ error: 'OpenAI API key not provided' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'The server has no OpenAI API key configured.' },
+        { status: 500 }
+      )
     }
 
     const result = await completeJson<{ plan: WorkoutBlock[] }>({

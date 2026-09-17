@@ -46,7 +46,6 @@ export default function Home() {
     setEquipment,
     plan,
     commitPlan,
-    apiKey,
     analyzedImageKey,
     resetState,
   } = useApp()
@@ -79,7 +78,6 @@ export default function Home() {
     try {
       const formData = new FormData()
       formData.append('image', selectedImage)
-      if (apiKey) formData.append('apiKey', apiKey)
 
       const response = await fetch('/api/equipment', { method: 'POST', body: formData })
       if (!response.ok) {
@@ -111,7 +109,6 @@ export default function Home() {
           sessionsPerWeek,
           weeks,
           sessionMinutes,
-          apiKey: apiKey || undefined,
         }),
       })
 

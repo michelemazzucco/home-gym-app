@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
 
-export const MODEL = 'gpt-4o-mini'
+export const MODEL = 'gpt-5-mini'
 
 export const resolveApiKey = (fromRequest?: string | null) =>
   fromRequest?.trim() || process.env.OPENAI_API_KEY || null
@@ -32,7 +32,9 @@ export async function completeJson<T>({
     body: JSON.stringify({
       model: MODEL,
       messages,
-      max_tokens: maxTokens,
+      // Reasoning tokens count against this budget, so it is not just the JSON.
+      max_completion_tokens: maxTokens,
+      reasoning_effort: 'low',
       response_format: { type: 'json_schema', json_schema: schema },
     }),
   })

@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     const result = await completeJson<{ equipment: string[] }>({
       apiKey,
-      maxTokens: 300,
+      maxTokens: 1500,
       schema: EQUIPMENT_SCHEMA,
       messages: [
         { role: 'system', content: EQUIPMENT_SYSTEM_PROMPT },

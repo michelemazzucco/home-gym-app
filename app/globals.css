@@ -42,6 +42,31 @@
   --radius-xl: 12px;
 
   --shadow-raised: inset 0 1px 2px --alpha(#ffffff / 25%), 0 12px 12px -10px --alpha(#000000 / 60%);
+  --shadow-field: 0 12px 12px -10px --alpha(#000000 / 60%);
+
+  /* Hover and colour changes ride the browser default `ease`; entrances get an explicit curve. */
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: ease;
+
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  --animate-rise: rise 280ms var(--ease-out-quart) both;
+  --animate-pop: pop 180ms var(--ease-out-quad) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale3d(0.94, 0.94, 1);
+    }
+  }
 }
 
 @layer base {
@@ -104,7 +129,7 @@
     width: 100%;
     border-radius: 8px;
     background-color: #fff;
-    padding: 3.9rem 1.5rem 4rem 3.25rem;
+    padding: 3.75rem 1.5rem 4rem 3.25rem;
     color: #130225;
     letter-spacing: -0.01em;
 

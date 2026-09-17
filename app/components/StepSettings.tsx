@@ -33,7 +33,7 @@ export const StepSettings = () => {
         <h2 className="font-display text-[28px] leading-[34px] font-normal text-chalk">
           Show me your equipment
         </h2>
-        <p className="max-w-[34ch] text-base leading-[1.4] text-chalk">
+        <p className="max-w-[34ch] text-base leading-[1.4] text-muted-foreground">
           Upload a photo of the equipment you have at home and fill in your preferences.
         </p>
       </div>

@@ -14,32 +14,35 @@ export const SiteHeader = () => {
   const [infoOpen, setInfoOpen] = useState(false)
 
   return (
-    <header className="flex items-start justify-between gap-4 sm:gap-6">
-      <div className="min-w-0">
-        <h1 className="font-display text-3xl leading-tight font-medium text-chalk sm:text-[40px] sm:leading-[48px]">
-          Home Gym
-        </h1>
-        <div className="relative mt-1 w-full sm:w-fit">
-          <p className="font-display text-base text-accent sm:text-xl sm:leading-6">
-            Workouts based on what&rsquo;s around you
-          </p>
-          <Squiggle className="pointer-events-none absolute right-0 -bottom-4 hidden translate-x-2 text-accent sm:block" />
-        </div>
+    <header className="flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-6">
+      <h1 className="font-display text-[40px] leading-[48px] font-medium text-chalk">Homegym</h1>
+      <div className="relative mt-1 w-fit">
+        <p className="font-display text-base text-accent sm:text-xl sm:leading-6">
+          Workouts based on what&rsquo;s around you
+        </p>
+        <Squiggle className="pointer-events-none absolute right-0 -bottom-3 h-auto w-10 translate-x-2 text-accent sm:-bottom-4 sm:w-12" />
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 sm:gap-4">
-        <Button variant="icon" size="icon" asChild aria-label="Open the repository on GitHub">
+      <div className="order-first mb-4 flex items-center gap-2 self-end sm:order-none sm:col-start-2 sm:row-start-1 sm:row-end-3 sm:mb-0 sm:gap-4 sm:self-start">
+        <Button
+          variant="icon"
+          size="icon"
+          className="size-9 sm:size-11"
+          asChild
+          aria-label="Open the repository on GitHub"
+        >
           <a href={REPO_URL} target="_blank" rel="noreferrer noopener">
-            <GithubMark className="size-5" />
+            <GithubMark className="size-4 sm:size-5" />
           </a>
         </Button>
         <Button
           variant="icon"
           size="icon"
+          className="size-9 sm:size-11"
           onClick={() => setInfoOpen(true)}
           aria-label="About this app"
         >
-          <Info className="size-5" />
+          <Info className="size-4 sm:size-5" />
         </Button>
       </div>
 

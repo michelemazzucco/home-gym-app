@@ -16,6 +16,8 @@ export const StepEquipment = ({ selected, onToggle, onAdd, onRemove }: StepEquip
   const { equipment } = useApp()
   const [adding, setAdding] = useState(false)
   const [draft, setDraft] = useState('')
+  // Only the list that arrives with the step is staggered; items added by hand appear at once.
+  const [staggerUpTo] = useState(equipment.length)
 
   const commitDraft = () => {
     const value = draft.trim()
@@ -38,12 +40,15 @@ export const StepEquipment = ({ selected, onToggle, onAdd, onRemove }: StepEquip
       </div>
 
       <div className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-        {equipment.map((item) => {
+        {equipment.map((item, index) => {
           const checked = selected.includes(item)
           return (
             <div
               key={item}
-              className="group flex h-10 items-center gap-3 rounded-lg border border-border bg-ink pr-2 pl-3 shadow-raised"
+              style={{
+                animationDelay: index < staggerUpTo ? `${Math.min(index, 8) * 35}ms` : '0ms',
+              }}
+              className="group flex h-10 animate-rise items-center gap-3 rounded-lg border border-border bg-ink pr-2 pl-3 shadow-field motion-reduce:animate-none"
             >
               <Checkbox
                 id={`equipment-${item}`}
@@ -61,7 +66,7 @@ export const StepEquipment = ({ selected, onToggle, onAdd, onRemove }: StepEquip
                 type="button"
                 aria-label={`Remove ${item}`}
                 onClick={() => onRemove(item)}
-                className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition group-hover:opacity-100 hover:bg-white/10 hover:text-chalk focus-visible:opacity-100"
+                className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-[color,background-color,opacity] group-hover:opacity-100 hover:bg-white/10 hover:text-chalk focus-visible:opacity-100 motion-reduce:transition-none [@media(hover:none)]:opacity-100"
               >
                 <X className="size-4" />
               </button>
@@ -70,7 +75,7 @@ export const StepEquipment = ({ selected, onToggle, onAdd, onRemove }: StepEquip
         })}
 
         {adding ? (
-          <div className="flex h-10 items-center rounded-lg border border-accent bg-ink px-3 shadow-raised">
+          <div className="flex h-10 animate-pop items-center rounded-lg border border-accent bg-ink px-3 shadow-field motion-reduce:animate-none">
             <input
               autoFocus
               value={draft}
@@ -91,7 +96,7 @@ export const StepEquipment = ({ selected, onToggle, onAdd, onRemove }: StepEquip
           <button
             type="button"
             onClick={() => setAdding(true)}
-            className="flex h-10 items-center gap-3 rounded-lg bg-white/[0.03] pr-2 pl-3 text-base leading-5 text-chalk transition-colors hover:bg-white/[0.08]"
+            className="flex h-10 items-center gap-3 rounded-lg bg-white/[0.03] pr-2 pl-3 text-base leading-5 text-chalk transition-colors hover:bg-white/[0.08] motion-reduce:transition-none"
           >
             <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#423551]/80">
               <Plus className="size-4" />

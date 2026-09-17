@@ -19,7 +19,8 @@ function DialogOverlay({
       data-slot="dialog-overlay"
       className={cn(
         'fixed inset-0 z-50 bg-black/70 backdrop-blur-[2px]',
-        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'duration-200 ease-out-quart data-[state=closed]:animate-out data-[state=closed]:duration-150 data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
+        'motion-reduce:animate-none',
         className
       )}
       {...props}
@@ -40,7 +41,8 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           'fixed top-1/2 left-1/2 z-50 grid w-[calc(100%-2rem)] max-w-[26rem] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl border border-border bg-popover p-6 shadow-2xl',
-          'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+          'duration-200 ease-out-quart data-[state=closed]:animate-out data-[state=closed]:duration-150 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+          'motion-reduce:animate-none',
           className
         )}
         {...props}
@@ -48,7 +50,7 @@ function DialogContent({
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
-            className="absolute top-4 right-4 rounded-md p-1 text-muted-foreground transition-colors outline-none hover:text-chalk focus-visible:ring-2 focus-visible:ring-ring/50"
+            className="absolute top-4 right-4 rounded-md p-1 text-muted-foreground transition-colors outline-none hover:text-chalk focus-visible:ring-2 focus-visible:ring-ring/50 motion-reduce:transition-none"
             aria-label="Close"
           >
             <XIcon className="size-4" />

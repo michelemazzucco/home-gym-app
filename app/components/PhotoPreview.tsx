@@ -5,7 +5,7 @@ export const PhotoPreview = ({ previewUrl }: { previewUrl: string | null }) => (
       <img
         src={previewUrl}
         alt="The equipment you uploaded"
-        className="max-h-[240px] w-auto rounded-lg object-contain lg:max-h-[412px]"
+        className="max-h-[240px] w-auto animate-pop rounded-lg object-contain motion-reduce:animate-none lg:max-h-[412px]"
       />
     ) : (
       <p className="text-base text-muted-foreground">No photo</p>

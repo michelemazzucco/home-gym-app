@@ -21,7 +21,7 @@ export const NumberField = ({ label, value, min, max, onChange, className }: Num
   return (
     <div className={cn('space-y-2', className)}>
       <Label htmlFor={id}>{label}</Label>
-      <div className="flex h-10 items-center rounded-lg border border-border bg-ink pr-1 pl-3 shadow-raised transition-colors focus-within:border-accent hover:border-white/40">
+      <div className="flex h-10 items-center rounded-lg border border-border bg-ink pr-1 pl-3 shadow-field transition-colors focus-within:border-accent hover:border-white/40 motion-reduce:transition-none">
         <input
           id={id}
           type="number"
@@ -72,7 +72,7 @@ const StepButton = ({
     aria-label={label}
     disabled={disabled}
     onClick={onClick}
-    className="flex size-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-white/10 hover:text-chalk disabled:pointer-events-none disabled:opacity-30"
+    className="flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-[color,background-color,scale] hover:bg-white/10 hover:text-chalk active:scale-90 disabled:pointer-events-none disabled:opacity-30 motion-reduce:transition-none"
   >
     {children}
   </button>

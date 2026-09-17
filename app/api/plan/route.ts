@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     const result = await completeJson<{ plan: WorkoutBlock[] }>({
       apiKey,
-      maxTokens: 2000,
+      maxTokens: 6000,
       schema: PLAN_SCHEMA,
       messages: [
         { role: 'system', content: PLAN_SYSTEM_PROMPT },

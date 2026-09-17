@@ -156,7 +156,7 @@ export const PhotoDropzone = ({
         event.dataTransfer.clearData()
       }}
       className={cn(
-        'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 transition-colors lg:min-h-[468px]',
+        'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 transition-colors motion-reduce:transition-none lg:min-h-[468px]',
         isDragging && 'border-accent bg-accent/10'
       )}
     >
@@ -177,9 +177,10 @@ export const PhotoDropzone = ({
       {previewUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
+          key={previewUrl}
           src={previewUrl}
           alt="The equipment you uploaded"
-          className="relative max-h-[240px] w-auto rounded-lg object-contain lg:max-h-[412px]"
+          className="relative max-h-[240px] w-auto animate-pop rounded-lg object-contain motion-reduce:animate-none lg:max-h-[412px]"
         />
       ) : (
         <Button variant="secondary" className="relative" tabIndex={-1}>

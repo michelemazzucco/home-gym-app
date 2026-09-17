@@ -90,6 +90,9 @@ Strength focus: 2-3 min. Hypertrophy focus: 60-90s. Endurance/conditioning: 30-4
 SESSION STRUCTURE
 Each session should implicitly follow roughly 12% movement prep → 76% main work → 12% cooldown/flexibility, scaled to the session length given in the request. A short session means fewer exercises, not rushed ones. Reflect this in exercise selection and volume, not as explicit sections.
 
+OUTPUT BREVITY
+The plan is read on a small paper sheet, so every string stays short. Exercise names are at most five words and carry no coaching notes in brackets. Sets, reps and rest hold a value or a range and nothing else. Session titles are at most six words. Put progression in the numbers across blocks, never in prose inside a field.
+
 EQUIPMENT CREATIVITY
 If equipment is limited, use tempo (slow eccentric), isometric holds, unilateral variations, and bodyweight progressions to increase difficulty without adding load.`
 
@@ -154,22 +157,42 @@ export const PLAN_SCHEMA = {
         items: {
           type: 'object',
           properties: {
-            title: { type: 'string' },
+            title: {
+              type: 'string',
+              description: 'Week range and focus, e.g. "Week 1-4: Foundation". Six words at most.',
+            },
             sessions: {
               type: 'array',
               items: {
                 type: 'object',
                 properties: {
-                  title: { type: 'string' },
+                  title: {
+                    type: 'string',
+                    description: 'e.g. "Session A - Full body". Six words at most.',
+                  },
                   exercizes: {
                     type: 'array',
                     items: {
                       type: 'object',
                       properties: {
-                        name: { type: 'string' },
-                        sets: { type: 'string' },
-                        reps: { type: 'string' },
-                        rest: { type: 'string' },
+                        name: {
+                          type: 'string',
+                          description:
+                            'The movement alone, five words at most, e.g. "Goblet squat". No notes in brackets.',
+                        },
+                        sets: {
+                          type: 'string',
+                          description: 'A number or range, e.g. "3" or "2-3".',
+                        },
+                        reps: {
+                          type: 'string',
+                          description:
+                            'A number, range or hold, e.g. "10-15" or "30s". No per-week notes.',
+                        },
+                        rest: {
+                          type: 'string',
+                          description: 'e.g. "90s" or "2min", or "0" for none.',
+                        },
                       },
                       required: ['name', 'sets', 'reps', 'rest'],
                       additionalProperties: false,

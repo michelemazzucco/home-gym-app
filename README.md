@@ -1,73 +1,49 @@
-<h1 align="center"><p>🏋 Homegym 🏋</p></h1>
+# Homegym 🏋
 
-<p align="center">Get workouts based on what's around you, powered by AI magic ✨<br>
-<i>Inspired by <a href="https://github.com/Doriandarko" target="_blank">@Doriandarko</a> poem-cam</i></p>
+### Take a photo of your equipment, get a workout plan built around it
+_Inspired by <a href="https://github.com/Doriandarko" target="_blank">@Doriandarko</a> poem-cam_
 
-## The problem
+![Homegym on desktop, step one: the settings panel and the photo dropzone](docs/assets/desktop.png)
 
-Many of us have home gym equipment, but finding workout plans that actually use what we own is surprisingly difficult. Most online plans either leave some equipment gathering dust or push you to buy more gear, cluttering up your garage or living room even more.
+## Why
 
-## My solution
+I have some equipment at home, and the plans I found online either ignored half of it or told me
+to buy one more thing. So part of the stuff sits there unused, and I keep doing the same three
+exercises.
 
-Create personalized workout plans based on your actual equipment.
+Writing down everything I own in a form would fix that, and I never did it, because it is boring.
+Taking a photo is not. So the app reads the photo, shows me what it found, and writes the plan
+around the equipment I confirm.
 
-But let's be honest—sometimes we're too lazy to list everything we have. That's where AI comes into play: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
+## The three steps
 
-https://github.com/user-attachments/assets/e4dbe6c5-2a18-4b87-9f4c-658b595d58a9
-
-## Mobile PWA
-
-The app works on mobile as well, giving you the chance to actually take the picture from the app.
-
-<div>
-<img width="270" alt="Home page" src="docs/assets/pwa-home.PNG" />
-<img width="270" alt="Result page" src="docs/assets/pwa-loading.PNG" />
-<img width="270" alt="Result page" src="docs/assets/pwa-results.PNG" />
-</div>
-
-👀 See it in action [here](https://www.michelemazzucco.it/projects/homegym).
-
-## How to Use
-
-The app walks you through three steps:
-
-1. **Set it up.** Pick your level, sessions per week and how many weeks the plan runs, then take a photo or upload an image of your equipment.
-2. **Check the gear.** The app lists what it found in the photo. Untick anything it got wrong, remove what does not belong, and add what it missed.
+1. **Set it up.** Level, sessions per week, how long a session lasts, how many weeks the plan
+   runs. Then upload a photo of your equipment, or take one if you are on a phone.
+2. **Check the gear.** The app lists what it found in the photo. Untick what it got wrong, remove
+   what does not belong, add what it missed.
 3. **Train.** You get a plan built only around the equipment you confirmed. Copy it or share it.
 
-## Local setup
+The plan lives in `localStorage`, so a reload brings you back to it.
 
-Wanna try this app? Here are the steps to have it working on your laptop :)
-
-1. Install dependencies:
+## Run it locally
 
 ```bash
 pnpm install
-```
-
-2. Create `.env.local` file:
-
-```bash
 cp .env.local.example .env.local
 ```
 
-3. Add your OpenAI API key to `.env.local`:
+Put your OpenAI key in `.env.local`:
 
 ```
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-4. Run the development server:
-
-```bash
-pnpm dev
-```
-
-5. Open [http://localhost:3000](http://localhost:3000)
+Then `pnpm dev` and open [http://localhost:3000](http://localhost:3000). The deployed version asks
+for the key in a dialog instead, and never keeps it.
 
 ### No OpenAI credits?
 
-Set `MOCK_OPENAI=true` in `.env.local` and the app runs the full three-step flow on canned data,
-without ever calling OpenAI. The plan still reacts to your level, sessions per week, plan duration
-and the equipment you confirm, so it is good enough to click through and check the UI. A "Mock
-data" pill appears next to the step indicator so you always know what you are looking at.
+Set `MOCK_OPENAI=true` in `.env.local`. The API routes return canned data and the whole three-step
+flow works without a single call to OpenAI. The fake plan still reacts to your level, sessions per
+week, plan duration and confirmed equipment, so it is good enough to click through the UI. A "Mock
+data" pill shows up next to the step indicator, so you always know what you are looking at.

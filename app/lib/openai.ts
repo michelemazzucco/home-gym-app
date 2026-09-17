@@ -34,7 +34,7 @@ export async function completeJson<T>({
       messages,
       // Reasoning tokens count against this budget, so it is not just the JSON.
       max_completion_tokens: maxTokens,
-      reasoning_effort: 'low',
+      reasoning_effort: 'minimal',
       response_format: { type: 'json_schema', json_schema: schema },
     }),
   })

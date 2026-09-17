@@ -1,11 +1,4 @@
-import TurndownService from 'turndown'
-
-export const getMarkdown = (html: string) => {
-  const turndownService = new TurndownService()
-  return turndownService.turndown(html)
-}
-
-export const fallbackCopyText = (text: string, showToast: (message: string) => void) => {
+export const fallbackCopyText = (text: string, onDone: (message: string) => void) => {
   const textArea = document.createElement('textarea')
   textArea.value = text
 
@@ -21,15 +14,23 @@ export const fallbackCopyText = (text: string, showToast: (message: string) => v
   try {
     textArea.setSelectionRange(0, 99999)
     const successful = document.execCommand('copy')
-    if (successful) {
-      showToast('Workout plan copied to clipboard!')
-    } else {
-      showToast('Failed to copy workout plan.')
-    }
-  } catch (err) {
-    showToast('Copy not supported.')
-    console.log(err)
+    onDone(successful ? 'Workout plan copied to clipboard!' : 'Failed to copy workout plan.')
+  } catch {
+    onDone('Copy not supported.')
   } finally {
     document.body.removeChild(textArea)
   }
+}
+
+export const copyText = async (text: string, onDone: (message: string) => void) => {
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text)
+      onDone('Workout plan copied to clipboard!')
+      return
+    } catch {
+      // fall through to the textarea fallback
+    }
+  }
+  fallbackCopyText(text, onDone)
 }

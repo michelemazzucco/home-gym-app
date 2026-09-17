@@ -1,0 +1,163 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@theme {
+  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --font-ui: var(--font-public-sans), system-ui, sans-serif;
+  --font-hand: var(--font-handrawn), system-ui, cursive;
+
+  --color-ink: #130225;
+  --color-ink-deep: #0e011d;
+  --color-ink-raised: #1c0c31;
+  --color-chalk: #e7f2ec;
+  --color-lilac: #b19ec5;
+  --color-accent: #d9660e;
+  --color-accent-hover: #ec7419;
+
+  --color-paper: #ffffff;
+  --color-paper-ink: oklch(0.1841 0.0823 271.94);
+  --color-paper-rule: #e6e7eb;
+
+  --color-background: var(--color-ink);
+  --color-foreground: var(--color-chalk);
+  --color-card: var(--color-ink);
+  --color-card-foreground: var(--color-chalk);
+  --color-popover: var(--color-ink-raised);
+  --color-popover-foreground: var(--color-chalk);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: --alpha(#ffffff / 10%);
+  --color-secondary-foreground: var(--color-chalk);
+  --color-muted: --alpha(#ffffff / 5%);
+  --color-muted-foreground: var(--color-lilac);
+  --color-accent-foreground: #ffffff;
+  --color-destructive: #e5484d;
+  --color-border: --alpha(#ffffff / 20%);
+  --color-input: --alpha(#ffffff / 20%);
+  --color-ring: var(--color-accent);
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --shadow-raised: inset 0 1px 2px --alpha(#ffffff / 25%), 0 12px 12px -10px --alpha(#000000 / 60%);
+  --shadow-field: 0 12px 12px -10px --alpha(#000000 / 60%);
+
+  /* Hover and colour changes ride the browser default `ease`; entrances get an explicit curve. */
+  --default-transition-duration: 150ms;
+  --default-transition-timing-function: ease;
+
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  --animate-rise: rise 280ms var(--ease-out-quart) both;
+  --animate-pop: pop 180ms var(--ease-out-quad) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+  }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale3d(0.94, 0.94, 1);
+    }
+  }
+}
+
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      interpolate-size: allow-keywords;
+    }
+  }
+
+  html,
+  body {
+    font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Fixed pseudo-element rather than background-attachment: fixed, which misbehaves on iOS. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, var(--color-ink) 0%, var(--color-ink-deep) 100%);
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-chalk);
+    min-height: 100dvh;
+    line-height: 1.5;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  /* Ruled notebook paper. The 1.75rem baseline grid is load-bearing: every child
+     inherits that line-height so the text sits on the rules. */
+  .paper-sheet {
+    --top-space: 1.75rem;
+    --paper-color: #ffffff;
+
+    width: 100%;
+    border-radius: 8px;
+    background-color: #fff;
+    padding: 3.75rem 1.5rem 4rem 3.25rem;
+    color: #130225;
+    letter-spacing: -0.01em;
+
+    /* Safari required to not use vars here, argh */
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent,
+        transparent 1.75rem,
+        #d9660e 1.75rem,
+        #d9660e 1.8rem,
+        transparent 1.8rem
+      ),
+      linear-gradient(
+        var(--paper-color),
+        var(--paper-color) var(--top-space),
+        transparent var(--top-space)
+      ),
+      repeating-linear-gradient(
+        transparent,
+        transparent calc(1.75rem - 1px),
+        #e6e7eb calc(1.75rem - 2px),
+        #e6e7eb 1.75rem,
+        transparent 1.75rem
+      );
+  }
+
+  .paper-sheet * {
+    line-height: 1.75rem;
+  }
+}

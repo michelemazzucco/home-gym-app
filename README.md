@@ -9,13 +9,14 @@ Many of us have home gym equipment, but finding workout plans that actually use 
 
 ## My solution
 
-Create personalized workout plans based on your actual equipment. 
+Create personalized workout plans based on your actual equipment.
 
 But let's be honest—sometimes we're too lazy to list everything we have. That's where AI comes into play: simply scan your equipment and get a tailored, effective workout plan designed around what you already own.
 
 https://github.com/user-attachments/assets/e4dbe6c5-2a18-4b87-9f4c-658b595d58a9
 
 ## Mobile PWA
+
 The app works on mobile as well, giving you the chance to actually take the picture from the app.
 
 <div>
@@ -28,11 +29,11 @@ The app works on mobile as well, giving you the chance to actually take the pict
 
 ## How to Use
 
-1. Take a photo or upload an image of your home gym equipment
-2. Select your preferences (level, sessions per week, and number of weeks)
-3. Click "Let's go!" to analyze the image
-4. Check the identified equipment and tailored workout plan
-5. Copy the plan to your clipboard for later use
+The app walks you through three steps:
+
+1. **Set it up.** Pick your level, sessions per week and how many weeks the plan runs, then take a photo or upload an image of your equipment.
+2. **Check the gear.** The app lists what it found in the photo. Untick anything it got wrong, remove what does not belong, and add what it missed.
+3. **Train.** You get a plan built only around the equipment you confirmed. Copy it or share it.
 
 ## Local setup
 
@@ -41,7 +42,7 @@ Wanna try this app? Here are the steps to have it working on your laptop :)
 1. Install dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 2. Create `.env.local` file:
@@ -59,7 +60,14 @@ OPENAI_API_KEY=your_openai_api_key_here
 4. Run the development server:
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000)
+
+### No OpenAI credits?
+
+Set `MOCK_OPENAI=true` in `.env.local` and the app runs the full three-step flow on canned data,
+without ever calling OpenAI. The plan still reacts to your level, sessions per week, plan duration
+and the equipment you confirm, so it is good enough to click through and check the UI. A "Mock
+data" pill appears next to the step indicator so you always know what you are looking at.

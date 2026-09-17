@@ -1,138 +1,169 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from 'react'
+import {
+  DifficultyLevel,
+  SESSION_MINUTES_DEFAULT,
+  SESSIONS_DEFAULT,
+  WEEKS_DEFAULT,
+  WorkoutBlock,
+} from '../lib/workout'
+import { getServerSnapshot, getSnapshot, save, subscribe } from '../lib/planStorage'
 
-export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced'
-
-interface Exercize {
-  name: string
-  sets: string
-  reps: string
-  rest: string
-}
-
-interface Session {
-  title: string
-  exercizes: Exercize[]
-}
-
-export interface WorkoutBlock {
-  title: string
-  sessions: Session[]
-}
-
-interface WorkoutResult {
-  equipment: string[]
-  plan: WorkoutBlock[]
-}
+export type Step = 1 | 2 | 3
 
 interface AppState {
+  stepOverride: Step | null
   selectedImage: File | null
   difficulty: DifficultyLevel
   sessionsPerWeek: number
   weeks: number
-  loading: boolean
-  workoutResult: WorkoutResult | null
+  sessionMinutes: number
+  apiKey: string
+  /** Identifies the photo the equipment list came from, so step 1 -> 2 does not repeat the vision call. */
+  analyzedImageKey: string | null
 }
 
 interface AppContextType {
-  state: AppState
+  step: Step
+  selectedImage: File | null
+  difficulty: DifficultyLevel
+  sessionsPerWeek: number
+  weeks: number
+  sessionMinutes: number
+  equipment: string[]
+  plan: WorkoutBlock[] | null
+  apiKey: string
+  analyzedImageKey: string | null
+  setStep: (step: Step) => void
   setSelectedImage: (image: File | null) => void
   setDifficulty: (difficulty: DifficultyLevel) => void
   setSessionsPerWeek: (sessions: number) => void
   setWeeks: (weeks: number) => void
-  setLoading: (loading: boolean) => void
-  setWorkoutResult: (result: WorkoutResult | null) => void
+  setSessionMinutes: (minutes: number) => void
+  setEquipment: (equipment: string[], analyzedImageKey?: string | null) => void
+  commitPlan: (equipment: string[], plan: WorkoutBlock[]) => void
+  setApiKey: (apiKey: string) => void
   resetState: () => void
 }
 
-const STORAGE_KEY = 'homegym-workout-result:v1'
+const initialState: AppState = {
+  stepOverride: null,
+  selectedImage: null,
+  difficulty: 'beginner',
+  sessionsPerWeek: SESSIONS_DEFAULT,
+  weeks: WEEKS_DEFAULT,
+  sessionMinutes: SESSION_MINUTES_DEFAULT,
+  apiKey: '',
+  analyzedImageKey: null,
+}
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
 
-// Helper functions for localStorage
-const saveToStorage = (workoutResult: WorkoutResult | null) => {
-  try {
-    if (workoutResult) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(workoutResult))
-    } else {
-      localStorage.removeItem(STORAGE_KEY)
-    }
-  } catch {}
-}
-
-const loadFromStorage = (): WorkoutResult | null => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    return stored ? JSON.parse(stored) : null
-  } catch {
-    return null
-  }
-}
-
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<AppState>(() => ({
-    selectedImage: null,
-    difficulty: 'beginner',
-    sessionsPerWeek: 3,
-    weeks: 8,
-    loading: false,
-    workoutResult: loadFromStorage(),
-  }))
+  const [state, setState] = useState<AppState>(initialState)
 
-  const setSelectedImage = (image: File | null) => {
-    setState((prev) => ({ ...prev, selectedImage: image }))
-  }
+  // The equipment list and the plan live in localStorage, so a reload lands the
+  // user back on their plan instead of an empty form.
+  const stored = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  const setDifficulty = (difficulty: DifficultyLevel) => {
-    setState((prev) => ({ ...prev, difficulty }))
-  }
-
-  const setSessionsPerWeek = (sessions: number) => {
-    setState((prev) => ({ ...prev, sessionsPerWeek: sessions }))
-  }
-
-  const setWeeks = (weeks: number) => {
-    setState((prev) => ({ ...prev, weeks }))
-  }
-
-  const setLoading = (loading: boolean) => {
-    setState((prev) => ({ ...prev, loading }))
-  }
-
-  const setWorkoutResult = (result: WorkoutResult | null) => {
-    setState((prev) => ({ ...prev, workoutResult: result }))
-    saveToStorage(result)
-  }
-
-  const resetState = () => {
-    setState((prev) => ({
-      ...prev,
-      selectedImage: null,
-      difficulty: 'beginner',
-      sessionsPerWeek: 3,
-      weeks: 12,
-      loading: false,
-    }))
-    saveToStorage(null) // Clear localStorage
-  }
-
-  return (
-    <AppContext.Provider
-      value={{
-        state,
-        setSelectedImage,
-        setDifficulty,
-        setSessionsPerWeek,
-        setWeeks,
-        setLoading,
-        setWorkoutResult,
-        resetState,
-      }}
-    >
-      {children}
-    </AppContext.Provider>
+  const setStep = useCallback(
+    (stepOverride: Step) => setState((prev) => ({ ...prev, stepOverride })),
+    []
   )
+
+  const setSelectedImage = useCallback(
+    (selectedImage: File | null) => setState((prev) => ({ ...prev, selectedImage })),
+    []
+  )
+
+  const setDifficulty = useCallback(
+    (difficulty: DifficultyLevel) => setState((prev) => ({ ...prev, difficulty })),
+    []
+  )
+
+  const setSessionsPerWeek = useCallback(
+    (sessionsPerWeek: number) => setState((prev) => ({ ...prev, sessionsPerWeek })),
+    []
+  )
+
+  const setWeeks = useCallback((weeks: number) => setState((prev) => ({ ...prev, weeks })), [])
+
+  const setSessionMinutes = useCallback(
+    (sessionMinutes: number) => setState((prev) => ({ ...prev, sessionMinutes })),
+    []
+  )
+
+  const setEquipment = useCallback((nextEquipment: string[], analyzedImageKey?: string | null) => {
+    save({ equipment: nextEquipment, plan: getSnapshot()?.plan ?? null })
+    if (analyzedImageKey !== undefined) {
+      setState((prev) => ({ ...prev, analyzedImageKey }))
+    }
+  }, [])
+
+  const commitPlan = useCallback((nextEquipment: string[], nextPlan: WorkoutBlock[]) => {
+    save({ equipment: nextEquipment, plan: nextPlan })
+    setState((prev) => ({ ...prev, stepOverride: 3 }))
+  }, [])
+
+  const setApiKey = useCallback((apiKey: string) => setState((prev) => ({ ...prev, apiKey })), [])
+
+  const resetState = useCallback(() => {
+    save(null)
+    setState((prev) => ({ ...initialState, apiKey: prev.apiKey }))
+  }, [])
+
+  const value = useMemo(() => {
+    const equipment = stored?.equipment ?? []
+    const plan = stored?.plan ?? null
+    const step: Step = state.stepOverride ?? (plan ? 3 : 1)
+
+    return {
+      step,
+      selectedImage: state.selectedImage,
+      difficulty: state.difficulty,
+      sessionsPerWeek: state.sessionsPerWeek,
+      weeks: state.weeks,
+      sessionMinutes: state.sessionMinutes,
+      equipment,
+      plan,
+      apiKey: state.apiKey,
+      analyzedImageKey: state.analyzedImageKey,
+      setStep,
+      setSelectedImage,
+      setDifficulty,
+      setSessionsPerWeek,
+      setWeeks,
+      setSessionMinutes,
+      setEquipment,
+      commitPlan,
+      setApiKey,
+      resetState,
+    }
+  }, [
+    stored,
+    state,
+    setStep,
+    setSelectedImage,
+    setDifficulty,
+    setSessionsPerWeek,
+    setWeeks,
+    setSessionMinutes,
+    setEquipment,
+    commitPlan,
+    setApiKey,
+    resetState,
+  ])
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
 
 export function useApp() {

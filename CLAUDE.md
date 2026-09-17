@@ -4,106 +4,130 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Next.js 15 application that uses OpenAI's gpt-4o-mini model to analyze photos of home gym equipment and generate personalized workout plans. The app supports both camera capture and file uploads with real-time image processing. Users can customize workout duration (4-12 weeks), sessions per week (1-7), and difficulty level (beginner/intermediate/advanced). API key can be provided by the user or configured via environment variables.
+A Next.js 15 application that reads a photo of home gym equipment and writes a personalized
+workout plan around it. The user works through three steps on a single page:
+
+1. Pick the plan characteristics (level, sessions per week, plan duration) and upload a photo.
+2. Review the equipment the model found in the photo. Untick, remove or add items.
+3. Read the plan on a ruled-paper sheet, then copy or share it.
+
+The OpenAI API key can come from the user (via a dialog) or from an environment variable.
 
 ## Development Commands
 
-- `npm run dev` - Start development server on http://localhost:3000
-- `npm run build` - Build production application
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint for code quality checks
+- `pnpm dev` - Start the development server on http://localhost:3000
+- `pnpm build` - Build the production application
+- `pnpm start` - Start the production server
+- `pnpm lint` - Run ESLint with `--fix`
+- `pnpm format` - Run Prettier
+
+`pnpm-lock.yaml` is the live lockfile.
+
+### Mock mode
+
+Set `MOCK_OPENAI=true` in `.env.local` to run the whole flow without spending OpenAI credits.
+Both API routes then return canned data from `app/lib/mocks.ts` after a short delay, so the
+loading states are still visible. The mock plan is generated from the same inputs the real route
+receives, so the level, the sessions per week, the plan duration and the confirmed equipment all
+visibly change the output. The server logs a warning on start and the UI shows a "Mock data" pill
+next to the step indicator, so a mocked run is never mistaken for a real one.
 
 ## Architecture
 
-### Core Structure
+### Core structure
 
-- **Next.js 15 App Router**: Uses the modern app directory structure
-- **Multi-Page Application**: Home page for input, result page for workout display
-- **API Route**: Single `/api/analyze` endpoint handles image processing and OpenAI integration
-- **Context-Based State**: AppContext manages global state (image, settings, workout results, API key)
-- **UI Components**: Uses Base UI components from https://base-ui.com/llms.txt
-- **Toast Notifications**: Custom toast system for user feedback
+- **Next.js 15 App Router**, one page at `/` plus two API routes.
+- **Wizard state**: `app/context/AppContext.tsx` holds the step, the photo, the settings and the
+  API key. The confirmed equipment and the generated plan live in `localStorage` and are read
+  through `useSyncExternalStore` (`app/lib/planStorage.ts`), so a reload lands the user back on
+  their plan.
+- **Styling**: Tailwind v4. All design tokens are declared in the `@theme` block of
+  `app/globals.css`. There are no CSS Modules and no `tailwind.config` file.
+- **UI primitives**: shadcn/ui (Radix under the hood) in `app/components/ui/`. Icons are
+  `lucide-react`. Toasts are `sonner`.
 
-### Key Components
+### The two API routes
 
-- **Image Upload**: Drag-and-drop or click to upload. Supports JPEG, PNG, GIF, WebP with automatic server-side optimization
-- **Image Optimization**: Uses Sharp library to automatically resize/compress images server-side to stay under 3MB before base64 encoding
-- **OpenAI Integration**: Sends base64-encoded images to gpt-4o-mini for equipment identification and workout generation
-- **Result Display**: Shows generated workout plans organized by blocks and sessions with equipment badges
-- **API Key Management**: Modal dialog for users to provide their own OpenAI API key (appears automatically in production)
+The equipment step needs the equipment list before any plan exists, so the work is split:
 
-### File Organization
+- `POST /api/equipment` - `multipart/form-data` with `image` and an optional `apiKey`. One vision
+  call at `detail: 'low'`. Returns `{ equipment: string[] }`.
+- `POST /api/plan` - JSON with `equipment`, `difficulty`, `sessionsPerWeek`, `weeks` and an
+  optional `apiKey`. No image, so it is cheaper and faster than the vision call. Returns
+  `{ plan: WorkoutBlock[] }`.
+
+Both go through `completeJson` in `app/lib/openai.ts`, which owns the fetch, the structured-output
+request and the error mapping. Error messages from OpenAI are passed through to the client and
+shown in a toast - do not swallow them.
+
+### Shared model
+
+`app/lib/workout.ts` is the single source of truth for the types, the JSON schemas, the prompts
+and the min/max limits (`SESSIONS_MIN/MAX`, `WEEKS_MIN/MAX`, `SESSION_MINUTES_MIN/MAX`). Both routes
+and the UI read from it. `formatDuration` renders session minutes as HH:MM for the picker.
+`planToMarkdown` builds the clipboard text from the data, not from the DOM.
+
+Note the spelling `exercizes` / `Exercize`. It is baked into the JSON schema, the model output and
+the stored payload. Renaming it means bumping the storage key in `app/lib/planStorage.ts`.
+
+### File organization
 
 ```
 app/
-├── layout.tsx              # Root layout with metadata
-├── page.tsx               # Home page with form
-├── result/
-│   └── page.tsx           # Workout result display page
-├── context/
-│   └── AppContext.tsx     # Global state management
-├── hooks/
-│   └── useToast.tsx       # Toast notification hook
-├── components/            # Reusable UI components
-│   ├── Form/             # Image upload and settings form
-│   ├── ApiDialog/        # API key input modal
-│   ├── WorkoutBlock/     # Workout block display
-│   ├── Button/           # Button component
-│   ├── Select/           # Select dropdown
-│   ├── NumberField/      # Number input
-│   └── ...               # Other UI components
-└── api/analyze/
-    └── route.ts          # OpenAI API integration endpoint
+├── layout.tsx              # Fonts, providers, Toaster
+├── page.tsx                # The 3-step wizard shell and both API calls
+├── globals.css             # Tailwind import, @theme tokens, .paper-sheet
+├── utils.ts                # Clipboard helpers
+├── context/AppContext.tsx  # Wizard state
+├── lib/
+│   ├── workout.ts          # Types, schemas, prompts, limits, markdown
+│   ├── openai.ts           # Shared OpenAI call and error mapping
+│   ├── planStorage.ts      # localStorage external store
+│   ├── mocks.ts            # Canned data for MOCK_OPENAI=true
+│   ├── useObjectUrl.ts     # Object URL for the uploaded photo
+│   └── utils.ts            # cn()
+├── components/
+│   ├── ui/                 # shadcn primitives
+│   ├── SiteHeader, StepIndicator
+│   ├── StepSettings, StepEquipment, StepPlanSummary
+│   ├── PhotoDropzone, PhotoPreview, PaperSheet, EquipmentBadges
+│   └── ApiKeyDialog, InfoDialog
+└── api/
+    ├── equipment/route.ts
+    └── plan/route.ts
 ```
 
-## Configuration
+## Key implementation details
 
-### Environment Variables
+### Images
 
-Optional in `.env.local` (use `.env.local.example` as template):
+Compression happens **on the client**, in `PhotoDropzone`: a canvas resizes to a 2048px maximum
+dimension and steps the JPEG quality down until the file is under 4MB, which keeps the request
+below Vercel's 4.5MB body limit. There is no server-side image processing and Sharp is not a
+dependency. The route base64-encodes whatever it receives.
 
-- `OPENAI_API_KEY` - OpenAI API key for gpt-4o-mini access (can also be provided by user via UI)
+Accepted types: JPEG, PNG, GIF, WebP.
 
-### TypeScript Configuration
+### The paper sheet
 
-- Uses strict mode with ES2017 target
-- Path aliases configured: `@/*` maps to `./*`
-- Standard Next.js TypeScript setup
+`.paper-sheet` in `app/globals.css` is three stacked gradients: the orange margin rule, a white
+mask for the top gutter, and the repeating ruled lines. The `1.75rem` baseline grid is
+load-bearing - `.paper-sheet *` inherits that line height and `PaperSheet` nudges its headings by
+fractions of a rem so the text sits on the rules. The hex values there are hardcoded on purpose;
+Safari will not resolve CSS variables inside those gradients.
 
-### Image Processing
+### Object URLs
 
-- Supported formats: JPEG, PNG, GIF, WebP
-- Server-side optimization using Sharp: automatically resizes/compresses images to stay under 3MB
-- Progressive quality reduction (90 down to 10) and dimension scaling until target size achieved
-- Base64 encoding used for OpenAI API transmission (kept under 4MB limit)
-- Image detail level: 'low' for cost optimization
-- No client-side size restrictions - all images accepted and optimized server-side
+`useObjectUrl` revokes the previous URL when the file changes but never on unmount. React re-runs
+effect cleanups in development, and revoking there kills a URL the component is still rendering.
 
-## Key Implementation Details
+### Model
 
-### OpenAI Integration
+`gpt-4o-mini` with vision, called through the chat-completions API with
+`response_format: json_schema` and `strict: true`.
 
-- Model: `gpt-4o-mini` with vision capabilities
-- Max tokens: 2000
-- Expects structured JSON response with equipment list and workout plan
-- Images automatically optimized via Sharp before sending to API
-- Comprehensive error handling for API failures
+## Conventions
 
-### State Management
-
-- React Context API (AppContext) for global state
-- Local React hooks (useState, useRef) for component-specific state
-- Form data handling via FormData API for file uploads
-- State persisted during navigation between home and result pages
-
-## Common Development Patterns
-
-When working with this codebase:
-
-- User feedback is provided via toast notifications (useToast hook)
-- Image file type validation occurs client-side (Form component), size optimization handled server-side (API route)
-- Sharp library handles all image resizing/compression server-side to meet OpenAI requirements
-- Base64 encoding is used consistently for image transmission
-- TypeScript interfaces define all data structures (`DifficultyLevel`, `WorkoutResult`)
-- API key flexibility: accepts user-provided key via form or environment variable
-- Mobile detection using `is-mobile` library for adaptive UI text
+- User feedback goes through `toast()` from `sonner`.
+- File type validation is client-side; the limits in `app/lib/workout.ts` are re-clamped server-side.
+- The app is dark-only. Colors come from the `@theme` tokens, never from raw hex in components.

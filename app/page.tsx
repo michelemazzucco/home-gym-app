@@ -243,15 +243,14 @@ export default function Home() {
             {step === 2 && (
               <>
                 <Button
-                  variant="icon"
-                  size="icon"
-                  className="size-[41px] rounded-lg"
+                  variant="secondary"
+                  className="max-lg:w-[41px] max-lg:px-0!"
                   onClick={() => setStep(1)}
                   disabled={loading}
-                  title="Previous step"
                   aria-label="Previous step"
                 >
                   <ArrowLeft className="size-4" />
+                  <span className="max-lg:hidden">Previous step</span>
                 </Button>
                 <Button
                   className="flex-1 lg:ml-auto lg:flex-none"
@@ -276,28 +275,26 @@ export default function Home() {
             {step === 3 && (
               <>
                 <Button
-                  variant="icon"
-                  size="icon"
-                  className="size-[41px] rounded-lg"
+                  variant="secondary"
+                  className="max-lg:w-[41px] max-lg:px-0!"
                   onClick={resetState}
-                  title="Create new one"
                   aria-label="Create new one"
                 >
                   <RotateCcw className="size-4" />
+                  <span className="max-lg:hidden">Create new one</span>
                 </Button>
                 {canShare && (
                   <Button
-                    variant="icon"
-                    size="icon"
-                    className="size-[41px] rounded-lg"
+                    variant="secondary"
+                    className="max-lg:w-[41px] max-lg:px-0!"
                     onClick={handleShare}
-                    title="Share"
                     aria-label="Share"
                   >
                     <Share2 className="size-4" />
+                    <span className="max-lg:hidden">Share</span>
                   </Button>
                 )}
-                <Button className="flex-1" onClick={handleCopy}>
+                <Button className="flex-1 lg:flex-none" onClick={handleCopy}>
                   <Copy className="size-4" />
                   Copy workout
                 </Button>

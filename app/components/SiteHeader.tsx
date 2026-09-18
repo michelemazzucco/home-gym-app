@@ -3,14 +3,11 @@
 import { useState } from 'react'
 import { Info } from 'lucide-react'
 import { Button } from './ui/button'
-import { ApiKeyDialog } from './ApiKeyDialog'
 import { InfoDialog } from './InfoDialog'
 
 const REPO_URL = 'https://github.com/michelemazzucco/home-gym-app'
 
 export const SiteHeader = () => {
-  // No trigger in the header any more, so in production the dialog asks for the key up front.
-  const [apiKeyOpen, setApiKeyOpen] = useState(process.env.NODE_ENV === 'production')
   const [infoOpen, setInfoOpen] = useState(false)
 
   return (
@@ -47,7 +44,6 @@ export const SiteHeader = () => {
       </div>
 
       <InfoDialog open={infoOpen} onOpenChange={setInfoOpen} />
-      <ApiKeyDialog open={apiKeyOpen} onOpenChange={setApiKeyOpen} />
     </header>
   )
 }

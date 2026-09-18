@@ -27,7 +27,6 @@ interface AppState {
   sessionsPerWeek: number
   weeks: number
   sessionMinutes: number
-  apiKey: string
   /** Identifies the photo the equipment list came from, so step 1 -> 2 does not repeat the vision call. */
   analyzedImageKey: string | null
 }
@@ -41,7 +40,6 @@ interface AppContextType {
   sessionMinutes: number
   equipment: string[]
   plan: WorkoutBlock[] | null
-  apiKey: string
   analyzedImageKey: string | null
   setStep: (step: Step) => void
   setSelectedImage: (image: File | null) => void
@@ -51,7 +49,6 @@ interface AppContextType {
   setSessionMinutes: (minutes: number) => void
   setEquipment: (equipment: string[], analyzedImageKey?: string | null) => void
   commitPlan: (equipment: string[], plan: WorkoutBlock[]) => void
-  setApiKey: (apiKey: string) => void
   resetState: () => void
 }
 
@@ -62,7 +59,6 @@ const initialState: AppState = {
   sessionsPerWeek: SESSIONS_DEFAULT,
   weeks: WEEKS_DEFAULT,
   sessionMinutes: SESSION_MINUTES_DEFAULT,
-  apiKey: '',
   analyzedImageKey: null,
 }
 
@@ -114,11 +110,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, stepOverride: 3 }))
   }, [])
 
-  const setApiKey = useCallback((apiKey: string) => setState((prev) => ({ ...prev, apiKey })), [])
-
   const resetState = useCallback(() => {
     save(null)
-    setState((prev) => ({ ...initialState, apiKey: prev.apiKey }))
+    setState(initialState)
   }, [])
 
   const value = useMemo(() => {
@@ -135,7 +129,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       sessionMinutes: state.sessionMinutes,
       equipment,
       plan,
-      apiKey: state.apiKey,
       analyzedImageKey: state.analyzedImageKey,
       setStep,
       setSelectedImage,
@@ -145,7 +138,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setSessionMinutes,
       setEquipment,
       commitPlan,
-      setApiKey,
       resetState,
     }
   }, [
@@ -159,7 +151,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setSessionMinutes,
     setEquipment,
     commitPlan,
-    setApiKey,
     resetState,
   ])
 

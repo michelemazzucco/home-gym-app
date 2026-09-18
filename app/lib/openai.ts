@@ -4,8 +4,7 @@ const OPENAI_URL = 'https://api.openai.com/v1/chat/completions'
 
 export const MODEL = 'gpt-5-mini'
 
-export const resolveApiKey = (fromRequest?: string | null) =>
-  fromRequest?.trim() || process.env.OPENAI_API_KEY || null
+export const getApiKey = () => process.env.OPENAI_API_KEY?.trim() || null
 
 type ChatMessage = {
   role: 'system' | 'user'

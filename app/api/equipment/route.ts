@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { EQUIPMENT_SCHEMA, EQUIPMENT_SYSTEM_PROMPT } from '@/app/lib/workout'
-import { completeJson, resolveApiKey } from '@/app/lib/openai'
+import { completeJson, getApiKey } from '@/app/lib/openai'
 import { isMockMode, mockDelay, MOCK_EQUIPMENT } from '@/app/lib/mocks'
 
 export async function POST(request: NextRequest) {
@@ -17,9 +17,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ equipment: MOCK_EQUIPMENT, mock: true })
     }
 
-    const apiKey = resolveApiKey(formData.get('apiKey') as string | null)
+    const apiKey = getApiKey()
     if (!apiKey) {
-      return NextResponse.json({ error: 'OpenAI API key not provided' }, { status: 400 })
+      return NextResponse.json(
+        { error: 'The server has no OpenAI API key configured.' },
+        { status: 500 }
+      )
     }
 
     const base64Image = Buffer.from(await image.arrayBuffer()).toString('base64')

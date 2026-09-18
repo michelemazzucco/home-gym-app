@@ -12,7 +12,7 @@ export const SiteHeader = () => {
 
   return (
     <header className="flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-6">
-      <h1 className="font-display text-[40px] leading-[48px] font-medium text-chalk">Homegym</h1>
+      <h1 className="font-display text-[40px] leading-[1em] font-medium text-chalk">Homegym</h1>
       <div className="relative mt-1 w-fit">
         <p className="font-display text-base text-accent sm:text-xl sm:leading-6">
           Workouts based on what&rsquo;s around you

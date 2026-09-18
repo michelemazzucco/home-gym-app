@@ -37,7 +37,7 @@ export const StepEquipment = ({
   // leaves no trace when the list is short, and lg:pb-16 matches it so the last row clears the
   // fade at the end of the scroll.
   return (
-    <div className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2 lg:h-full lg:content-start lg:overflow-y-auto lg:mask-b-from-[calc(100%-4rem)] lg:pr-2 lg:pb-16">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:h-full lg:content-start lg:overflow-y-auto lg:mask-b-from-[calc(100%-4rem)] lg:pr-2 lg:pb-16">
       {equipment.map((item, index) => {
         const checked = selected.includes(item)
         return (

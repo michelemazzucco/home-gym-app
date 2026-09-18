@@ -156,7 +156,7 @@ export const PhotoDropzone = ({
         event.dataTransfer.clearData()
       }}
       className={cn(
-        'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 transition-colors motion-reduce:transition-none lg:min-h-[468px]',
+        'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 transition-colors motion-reduce:transition-none lg:min-h-media',
         isDragging && 'border-accent bg-accent/10'
       )}
     >

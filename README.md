@@ -1,6 +1,7 @@
 # Homegym 🏋
 
 ### Take a photo of your equipment, get a workout plan built around it
+
 _Inspired by <a href="https://github.com/Doriandarko" target="_blank">@Doriandarko</a> poem-cam_
 
 ![Homegym on desktop, step one: the settings panel and the photo dropzone](docs/assets/desktop.png)
@@ -19,9 +20,9 @@ around the equipment I confirm.
 
 1. **Set it up.** Level, sessions per week, how long a session lasts, how many weeks the plan
    runs. Then upload a photo of your equipment, or take one if you are on a phone.
-2. **Check the gear.** The app lists what it found in the photo. Untick what it got wrong, remove
-   what does not belong, add what it missed.
-3. **Train.** You get a plan built only around the equipment you confirmed. Copy it or share it.
+2. **Check the gear.** The app lists what it found in the photo. Untick what it got wrong, and add
+   what it missed.
+3. **Train.** You get a plan built only around the equipment you confirmed. Copy it and get going.
 
 The plan lives in `localStorage`, so a reload brings you back to it.
 

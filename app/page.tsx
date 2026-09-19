@@ -135,7 +135,7 @@ export default function Home() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-6 pt-6 pb-36 sm:px-8 sm:pt-10 lg:gap-24 lg:px-6 lg:py-20">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pt-6 pb-36 sm:px-8 sm:pt-10 lg:gap-24 lg:px-6 lg:py-20">
       <SiteHeader />
 
       <main className="flex flex-col gap-8 lg:gap-12">

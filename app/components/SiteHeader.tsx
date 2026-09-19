@@ -20,7 +20,7 @@ export const SiteHeader = () => {
         <Squiggle className="pointer-events-none absolute right-0 -bottom-3 h-auto w-10 translate-x-2 text-accent sm:-bottom-4 sm:w-12" />
       </div>
 
-      <div className="order-first mb-4 flex items-center gap-2 self-end sm:order-none sm:col-start-2 sm:row-start-1 sm:row-end-3 sm:mb-0 sm:gap-4 sm:self-start">
+      <div className="order-first mb-2 flex items-center gap-2 self-end sm:order-none sm:col-start-2 sm:row-start-1 sm:row-end-3 sm:mb-0 sm:gap-4 sm:self-start">
         <Button
           variant="icon"
           size="icon"

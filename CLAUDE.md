@@ -8,8 +8,9 @@ A Next.js 15 application that reads a photo of home gym equipment and writes a p
 workout plan around it. The user works through three steps on a single page:
 
 1. Pick the plan characteristics (level, sessions per week, plan duration) and upload a photo.
-2. Review the equipment the model found in the photo. Untick, remove or add items.
-3. Read the plan on a ruled-paper sheet, then copy or share it.
+2. Review the equipment the model found in the photo. Untick what the model got wrong and add
+   what it missed. Only hand-added items can be removed.
+3. Read the plan on a ruled-paper sheet, then copy it.
 
 The OpenAI API key comes from the `OPENAI_API_KEY` environment variable. The app never asks the
 user for one.
@@ -88,7 +89,7 @@ app/
 │   └── utils.ts            # cn()
 ├── components/
 │   ├── ui/                 # shadcn primitives
-│   ├── SiteHeader, StepIndicator
+│   ├── SiteHeader, StepIndicator, StepHeading
 │   ├── StepSettings, StepEquipment, StepPlanSummary
 │   ├── PhotoDropzone, PhotoPreview, PaperSheet, EquipmentBadges
 │   └── InfoDialog

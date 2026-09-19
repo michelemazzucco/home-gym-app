@@ -36,6 +36,10 @@
   --color-input: --alpha(#ffffff / 20%);
   --color-ring: var(--color-accent);
 
+  /* The desktop height of the photo box. The left column is capped to it so the actions
+     line up with the bottom of the photo. */
+  --spacing-media: 29.25rem;
+
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
@@ -129,7 +133,7 @@
     width: 100%;
     border-radius: 8px;
     background-color: #fff;
-    padding: 3.75rem 1.5rem 4rem 3.25rem;
+    padding: 3.8rem 1.5rem 4rem 3.25rem;
     color: #130225;
     letter-spacing: -0.01em;
 

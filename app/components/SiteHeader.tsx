@@ -12,7 +12,7 @@ export const SiteHeader = () => {
 
   return (
     <header className="flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-6">
-      <h1 className="font-display text-[40px] leading-[48px] font-medium text-chalk">Homegym</h1>
+      <h1 className="font-display text-[40px] leading-[1em] font-medium text-chalk">Homegym</h1>
       <div className="relative mt-1 w-fit">
         <p className="font-display text-base text-accent sm:text-xl sm:leading-6">
           Workouts based on what&rsquo;s around you
@@ -20,7 +20,7 @@ export const SiteHeader = () => {
         <Squiggle className="pointer-events-none absolute right-0 -bottom-3 h-auto w-10 translate-x-2 text-accent sm:-bottom-4 sm:w-12" />
       </div>
 
-      <div className="order-first mb-4 flex items-center gap-2 self-end sm:order-none sm:col-start-2 sm:row-start-1 sm:row-end-3 sm:mb-0 sm:gap-4 sm:self-start">
+      <div className="order-first mb-2 flex items-center gap-2 self-end sm:order-none sm:col-start-2 sm:row-start-1 sm:row-end-3 sm:mb-0 sm:gap-4 sm:self-start">
         <Button
           variant="icon"
           size="icon"

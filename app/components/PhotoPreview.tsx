@@ -1,5 +1,5 @@
 export const PhotoPreview = ({ previewUrl }: { previewUrl: string | null }) => (
-  <div className="flex min-h-[280px] w-full items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 lg:min-h-[468px]">
+  <div className="flex min-h-[280px] w-full items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 lg:min-h-media">
     {previewUrl ? (
       // eslint-disable-next-line @next/next/no-img-element
       <img

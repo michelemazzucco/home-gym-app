@@ -11,9 +11,9 @@ const buttonVariants = cva(
       variant: {
         primary: 'bg-accent text-white shadow-raised hover:bg-accent-hover',
         secondary:
-          'border border-border bg-ink text-white shadow-raised hover:border-white/40 hover:bg-white/5',
-        ghost: 'text-chalk hover:bg-white/10',
-        icon: 'border border-border bg-ink text-chalk shadow-raised hover:border-white/40 hover:bg-white/5',
+          'border border-border bg-ink text-white shadow-raised hover:border-white/40 hover:bg-ink-raised',
+        ghost: 'text-chalk hover:bg-ink-raised',
+        icon: 'border border-border bg-ink text-chalk shadow-raised hover:border-white/40 hover:bg-ink-raised',
       },
       size: {
         // An icon reads lighter than a word, so the side it sits on gets less padding.

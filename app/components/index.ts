@@ -1,5 +1,6 @@
 export { EquipmentBadges } from './EquipmentBadges'
 export { InfoDialog } from './InfoDialog'
+export { NewPlanDialog } from './NewPlanDialog'
 export { NumberField } from './NumberField'
 export { PaperSheet } from './PaperSheet'
 export { PhotoDropzone } from './PhotoDropzone'

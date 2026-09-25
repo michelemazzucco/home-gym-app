@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     if (isMockMode()) {
       await mockDelay(900)
-      return NextResponse.json({ equipment: MOCK_EQUIPMENT, mock: true })
+      return NextResponse.json({ equipment: MOCK_EQUIPMENT })
     }
 
     const apiKey = getApiKey()

@@ -8,6 +8,7 @@ import { useApp } from './context/AppContext'
 import { planToMarkdown } from './lib/workout'
 import { copyText } from './utils'
 import {
+  NewPlanDialog,
   PaperSheet,
   PhotoDropzone,
   PhotoPreview,
@@ -21,6 +22,8 @@ import {
 } from './components'
 import { Button } from './components/ui/button'
 import { ArrowLeft, ArrowRight, Copy, Loader2, RotateCcw } from 'lucide-react'
+
+const EXAMPLE_PHOTO = '/example-equipment.jpg'
 
 const imageKeyOf = (file: File) => `${file.name}-${file.size}-${file.lastModified}`
 
@@ -56,12 +59,41 @@ export default function Home() {
   // Items typed in by hand. Only these can be removed; the ones from the photo can only be unticked.
   const [added, setAdded] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
-  const [usingMockData, setUsingMockData] = useState(false)
+  const [confirmNewPlan, setConfirmNewPlan] = useState(false)
   const previewUrl = useObjectUrl(selectedImage)
+
+  const loadExamplePhoto = async () => {
+    try {
+      const response = await fetch(EXAMPLE_PHOTO)
+      if (!response.ok) throw new Error()
+      const blob = await response.blob()
+      // A fixed lastModified keeps imageKeyOf stable, so a second try reuses the first analysis.
+      setSelectedImage(
+        new File([blob], 'example-equipment.jpg', { type: blob.type, lastModified: 0 })
+      )
+    } catch {
+      toast("Couldn't load the example photo, sorry.")
+    }
+  }
 
   const identifyEquipment = async () => {
     if (!selectedImage) {
-      toast('Upload a photo to get started!')
+      const id = toast('You need a photo first!', {
+        description: 'Nothing to snap right now? Try with mine.',
+        action: (
+          <Button
+            variant="secondary"
+            size="sm"
+            className="ml-auto"
+            onClick={() => {
+              toast.dismiss(id)
+              loadExamplePhoto()
+            }}
+          >
+            Try it
+          </Button>
+        ),
+      })
       return
     }
 
@@ -82,8 +114,7 @@ export default function Home() {
         throw new Error(await readError(response, 'Could not read the photo. Please try again.'))
       }
 
-      const data = (await response.json()) as { equipment: string[]; mock?: boolean }
-      setUsingMockData(Boolean(data.mock))
+      const data = (await response.json()) as { equipment: string[] }
       setEquipment(data.equipment, key)
       setUnticked([])
       setAdded([])
@@ -115,11 +146,7 @@ export default function Home() {
         throw new Error(await readError(response, 'Could not build the plan. Please try again.'))
       }
 
-      const data = (await response.json()) as {
-        plan: Parameters<typeof commitPlan>[1]
-        mock?: boolean
-      }
-      setUsingMockData(Boolean(data.mock))
+      const data = (await response.json()) as { plan: Parameters<typeof commitPlan>[1] }
       commitPlan(selected, data.plan)
     } catch (error) {
       console.error('Error generating plan:', error)
@@ -140,12 +167,10 @@ export default function Home() {
 
       <main className="flex flex-col gap-8 lg:gap-12">
         <div className="flex flex-wrap items-center gap-4">
-          <StepIndicator current={step} onSelect={loading ? undefined : setStep} />
-          {usingMockData && (
-            <span className="animate-pop rounded-full border border-accent/50 bg-accent/10 px-3 py-1 text-sm text-accent motion-reduce:animate-none">
-              Mock data — OpenAI was not called
-            </span>
-          )}
+          <StepIndicator
+            current={step}
+            onSelect={loading ? undefined : step === 3 ? () => setConfirmNewPlan(true) : setStep}
+          />
         </div>
 
         <div className="grid grid-cols-1 items-start gap-y-8 lg:grid-cols-2 lg:gap-x-16">
@@ -240,7 +265,7 @@ export default function Home() {
                   <Button
                     className="flex-1 lg:ml-auto lg:flex-none"
                     onClick={identifyEquipment}
-                    disabled={loading || !selectedImage}
+                    disabled={loading}
                   >
                     {loading ? (
                       <>
@@ -330,6 +355,12 @@ export default function Home() {
             {step === 3 && plan && <PaperSheet plan={plan} />}
           </div>
         </div>
+
+        <NewPlanDialog
+          open={confirmNewPlan}
+          onOpenChange={setConfirmNewPlan}
+          onConfirm={resetState}
+        />
       </main>
     </div>
   )

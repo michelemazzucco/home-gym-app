@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-title" content={title} />
         <link rel="icon" href="/favicon.png" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <AppProvider>{children}</AppProvider>
         <Toaster />
       </body>

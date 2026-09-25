@@ -13,9 +13,15 @@ const Toaster = (props: ToasterProps) => (
         '--normal-text': 'var(--color-chalk)',
         '--normal-border': 'var(--color-border)',
         '--border-radius': 'var(--radius-lg)',
+        '--width': '440px',
       } as CSSProperties
     }
-    toastOptions={{ className: 'font-display text-base shadow-raised' }}
+    toastOptions={{
+      className: 'font-display text-base shadow-raised',
+      classNames: {
+        description: 'text-muted-foreground!',
+      },
+    }}
     {...props}
   />
 )

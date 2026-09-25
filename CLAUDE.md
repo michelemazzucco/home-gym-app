@@ -29,10 +29,10 @@ user for one.
 
 Set `MOCK_OPENAI=true` in `.env.local` to run the whole flow without spending OpenAI credits.
 Both API routes then return canned data from `app/lib/mocks.ts` after a short delay, so the
-loading states are still visible. The mock plan is generated from the same inputs the real route
-receives, so the level, the sessions per week, the plan duration and the confirmed equipment all
-visibly change the output. The server logs a warning on start and the UI shows a "Mock data" pill
-next to the step indicator, so a mocked run is never mistaken for a real one.
+loading states are still visible. The canned data is a real OpenAI run on
+`public/example-equipment.jpg`, the photo behind the "Try it" toast on step 1. The mock plan is
+fixed, so the settings and the confirmed equipment do not change it. The server logs a warning on
+start so a mocked run is never mistaken for a real one.
 
 ## Architecture
 

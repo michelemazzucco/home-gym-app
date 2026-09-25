@@ -17,7 +17,7 @@ import {
   WorkoutBlock,
 } from '@/app/lib/workout'
 import { completeJson, getApiKey } from '@/app/lib/openai'
-import { isMockMode, mockDelay, mockPlan } from '@/app/lib/mocks'
+import { isMockMode, mockDelay, MOCK_PLAN } from '@/app/lib/mocks'
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,10 +47,7 @@ export async function POST(request: NextRequest) {
 
     if (isMockMode()) {
       await mockDelay(1200)
-      return NextResponse.json({
-        plan: mockPlan({ equipment, difficulty, sessionsPerWeek, weeks, sessionMinutes }),
-        mock: true,
-      })
+      return NextResponse.json({ plan: MOCK_PLAN })
     }
 
     const apiKey = getApiKey()

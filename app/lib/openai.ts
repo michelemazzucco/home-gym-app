@@ -65,7 +65,12 @@ export async function completeJson<T>({
 
   if (!message?.content) {
     console.error('No content in OpenAI response:', payload)
-    return { error: NextResponse.json({ error: 'No response from OpenAI' }, { status: 502 }) }
+    return {
+      error: NextResponse.json(
+        { error: 'OpenAI sent back an empty response. Please try again.' },
+        { status: 502 }
+      ),
+    }
   }
 
   try {
@@ -73,7 +78,10 @@ export async function completeJson<T>({
   } catch {
     console.error('Could not parse OpenAI response:', message.content)
     return {
-      error: NextResponse.json({ error: 'Malformed response from OpenAI' }, { status: 502 }),
+      error: NextResponse.json(
+        { error: "OpenAI sent back a response the app couldn't read. Please try again." },
+        { status: 502 }
+      ),
     }
   }
 }

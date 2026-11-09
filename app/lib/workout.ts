@@ -36,14 +36,38 @@ export const SESSION_MINUTES_MAX = 90
 export const SESSION_MINUTES_DEFAULT = 30
 export const SESSION_MINUTES_OPTIONS = [15, 20, 30, 45, 60, 75, 90]
 
-/** Minutes as HH:MM, e.g. 30 -> "00:30", 90 -> "01:30". */
-export const formatDuration = (minutes: number) =>
-  `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
+/** Minutes as a plain duration, e.g. 30 -> "30 min", 60 -> "1 h", 90 -> "1 h 30 min". */
+export const formatDuration = (minutes: number) => {
+  const hours = Math.floor(minutes / 60)
+  const rest = minutes % 60
+  if (hours === 0) return `${rest} min`
+  return rest === 0 ? `${hours} h` : `${hours} h ${rest} min`
+}
 
 export const clamp = (value: unknown, min: number, max: number, fallback: number) => {
   const n = Number(value)
   if (!Number.isFinite(n) || n === 0) return fallback
   return Math.max(min, Math.min(max, Math.floor(n)))
+}
+
+export const EQUIPMENT_MAX_ITEMS = 40
+export const EQUIPMENT_NAME_MAX = 60
+
+/** Trims, drops empties and case-insensitive duplicates, and applies the item and length caps. */
+export const normalizeEquipment = (items: unknown): string[] => {
+  if (!Array.isArray(items)) return []
+  const seen = new Set<string>()
+  const result: string[] = []
+  for (const item of items) {
+    if (typeof item !== 'string') continue
+    const name = item.trim().slice(0, EQUIPMENT_NAME_MAX)
+    const key = name.toLowerCase()
+    if (!name || seen.has(key)) continue
+    seen.add(key)
+    result.push(name)
+    if (result.length === EQUIPMENT_MAX_ITEMS) break
+  }
+  return result
 }
 
 export const isDifficulty = (value: unknown): value is DifficultyLevel =>
@@ -214,8 +238,22 @@ export const PLAN_SCHEMA = {
   },
 } as const
 
+const isPlainCount = (value: string) => /^\d+(\s*[-–]\s*\d+)?$/.test(value)
+
+// The model writes timed work as "30s" or "5min" in the reps field, so the unit is only added to
+// bare numbers and ranges.
+const withUnit = (value: string, unit: string) => {
+  const text = value.trim()
+  if (!isPlainCount(text)) return text
+  return `${text} ${text === '1' ? unit : `${unit}s`}`
+}
+
+const isNoRest = (rest: string) => /^0\s*(s|sec)?$/i.test(rest.trim())
+
 export const describeExercize = ({ sets, reps, rest }: Exercize) =>
-  `${sets} sets, ${reps} reps${rest === '0' ? '' : `, ${rest} rest`}`
+  [withUnit(sets, 'set'), withUnit(reps, 'rep'), isNoRest(rest) ? null : `${rest.trim()} rest`]
+    .filter(Boolean)
+    .join(', ')
 
 export const planToMarkdown = (equipment: string[], plan: WorkoutBlock[]) => {
   const lines: string[] = ['# Homegym workout plan', '']

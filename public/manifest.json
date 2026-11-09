@@ -1,11 +1,11 @@
 {
   "name": "Homegym",
   "short_name": "Homegym",
-  "description": "Workouts based on what there is around you",
+  "description": "Workouts based on what's around you",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#030D2E",
-  "theme_color": "#030D2E",
+  "background_color": "#130225",
+  "theme_color": "#130225",
   "orientation": "portrait",
   "scope": "/",
   "icons": [

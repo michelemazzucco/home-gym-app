@@ -49,7 +49,7 @@ export const StepSettings = () => {
       </div>
 
       <NumberField
-        label="Sesh per week"
+        label="Sessions per week"
         value={sessionsPerWeek}
         min={SESSIONS_MIN}
         max={SESSIONS_MAX}
@@ -58,6 +58,7 @@ export const StepSettings = () => {
 
       <NumberField
         label="Plan duration"
+        unit="weeks"
         value={weeks}
         min={WEEKS_MIN}
         max={WEEKS_MAX}

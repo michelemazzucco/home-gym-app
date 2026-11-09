@@ -2,10 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Camera } from 'lucide-react'
-import isMobile from 'is-mobile'
 import { toast } from 'sonner'
 import { cn } from '@/app/lib/utils'
-import { Button } from './ui/button'
+import { buttonVariants } from './ui/button'
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
 
@@ -103,14 +102,16 @@ export const PhotoDropzone = ({
 
   const validateAndSet = async (file: File) => {
     if (!ALLOWED_TYPES.includes(file.type)) {
-      toast(`Unsupported file type: ${file.type}. Use JPEG, PNG, GIF or WebP.`)
+      toast(
+        `${file.type ? `${file.type} files are` : 'This file type is'} not supported. Use a JPEG, PNG, GIF or WebP photo.`
+      )
       return
     }
     try {
       onSelect(await compressImage(file))
     } catch (error) {
       console.error('Image compression error:', error)
-      toast('Failed to process the image. Please try another one.')
+      toast("Couldn't read that image. Try another photo.")
     }
   }
 
@@ -118,7 +119,7 @@ export const PhotoDropzone = ({
     <div
       role="button"
       tabIndex={0}
-      aria-label="Upload a photo by clicking or dragging and dropping"
+      aria-label={previewUrl ? 'Replace the photo' : 'Upload a photo'}
       onClick={() => inputRef.current?.click()}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -156,7 +157,7 @@ export const PhotoDropzone = ({
         event.dataTransfer.clearData()
       }}
       className={cn(
-        'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-white/40 bg-white/[0.03] p-6 transition-colors motion-reduce:transition-none lg:min-h-media',
+        'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-border-strong bg-white/[0.03] p-6 transition-[border-color,background-color,box-shadow] outline-none focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none lg:min-h-media',
         isDragging && 'border-accent bg-accent/10'
       )}
     >
@@ -183,10 +184,14 @@ export const PhotoDropzone = ({
           className="relative max-h-[240px] w-auto animate-pop rounded-lg object-contain motion-reduce:animate-none lg:max-h-[412px]"
         />
       ) : (
-        <Button variant="secondary" className="relative" tabIndex={-1}>
+        <span
+          aria-hidden="true"
+          className={buttonVariants({ variant: 'secondary', className: 'relative' })}
+        >
           <Camera className="size-4" />
-          {isMobile() ? 'Take a picture or select one' : 'Upload photo'}
-        </Button>
+          <span className="pointer-coarse:hidden">Upload photo</span>
+          <span className="hidden pointer-coarse:inline">Take or choose a photo</span>
+        </span>
       )}
     </div>
   )
@@ -197,11 +202,11 @@ const Diagonals = () => (
     aria-hidden="true"
     preserveAspectRatio="none"
     viewBox="0 0 100 100"
-    className="absolute inset-0 size-full opacity-10"
+    className="absolute inset-0 size-full text-chalk opacity-10"
   >
     <path
       d="M0 0 L100 100 M100 0 L0 100"
-      stroke="#fff"
+      stroke="currentColor"
       strokeWidth="1"
       vectorEffect="non-scaling-stroke"
     />

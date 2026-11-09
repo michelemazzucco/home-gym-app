@@ -3,7 +3,7 @@ import { describeExercize, type WorkoutBlock } from '../lib/workout'
 export const PaperSheet = ({ plan }: { plan: WorkoutBlock[] }) => (
   <div className="paper-sheet animate-rise motion-reduce:animate-none">
     {plan.map((block, index) => (
-      <Block key={block.title} block={block} index={index} />
+      <Block key={`${index}-${block.title}`} block={block} index={index} />
     ))}
   </div>
 )
@@ -16,12 +16,12 @@ const Block = ({ block, index }: { block: WorkoutBlock; index: number }) => (
   >
     <h2 className="relative -top-[0.2rem] text-[26px] font-medium">{block.title}</h2>
 
-    {block.sessions.map((session) => (
-      <div key={session.title}>
+    {block.sessions.map((session, sessionIndex) => (
+      <div key={`${sessionIndex}-${session.title}`}>
         <h3 className="relative -top-[0.075rem] text-xl font-semibold">{session.title}</h3>
         <ul className="[list-style-type:'*'] pl-2">
-          {session.exercizes.map((exercize) => (
-            <li key={exercize.name} className="pl-2 marker:text-accent">
+          {session.exercizes.map((exercize, exercizeIndex) => (
+            <li key={`${exercizeIndex}-${exercize.name}`} className="pl-2 marker:text-accent">
               <strong className="relative font-semibold">{exercize.name}</strong>
               <div className="text-paper-ink/60">{describeExercize(exercize)}</div>
             </li>

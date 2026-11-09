@@ -5,15 +5,15 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/app/lib/utils'
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg font-ui text-base font-medium outline-none transition-[color,background-color,box-shadow,translate] duration-150 motion-reduce:transition-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:pointer-events-none disabled:opacity-50 active:translate-y-px [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0",
+  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-lg font-ui text-base font-medium outline-none transition-[color,background-color,box-shadow,translate] duration-150 motion-reduce:transition-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-50 active:translate-y-px [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        primary: 'bg-accent text-white shadow-raised hover:bg-accent-hover',
+        primary: 'bg-action text-white shadow-raised hover:bg-action-hover',
         secondary:
-          'border border-border bg-ink text-white shadow-raised hover:border-white/40 hover:bg-ink-raised',
+          'border border-border bg-ink text-white shadow-raised hover:border-border-strong hover:bg-ink-raised',
         ghost: 'text-chalk hover:bg-ink-raised',
-        icon: 'border border-border bg-ink text-chalk shadow-raised hover:border-white/40 hover:bg-ink-raised',
+        icon: 'border border-border bg-ink text-chalk shadow-raised hover:border-border-strong hover:bg-ink-raised',
       },
       size: {
         // An icon reads lighter than a word, so the side it sits on gets less padding.

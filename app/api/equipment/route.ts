@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { EQUIPMENT_SCHEMA, EQUIPMENT_SYSTEM_PROMPT } from '@/app/lib/workout'
+import { EQUIPMENT_SCHEMA, EQUIPMENT_SYSTEM_PROMPT, normalizeEquipment } from '@/app/lib/workout'
 import { completeJson, getApiKey } from '@/app/lib/openai'
 import { isMockMode, mockDelay, MOCK_EQUIPMENT } from '@/app/lib/mocks'
 
@@ -49,13 +49,12 @@ export async function POST(request: NextRequest) {
 
     if ('error' in result) return result.error
 
-    const equipment = Array.isArray(result.data.equipment)
-      ? result.data.equipment.map((item) => item.trim()).filter(Boolean)
-      : []
-
-    return NextResponse.json({ equipment })
+    return NextResponse.json({ equipment: normalizeEquipment(result.data.equipment) })
   } catch (error) {
     console.error('Error identifying equipment:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Something went wrong on the server. Please try again.' },
+      { status: 500 }
+    )
   }
 }

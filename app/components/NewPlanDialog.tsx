@@ -39,7 +39,7 @@ export const NewPlanDialog = ({
             onConfirm()
           }}
         >
-          Create new plan
+          Start new plan
         </Button>
       </DialogFooter>
     </DialogContent>

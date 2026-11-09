@@ -50,7 +50,7 @@ function DialogContent({
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
-            className="absolute top-6 right-6 rounded-md p-1 text-muted-foreground transition-colors outline-none hover:text-chalk focus-visible:ring-2 focus-visible:ring-ring/50 motion-reduce:transition-none"
+            className="absolute top-6 right-6 rounded-md p-1 text-muted-foreground transition-colors outline-none hover:text-chalk focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none pointer-coarse:top-4 pointer-coarse:right-4 pointer-coarse:p-2.5"
             aria-label="Close"
           >
             <XIcon className="size-4" />

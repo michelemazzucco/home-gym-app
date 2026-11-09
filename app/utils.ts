@@ -1,3 +1,5 @@
+const COPY_FAILED = "Couldn't copy the plan. Select the text on the sheet and copy it by hand."
+
 export const fallbackCopyText = (text: string, onDone: (message: string) => void) => {
   const textArea = document.createElement('textarea')
   textArea.value = text
@@ -14,9 +16,9 @@ export const fallbackCopyText = (text: string, onDone: (message: string) => void
   try {
     textArea.setSelectionRange(0, 99999)
     const successful = document.execCommand('copy')
-    onDone(successful ? 'Workout plan copied to clipboard!' : 'Failed to copy workout plan.')
+    onDone(successful ? 'Workout plan copied to clipboard!' : COPY_FAILED)
   } catch {
-    onDone('Copy not supported.')
+    onDone(COPY_FAILED)
   } finally {
     document.body.removeChild(textArea)
   }

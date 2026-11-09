@@ -42,7 +42,9 @@ start so a mocked run is never mistaken for a real one.
 - **Wizard state**: `app/context/AppContext.tsx` holds the step, the photo and the settings. The
   confirmed equipment and the generated plan live in `localStorage` and are read
   through `useSyncExternalStore` (`app/lib/planStorage.ts`), so a reload lands the user back on
-  their plan.
+  their plan. The server cannot see `localStorage`, so `page.tsx` renders the wizard only once
+  `useHydrated()` is true. Without that gate a reload shows step 1 and then jumps to step 3.
+  `planStorage` also checks the shape of the stored payload and drops a corrupt one.
 - **Styling**: Tailwind v4. All design tokens are declared in the `@theme` block of
   `app/globals.css`. There are no CSS Modules and no `tailwind.config` file.
 - **UI primitives**: shadcn/ui (Radix under the hood) in `app/components/ui/`. Icons are
@@ -54,19 +56,28 @@ The equipment step needs the equipment list before any plan exists, so the work 
 
 - `POST /api/equipment` - `multipart/form-data` with `image`. One vision call at `detail: 'low'`.
   Returns `{ equipment: string[] }`.
-- `POST /api/plan` - JSON with `equipment`, `difficulty`, `sessionsPerWeek` and `weeks`. No image,
-  so it is cheaper and faster than the vision call. Returns `{ plan: WorkoutBlock[] }`.
+- `POST /api/plan` - JSON with `equipment`, `difficulty`, `sessionsPerWeek`, `weeks` and
+  `sessionMinutes`. No image, so it is cheaper and faster than the vision call. Returns
+  `{ plan: WorkoutBlock[] }`, or a 502 when the model returns an empty plan.
 
 Both go through `completeJson` in `app/lib/openai.ts`, which owns the fetch, the structured-output
 request and the error mapping. Error messages from OpenAI are passed through to the client and
 shown in a toast - do not swallow them.
 
+On the client, both calls go through `postForJson` in `page.tsx`. It has a 90s timeout and turns
+a network failure into a readable message. Failures show a toast with a "Try again" action that
+runs the same call again.
+
 ### Shared model
 
 `app/lib/workout.ts` is the single source of truth for the types, the JSON schemas, the prompts
 and the min/max limits (`SESSIONS_MIN/MAX`, `WEEKS_MIN/MAX`, `SESSION_MINUTES_MIN/MAX`). Both routes
-and the UI read from it. `formatDuration` renders session minutes as HH:MM for the picker.
-`planToMarkdown` builds the clipboard text from the data, not from the DOM.
+and the UI read from it. It also holds the equipment caps (`EQUIPMENT_MAX_ITEMS`,
+`EQUIPMENT_NAME_MAX`) and `normalizeEquipment`, which both routes use to trim, dedupe without
+regard to case and cap the list. `formatDuration` renders session minutes as a plain duration
+("30 min", "1 h 30 min") for the picker. `describeExercize` adds "set"/"rep" units only to bare
+numbers and ranges, because the model writes timed work as "30s" or "5min". `planToMarkdown`
+builds the clipboard text from the data, not from the DOM.
 
 Note the spelling `exercizes` / `Exercize`. It is baked into the JSON schema, the model output and
 the stored payload. Renaming it means bumping the storage key in `app/lib/planStorage.ts`.
@@ -91,8 +102,9 @@ app/
 │   ├── ui/                 # shadcn primitives
 │   ├── SiteHeader, StepIndicator, StepHeading
 │   ├── StepSettings, StepEquipment, StepPlanSummary
-│   ├── PhotoDropzone, PhotoPreview, PaperSheet, EquipmentBadges
-│   └── InfoDialog
+│   ├── PhotoDropzone, PhotoPreview, UploadHint, PaperSheet, EquipmentBadges
+│   ├── NumberField         # Number input with steppers; clamps on blur, not per keystroke
+│   └── InfoDialog, NewPlanDialog
 └── api/
     ├── equipment/route.ts
     └── plan/route.ts
@@ -124,11 +136,20 @@ effect cleanups in development, and revoking there kills a URL the component is 
 
 ### Model
 
-`gpt-4o-mini` with vision, called through the chat-completions API with
-`response_format: json_schema` and `strict: true`.
+`gpt-5-mini` (`MODEL` in `app/lib/openai.ts`) with vision, called through the chat-completions
+API with `reasoning_effort: 'minimal'`, `response_format: json_schema` and `strict: true`.
+Reasoning tokens count against `max_completion_tokens`.
 
 ## Conventions
 
 - User feedback goes through `toast()` from `sonner`.
 - File type validation is client-side; the limits in `app/lib/workout.ts` are re-clamped server-side.
 - The app is dark-only. Colors come from the `@theme` tokens, never from raw hex in components.
+- `accent` (`#d9660e`) is the brand orange for text, rules, marks and the done step dots.
+  Button fills use `action` / `action-hover`, which are darker so white labels pass 4.5:1. Hover
+  goes darker, never lighter. Do not put white text on `accent`.
+- Focus is `focus-visible:ring-2 ring-ring` at full opacity. Do not leave the browser default
+  outline on custom controls.
+- Touch-only differences use Tailwind's `pointer-coarse:` variant, not user-agent sniffing. A
+  branch on the device inside render causes a hydration mismatch.
+- Each step change moves focus to the new step heading (`StepHeading` takes a `ref`).

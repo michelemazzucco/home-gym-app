@@ -3,6 +3,7 @@ import {
   buildPlanPrompt,
   clamp,
   isDifficulty,
+  normalizeEquipment,
   PLAN_SCHEMA,
   PLAN_SYSTEM_PROMPT,
   SESSIONS_DEFAULT,
@@ -23,12 +24,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
-    const equipment: string[] = Array.isArray(body.equipment)
-      ? body.equipment
-          .filter((item: unknown): item is string => typeof item === 'string')
-          .map((item: string) => item.trim())
-          .filter(Boolean)
-      : []
+    const equipment = normalizeEquipment(body.equipment)
 
     const difficulty = isDifficulty(body.difficulty) ? body.difficulty : 'beginner'
     const sessionsPerWeek = clamp(
@@ -79,9 +75,19 @@ export async function POST(request: NextRequest) {
 
     if ('error' in result) return result.error
 
-    return NextResponse.json({ plan: result.data.plan ?? [] })
+    if (!result.data.plan?.length) {
+      return NextResponse.json(
+        { error: 'The model returned an empty plan. Please try again.' },
+        { status: 502 }
+      )
+    }
+
+    return NextResponse.json({ plan: result.data.plan })
   } catch (error) {
     console.error('Error generating plan:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Something went wrong on the server. Please try again.' },
+      { status: 500 }
+    )
   }
 }

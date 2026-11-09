@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from 'react'
 import type { WorkoutBlock } from './workout'
 
 const STORAGE_KEY = 'homegym-workout-result:v2'
@@ -11,6 +12,21 @@ const listeners = new Set<() => void>()
 
 let cachedRaw: string | null = null
 let cachedValue: StoredResult | null = null
+
+const isPlan = (value: unknown): value is WorkoutBlock[] =>
+  Array.isArray(value) &&
+  value.every(
+    (block) =>
+      Array.isArray(block?.sessions) &&
+      block.sessions.every((session: unknown) =>
+        Array.isArray((session as { exercizes?: unknown })?.exercizes)
+      )
+  )
+
+const isStoredResult = (value: unknown): value is StoredResult => {
+  const candidate = value as StoredResult | null
+  return Array.isArray(candidate?.equipment) && (candidate.plan === null || isPlan(candidate.plan))
+}
 
 const readRaw = () => {
   try {
@@ -36,7 +52,7 @@ export const getSnapshot = (): StoredResult | null => {
     cachedRaw = raw
     try {
       const parsed = raw ? (JSON.parse(raw) as StoredResult) : null
-      cachedValue = parsed && Array.isArray(parsed.equipment) ? parsed : null
+      cachedValue = isStoredResult(parsed) ? parsed : null
     } catch {
       cachedValue = null
     }
@@ -46,6 +62,19 @@ export const getSnapshot = (): StoredResult | null => {
 }
 
 export const getServerSnapshot = (): StoredResult | null => null
+
+const subscribeToNothing = () => () => {}
+
+/**
+ * False on the server and during hydration, true afterwards. The stored plan is only known on the
+ * client, so anything that depends on it waits for this to avoid rendering step 1 and then step 3.
+ */
+export const useHydrated = () =>
+  useSyncExternalStore(
+    subscribeToNothing,
+    () => true,
+    () => false
+  )
 
 export const save = (result: StoredResult | null) => {
   try {

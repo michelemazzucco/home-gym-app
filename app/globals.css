@@ -11,8 +11,13 @@
   --color-ink-raised: #1c0c31;
   --color-chalk: #e7f2ec;
   --color-lilac: #b19ec5;
+  --color-ink-selected: #423551;
+  --color-chip: #eff0f4;
   --color-accent: #d9660e;
-  --color-accent-hover: #ec7419;
+  /* Button fills sit deeper than the brand orange so white labels reach 4.5:1. Hover goes darker,
+     never lighter, for the same reason. */
+  --color-action: #bd5400;
+  --color-action-hover: #b54f00;
 
   --color-paper: #ffffff;
   --color-paper-ink: oklch(0.1841 0.0823 271.94);
@@ -24,7 +29,7 @@
   --color-card-foreground: var(--color-chalk);
   --color-popover: var(--color-ink-raised);
   --color-popover-foreground: var(--color-chalk);
-  --color-primary: var(--color-accent);
+  --color-primary: var(--color-action);
   --color-primary-foreground: #ffffff;
   --color-secondary: --alpha(#ffffff / 10%);
   --color-secondary-foreground: var(--color-chalk);
@@ -33,6 +38,7 @@
   --color-accent-foreground: #ffffff;
   --color-destructive: #e5484d;
   --color-border: --alpha(#ffffff / 20%);
+  --color-border-strong: --alpha(#ffffff / 40%);
   --color-input: --alpha(#ffffff / 20%);
   --color-ring: var(--color-accent);
 
@@ -47,6 +53,7 @@
 
   --shadow-raised: inset 0 1px 2px --alpha(#ffffff / 25%), 0 12px 12px -10px --alpha(#000000 / 60%);
   --shadow-field: 0 12px 12px -10px --alpha(#000000 / 60%);
+  --shadow-chip: 0 12px 8px --alpha(#000000 / 40%), inset 0 1px 1px #ffffff;
 
   /* Hover and colour changes ride the browser default `ease`; entrances get an explicit curve. */
   --default-transition-duration: 150ms;
@@ -97,6 +104,14 @@
     background: linear-gradient(to bottom, var(--color-ink) 0%, var(--color-ink-deep) 100%);
   }
 
+  html {
+    scrollbar-color: var(--color-border-strong) transparent;
+  }
+
+  input {
+    caret-color: var(--color-accent);
+  }
+
   body {
     background-color: var(--color-ink);
     color: var(--color-chalk);
@@ -118,7 +133,7 @@
   }
 
   ::selection {
-    background-color: var(--color-accent);
+    background-color: var(--color-action);
     color: #ffffff;
   }
 }

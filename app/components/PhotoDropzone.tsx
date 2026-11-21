@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Camera, Loader2 } from 'lucide-react'
+import { Camera, Loader2, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/app/lib/utils'
 import { buttonVariants } from './ui/button'
@@ -196,13 +196,24 @@ export const PhotoDropzone = ({
           Preparing the photo
         </span>
       ) : previewUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={previewUrl}
-          src={previewUrl}
-          alt="The equipment you uploaded"
-          className="relative max-h-[240px] w-auto animate-pop rounded-lg object-contain motion-reduce:animate-none lg:max-h-[412px]"
-        />
+        <>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            key={previewUrl}
+            src={previewUrl}
+            alt="The equipment you uploaded"
+            className="relative max-h-[240px] w-auto animate-pop rounded-lg object-contain motion-reduce:animate-none lg:max-h-[412px]"
+          />
+          <span
+            aria-hidden="true"
+            className={cn(
+              buttonVariants({ variant: 'icon', size: 'icon' }),
+              'absolute top-3 right-3 size-9 sm:top-4 sm:right-4 sm:size-11'
+            )}
+          >
+            <RefreshCw className="size-4 sm:size-5" />
+          </span>
+        </>
       ) : (
         <span
           aria-hidden="true"

@@ -277,7 +277,17 @@ export default function Home() {
                       }
                       onAdd={(item) => {
                         const key = item.toLowerCase()
-                        if (equipment.some((entry) => entry.toLowerCase() === key)) return
+                        const existing = equipment.find((entry) => entry.toLowerCase() === key)
+                        if (existing) {
+                          const name = existing.charAt(0).toUpperCase() + existing.slice(1)
+                          if (unticked.includes(existing)) {
+                            setUnticked((prev) => prev.filter((entry) => entry !== existing))
+                            toast(`${name} was already on the list, so it's ticked again.`)
+                          } else {
+                            toast(`${name} is already on the list.`)
+                          }
+                          return
+                        }
                         setEquipment([...equipment, item])
                         setAdded((prev) => [...prev, item])
                       }}

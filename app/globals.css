@@ -104,6 +104,14 @@
     }
   }
 
+  /* Below lg the actions ride in a fixed bar at the bottom of the viewport. Keep anything that
+     scrolls into view on focus clear of its buttons. */
+  @media (width < 64rem) {
+    html {
+      scroll-padding-bottom: calc(7rem + env(safe-area-inset-bottom));
+    }
+  }
+
   html,
   body {
     font-family: var(--font-display);

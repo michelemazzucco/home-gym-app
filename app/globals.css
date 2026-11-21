@@ -4,13 +4,16 @@
 @theme {
   --font-display: var(--font-bricolage), system-ui, sans-serif;
   --font-ui: var(--font-public-sans), system-ui, sans-serif;
-  --font-hand: var(--font-handrawn), system-ui, cursive;
+  --font-hand: var(--font-caveat), system-ui, cursive;
 
   --color-ink: #130225;
   --color-ink-deep: #0e011d;
   --color-ink-raised: #1c0c31;
   --color-chalk: #e7f2ec;
   --color-lilac: #b19ec5;
+  /* The handwritten notes: halfway between lilac and the faint ink of the old upload hint, and
+     still 4.75:1 on ink, since the example-photo nudge is a control. */
+  --color-scribble: #867696;
   --color-ink-selected: #423551;
   --color-chip: #eff0f4;
   --color-accent: #d9660e;

@@ -295,7 +295,7 @@ export default function Home() {
                           }
                           return
                         }
-                        setEquipment([...equipment, item])
+                        setEquipment([item, ...equipment])
                         setAdded((prev) => [...prev, item])
                       }}
                       onRemove={(item) => {

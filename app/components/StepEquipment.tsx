@@ -83,7 +83,7 @@ export const StepEquipment = ({
                 type="button"
                 aria-label={`Remove ${item}`}
                 onClick={() => onRemove(item)}
-                className="flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-[color,background-color,opacity] outline-none group-hover:opacity-100 hover:bg-white/10 hover:text-chalk focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none pointer-coarse:size-9 [@media(hover:none)]:opacity-100"
+                className="touch-target relative flex size-6 shrink-0 items-center justify-center rounded-md text-muted-foreground opacity-0 transition-[color,background-color,opacity] outline-none group-hover:opacity-100 hover:bg-white/10 hover:text-chalk focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none pointer-coarse:size-9 [@media(hover:none)]:opacity-100"
               >
                 <X className="size-4" />
               </button>
@@ -119,7 +119,7 @@ export const StepEquipment = ({
           ref={addButtonRef}
           type="button"
           onClick={() => setAdding(true)}
-          className="flex h-10 items-center gap-3 rounded-lg bg-white/[0.03] pr-2 pl-3 text-base leading-5 text-chalk transition-[background-color,box-shadow] outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+          className="touch-target relative flex h-10 items-center gap-3 rounded-lg bg-white/[0.03] pr-2 pl-3 text-base leading-5 text-chalk transition-[background-color,box-shadow] outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
         >
           <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-ink-selected/80">
             <Plus className="size-4" />

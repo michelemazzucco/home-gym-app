@@ -80,6 +80,23 @@
   }
 }
 
+/* Grows the touch area to at least 44px on coarse pointers without changing the visible size.
+   The element must be positioned; on a fine pointer the targets stay as drawn, so tight
+   neighbours such as the steppers do not steal each other's clicks. */
+@utility touch-target {
+  @media (pointer: coarse) {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+      translate: -50% -50%;
+    }
+  }
+}
+
 @layer base {
   @media (prefers-reduced-motion: no-preference) {
     html {

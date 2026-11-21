@@ -9,6 +9,7 @@ import { useHydrated } from './lib/planStorage'
 import { planToMarkdown, type WorkoutBlock } from './lib/workout'
 import { copyText } from './utils'
 import {
+  ExamplePhotoNudge,
   NewPlanDialog,
   PaperSheet,
   PhotoDropzone,
@@ -407,12 +408,19 @@ export default function Home() {
               {step === 1 && (
                 <div className="relative">
                   {!selectedImage && <UploadHint />}
-                  <PhotoDropzone
-                    previewUrl={previewUrl}
-                    onSelect={setSelectedImage}
-                    preparing={preparingPhoto}
-                    onPreparingChange={setPreparingPhoto}
-                  />
+                  {/* The nudge sits over the dropzone but outside it: a button inside its
+                    role="button" would be hidden from screen readers. */}
+                  <div className="relative">
+                    <PhotoDropzone
+                      previewUrl={previewUrl}
+                      onSelect={setSelectedImage}
+                      preparing={preparingPhoto}
+                      onPreparingChange={setPreparingPhoto}
+                    />
+                    {!selectedImage && !preparingPhoto && (
+                      <ExamplePhotoNudge onTry={loadExamplePhoto} />
+                    )}
+                  </div>
                 </div>
               )}
               {step === 2 && <PhotoPreview previewUrl={previewUrl} />}

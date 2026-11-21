@@ -192,7 +192,7 @@ export const PhotoDropzone = ({
           role="status"
           className={buttonVariants({ variant: 'secondary', className: 'relative' })}
         >
-          <Loader2 className="size-4 animate-spin" />
+          <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
           Preparing the photo
         </span>
       ) : previewUrl ? (

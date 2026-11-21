@@ -118,7 +118,7 @@ const StepButton = ({
     aria-label={label}
     disabled={disabled}
     onClick={onClick}
-    className="touch-target relative flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-[color,background-color,scale] outline-none hover:bg-white/10 hover:text-chalk focus-visible:ring-2 focus-visible:ring-ring active:scale-90 disabled:pointer-events-none disabled:opacity-30 motion-reduce:transition-none pointer-coarse:size-9"
+    className="touch-target relative flex size-7 cursor-pointer items-center justify-center rounded-md text-muted-foreground transition-[color,background-color,scale] outline-none hover:bg-white/10 hover:text-chalk focus-visible:ring-2 focus-visible:ring-ring active:scale-[0.97] disabled:pointer-events-none disabled:opacity-30 motion-reduce:transition-none pointer-coarse:size-9"
   >
     {children}
   </button>

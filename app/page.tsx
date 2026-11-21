@@ -318,15 +318,17 @@ export default function Home() {
                     step === 3 ? 'max-lg:order-3' : 'max-lg:order-4'
                   )}
                 >
+                  {/* Each min width fits that button's longest label, so it keeps its size when
+                    the label swaps to the loading one. */}
                   {step === 1 && (
                     <Button
-                      className="flex-1 lg:ml-auto lg:flex-none"
+                      className="flex-1 lg:ml-auto lg:min-w-[13.5rem] lg:flex-none"
                       onClick={identifyEquipment}
                       disabled={loading || preparingPhoto}
                     >
                       {loading || preparingPhoto ? (
                         <>
-                          <Loader2 className="size-4 animate-spin" />
+                          <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
                           {preparingPhoto ? 'Preparing the photo' : 'Reading the photo'}
                         </>
                       ) : (
@@ -351,13 +353,13 @@ export default function Home() {
                         <span className="max-lg:hidden">Previous step</span>
                       </Button>
                       <Button
-                        className="flex-1 lg:ml-auto lg:flex-none"
+                        className="flex-1 lg:ml-auto lg:min-w-[11.75rem] lg:flex-none"
                         onClick={generatePlan}
                         disabled={loading}
                       >
                         {loading ? (
                           <>
-                            <Loader2 className="size-4 animate-spin" />
+                            <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
                             Writing the plan
                           </>
                         ) : (

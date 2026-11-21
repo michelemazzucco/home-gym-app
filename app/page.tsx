@@ -65,7 +65,10 @@ const toastAction = (label: string, onClick: () => void): ReactNode => (
 )
 
 const failureToast = (error: unknown, fallback: string, retry: () => void) => {
+  // The retry is the way out of the failure, so the toast waits for the user instead of timing out.
   const id = toast(error instanceof Error ? error.message : fallback, {
+    duration: Infinity,
+    closeButton: true,
     action: toastAction('Try again', () => {
       toast.dismiss(id)
       retry()

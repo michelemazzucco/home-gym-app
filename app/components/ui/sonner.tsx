@@ -20,6 +20,7 @@ const Toaster = (props: ToasterProps) => (
       className: 'font-display text-base shadow-raised',
       classNames: {
         description: 'text-muted-foreground!',
+        closeButton: 'touch-target',
       },
     }}
     {...props}

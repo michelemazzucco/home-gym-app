@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Plus, X } from 'lucide-react'
 import { useApp } from '../context/AppContext'
 import { EQUIPMENT_MAX_ITEMS, EQUIPMENT_NAME_MAX } from '../lib/workout'
@@ -27,11 +27,27 @@ export const StepEquipment = ({
   // Only the list that arrives with the step is staggered; items added by hand appear at once.
   const [staggerUpTo] = useState(equipment.length)
 
-  const commitDraft = () => {
-    const value = draft.trim()
-    if (value) onAdd(value)
+  const addButtonRef = useRef<HTMLButtonElement>(null)
+  // Enter and Escape unmount the focused field, so focus goes back to the button that opened it.
+  // A blur leaves focus wherever the user moved it.
+  const refocusAddButton = useRef(false)
+
+  useEffect(() => {
+    if (adding || !refocusAddButton.current) return
+    refocusAddButton.current = false
+    addButtonRef.current?.focus()
+  }, [adding])
+
+  const closeDraft = (returnFocus: boolean) => {
+    if (returnFocus) refocusAddButton.current = true
     setDraft('')
     setAdding(false)
+  }
+
+  const commitDraft = (returnFocus: boolean) => {
+    const value = draft.trim()
+    if (value) onAdd(value)
+    closeDraft(returnFocus)
   }
 
   // The bottom mask fades whatever runs under the actions. It masks the content itself, so it
@@ -86,19 +102,21 @@ export const StepEquipment = ({
             value={draft}
             placeholder="Kettlebell, resistance band..."
             onChange={(event) => setDraft(event.target.value)}
-            onBlur={commitDraft}
+            onBlur={() => commitDraft(false)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') commitDraft()
-              if (event.key === 'Escape') {
-                setDraft('')
-                setAdding(false)
+              if (event.key === 'Enter') {
+                // Focus is back on the add button before keypress fires, which would reopen the field.
+                event.preventDefault()
+                commitDraft(true)
               }
+              if (event.key === 'Escape') closeDraft(true)
             }}
             className="w-full bg-transparent text-base leading-5 text-chalk outline-none placeholder:text-muted-foreground/80"
           />
         </div>
       ) : equipment.length < EQUIPMENT_MAX_ITEMS ? (
         <button
+          ref={addButtonRef}
           type="button"
           onClick={() => setAdding(true)}
           className="flex h-10 items-center gap-3 rounded-lg bg-white/[0.03] pr-2 pl-3 text-base leading-5 text-chalk transition-[background-color,box-shadow] outline-none hover:bg-white/[0.08] focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"

@@ -12,13 +12,16 @@ export const SiteHeader = () => {
 
   return (
     <header className="flex flex-col sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-x-6">
-      <h1 className="font-display text-[40px] leading-[1em] font-medium text-chalk">Homegym</h1>
-      <div className="relative mt-1 w-fit">
-        <p className="font-display text-base text-accent sm:text-xl sm:leading-6">
-          Workouts based on what&rsquo;s around you
-        </p>
-        <Squiggle className="pointer-events-none absolute right-0 -bottom-3 h-auto w-10 translate-x-2 text-accent sm:-bottom-4 sm:w-12" />
-      </div>
+      <h1 className="font-display text-[44px] leading-none font-semibold tracking-[-0.02em] text-chalk sm:text-[56px]">
+        Homegym
+      </h1>
+      <p className="mt-2 font-hand text-[28px] leading-7 text-scribble sm:text-[32px] sm:leading-8">
+        Workouts based on what&rsquo;s around{' '}
+        <span className="relative inline-block text-accent">
+          you
+          <Squiggle className="pointer-events-none absolute right-0 -bottom-2.5 h-auto w-10 translate-x-1.5 text-accent sm:w-11" />
+        </span>
+      </p>
 
       <div className="order-first mb-2 flex items-center gap-2 self-end sm:order-none sm:col-start-2 sm:row-start-1 sm:row-end-3 sm:mb-0 sm:gap-4 sm:self-start">
         <Button

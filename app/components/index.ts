@@ -1,4 +1,5 @@
 export { EquipmentBadges } from './EquipmentBadges'
+export { ExamplePhotoNudge } from './ExamplePhotoNudge'
 export { InfoDialog } from './InfoDialog'
 export { NewPlanDialog } from './NewPlanDialog'
 export { NumberField } from './NumberField'

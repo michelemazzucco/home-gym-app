@@ -37,7 +37,7 @@ export const StepIndicator = ({ current, onSelect }: StepIndicatorProps) => (
               aria-current={step === current ? 'step' : undefined}
               aria-label={`Step ${step}`}
               className={cn(
-                'flex size-[35px] items-center justify-center rounded-full font-display text-base leading-5 text-white transition-[background-color,box-shadow] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none',
+                'touch-target relative flex size-[35px] items-center justify-center rounded-full font-display text-base leading-5 text-white transition-[background-color,box-shadow] outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none',
                 completed && 'bg-accent',
                 step === current && 'bg-white/20',
                 step > current && 'bg-white/10 text-white/60',

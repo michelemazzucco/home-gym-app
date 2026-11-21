@@ -9,6 +9,7 @@ import { useHydrated } from './lib/planStorage'
 import { planToMarkdown, type WorkoutBlock } from './lib/workout'
 import { copyText } from './utils'
 import {
+  ExamplePhotoNudge,
   NewPlanDialog,
   PaperSheet,
   PhotoDropzone,
@@ -65,7 +66,10 @@ const toastAction = (label: string, onClick: () => void): ReactNode => (
 )
 
 const failureToast = (error: unknown, fallback: string, retry: () => void) => {
+  // The retry is the way out of the failure, so the toast waits for the user instead of timing out.
   const id = toast(error instanceof Error ? error.message : fallback, {
+    duration: Infinity,
+    closeButton: true,
     action: toastAction('Try again', () => {
       toast.dismiss(id)
       retry()
@@ -96,6 +100,7 @@ export default function Home() {
   // Items typed in by hand. Only these can be removed; the ones from the photo can only be unticked.
   const [added, setAdded] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const [preparingPhoto, setPreparingPhoto] = useState(false)
   const [confirmNewPlan, setConfirmNewPlan] = useState(false)
   const previewUrl = useObjectUrl(selectedImage)
   const hydrated = useHydrated()
@@ -111,6 +116,7 @@ export default function Home() {
   }, [step])
 
   const loadExamplePhoto = async () => {
+    setPreparingPhoto(true)
     try {
       const response = await fetch(EXAMPLE_PHOTO)
       if (!response.ok) throw new Error()
@@ -121,6 +127,8 @@ export default function Home() {
       )
     } catch {
       toast("Couldn't load the example photo, sorry.")
+    } finally {
+      setPreparingPhoto(false)
     }
   }
 
@@ -277,8 +285,18 @@ export default function Home() {
                       }
                       onAdd={(item) => {
                         const key = item.toLowerCase()
-                        if (equipment.some((entry) => entry.toLowerCase() === key)) return
-                        setEquipment([...equipment, item])
+                        const existing = equipment.find((entry) => entry.toLowerCase() === key)
+                        if (existing) {
+                          const name = existing.charAt(0).toUpperCase() + existing.slice(1)
+                          if (unticked.includes(existing)) {
+                            setUnticked((prev) => prev.filter((entry) => entry !== existing))
+                            toast(`${name} was already on the list, so it's ticked again.`)
+                          } else {
+                            toast(`${name} is already on the list.`)
+                          }
+                          return
+                        }
+                        setEquipment([item, ...equipment])
                         setAdded((prev) => [...prev, item])
                       }}
                       onRemove={(item) => {
@@ -301,16 +319,18 @@ export default function Home() {
                     step === 3 ? 'max-lg:order-3' : 'max-lg:order-4'
                   )}
                 >
+                  {/* Each min width fits that button's longest label, so it keeps its size when
+                    the label swaps to the loading one. */}
                   {step === 1 && (
                     <Button
-                      className="flex-1 lg:ml-auto lg:flex-none"
+                      className="flex-1 lg:ml-auto lg:min-w-[13.5rem] lg:flex-none"
                       onClick={identifyEquipment}
-                      disabled={loading}
+                      disabled={loading || preparingPhoto}
                     >
-                      {loading ? (
+                      {loading || preparingPhoto ? (
                         <>
-                          <Loader2 className="size-4 animate-spin" />
-                          Reading the photo
+                          <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+                          {preparingPhoto ? 'Preparing the photo' : 'Reading the photo'}
                         </>
                       ) : (
                         <>
@@ -334,13 +354,13 @@ export default function Home() {
                         <span className="max-lg:hidden">Previous step</span>
                       </Button>
                       <Button
-                        className="flex-1 lg:ml-auto lg:flex-none"
+                        className="flex-1 lg:ml-auto lg:min-w-[11.75rem] lg:flex-none"
                         onClick={generatePlan}
                         disabled={loading}
                       >
                         {loading ? (
                           <>
-                            <Loader2 className="size-4 animate-spin" />
+                            <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
                             Writing the plan
                           </>
                         ) : (
@@ -388,7 +408,19 @@ export default function Home() {
               {step === 1 && (
                 <div className="relative">
                   {!selectedImage && <UploadHint />}
-                  <PhotoDropzone previewUrl={previewUrl} onSelect={setSelectedImage} />
+                  {/* The nudge sits over the dropzone but outside it: a button inside its
+                    role="button" would be hidden from screen readers. */}
+                  <div className="relative">
+                    <PhotoDropzone
+                      previewUrl={previewUrl}
+                      onSelect={setSelectedImage}
+                      preparing={preparingPhoto}
+                      onPreparingChange={setPreparingPhoto}
+                    />
+                    {!selectedImage && !preparingPhoto && (
+                      <ExamplePhotoNudge onTry={loadExamplePhoto} />
+                    )}
+                  </div>
                 </div>
               )}
               {step === 2 && <PhotoPreview previewUrl={previewUrl} />}

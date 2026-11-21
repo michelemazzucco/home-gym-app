@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Bricolage_Grotesque, Delicious_Handrawn, Public_Sans } from 'next/font/google'
+import { Bricolage_Grotesque, Caveat, Public_Sans } from 'next/font/google'
 import { AppProvider } from './context/AppContext'
 import { Toaster } from './components/ui/sonner'
 
@@ -24,15 +24,15 @@ const publicSans = Public_Sans({
   variable: '--font-public-sans',
 })
 
-const handrawn = Delicious_Handrawn({
+const caveat = Caveat({
   subsets: ['latin'],
   weight: '400',
-  variable: '--font-handrawn',
+  variable: '--font-caveat',
 })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${publicSans.variable} ${handrawn.variable}`}>
+    <html lang="en" className={`${bricolage.variable} ${publicSans.variable} ${caveat.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="theme-color" content="#130225" />

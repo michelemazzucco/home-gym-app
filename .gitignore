@@ -37,26 +37,5 @@ next-env.d.ts
 #editor
 .zed/
 
-# agent skills
-.agents/
+# claude code
 .claude/
-.codebuddy/
-.commandcode/
-.continue/
-.crush/
-.factory/
-.goose/
-.kilocode/
-.kiro/
-.mcpjam/
-.mux/
-.neovate/
-.openhands/
-.pi/
-.qoder/
-.qwen/
-.roo/
-.trae/
-.windsurf/
-.zencoder/
-skills/

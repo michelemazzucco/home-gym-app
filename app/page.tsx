@@ -99,6 +99,7 @@ export default function Home() {
   // Items typed in by hand. Only these can be removed; the ones from the photo can only be unticked.
   const [added, setAdded] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
+  const [preparingPhoto, setPreparingPhoto] = useState(false)
   const [confirmNewPlan, setConfirmNewPlan] = useState(false)
   const previewUrl = useObjectUrl(selectedImage)
   const hydrated = useHydrated()
@@ -114,6 +115,7 @@ export default function Home() {
   }, [step])
 
   const loadExamplePhoto = async () => {
+    setPreparingPhoto(true)
     try {
       const response = await fetch(EXAMPLE_PHOTO)
       if (!response.ok) throw new Error()
@@ -124,6 +126,8 @@ export default function Home() {
       )
     } catch {
       toast("Couldn't load the example photo, sorry.")
+    } finally {
+      setPreparingPhoto(false)
     }
   }
 
@@ -318,12 +322,12 @@ export default function Home() {
                     <Button
                       className="flex-1 lg:ml-auto lg:flex-none"
                       onClick={identifyEquipment}
-                      disabled={loading}
+                      disabled={loading || preparingPhoto}
                     >
-                      {loading ? (
+                      {loading || preparingPhoto ? (
                         <>
                           <Loader2 className="size-4 animate-spin" />
-                          Reading the photo
+                          {preparingPhoto ? 'Preparing the photo' : 'Reading the photo'}
                         </>
                       ) : (
                         <>
@@ -401,7 +405,12 @@ export default function Home() {
               {step === 1 && (
                 <div className="relative">
                   {!selectedImage && <UploadHint />}
-                  <PhotoDropzone previewUrl={previewUrl} onSelect={setSelectedImage} />
+                  <PhotoDropzone
+                    previewUrl={previewUrl}
+                    onSelect={setSelectedImage}
+                    preparing={preparingPhoto}
+                    onPreparingChange={setPreparingPhoto}
+                  />
                 </div>
               )}
               {step === 2 && <PhotoPreview previewUrl={previewUrl} />}

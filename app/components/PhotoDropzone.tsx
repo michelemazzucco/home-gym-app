@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Camera } from 'lucide-react'
+import { Camera, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { cn } from '@/app/lib/utils'
 import { buttonVariants } from './ui/button'
@@ -77,9 +77,13 @@ const compressImage = (file: File): Promise<File> =>
 export const PhotoDropzone = ({
   previewUrl,
   onSelect,
+  preparing,
+  onPreparingChange,
 }: {
   previewUrl: string | null
   onSelect: (file: File) => void
+  preparing: boolean
+  onPreparingChange: (preparing: boolean) => void
 }) => {
   const [isDragging, setIsDragging] = useState(false)
   const dragCounter = useRef(0)
@@ -107,11 +111,14 @@ export const PhotoDropzone = ({
       )
       return
     }
+    onPreparingChange(true)
     try {
       onSelect(await compressImage(file))
     } catch (error) {
       console.error('Image compression error:', error)
       toast("Couldn't read that image. Try another photo.")
+    } finally {
+      onPreparingChange(false)
     }
   }
 
@@ -120,11 +127,15 @@ export const PhotoDropzone = ({
       role="button"
       tabIndex={0}
       aria-label={previewUrl ? 'Replace the photo' : 'Upload a photo'}
-      onClick={() => inputRef.current?.click()}
+      aria-busy={preparing}
+      aria-disabled={preparing}
+      onClick={() => {
+        if (!preparing) inputRef.current?.click()
+      }}
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault()
-          inputRef.current?.click()
+          if (!preparing) inputRef.current?.click()
         }
       }}
       onDragEnter={(event) => {
@@ -153,12 +164,13 @@ export const PhotoDropzone = ({
             .find((item) => item.kind === 'file')
             ?.getAsFile()
 
-        if (file) validateAndSet(file)
+        if (file && !preparing) validateAndSet(file)
         event.dataTransfer.clearData()
       }}
       className={cn(
         'relative flex min-h-[280px] w-full cursor-pointer items-center justify-center rounded-lg border border-dashed border-border-strong bg-white/[0.03] p-6 transition-[border-color,background-color,box-shadow] outline-none focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none lg:min-h-media',
-        isDragging && 'border-accent bg-accent/10'
+        isDragging && !preparing && 'border-accent bg-accent/10',
+        preparing && 'cursor-progress'
       )}
     >
       <input
@@ -175,7 +187,15 @@ export const PhotoDropzone = ({
 
       <Diagonals />
 
-      {previewUrl ? (
+      {preparing ? (
+        <span
+          role="status"
+          className={buttonVariants({ variant: 'secondary', className: 'relative' })}
+        >
+          <Loader2 className="size-4 animate-spin" />
+          Preparing the photo
+        </span>
+      ) : previewUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           key={previewUrl}

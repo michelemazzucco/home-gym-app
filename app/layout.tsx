@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Bricolage_Grotesque, Caveat, Public_Sans } from 'next/font/google'
+import PlausibleProvider from 'next-plausible'
 import { AppProvider } from './context/AppContext'
 import { Toaster } from './components/ui/sonner'
 
@@ -43,8 +44,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.png" />
       </head>
       <body suppressHydrationWarning>
-        <AppProvider>{children}</AppProvider>
-        <Toaster />
+        <PlausibleProvider domain="michelemazzucco.it">
+          <AppProvider>{children}</AppProvider>
+          <Toaster />
+        </PlausibleProvider>
       </body>
     </html>
   )

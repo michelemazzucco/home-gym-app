@@ -22,17 +22,46 @@ user for one.
 - `pnpm start` - Start the production server
 - `pnpm lint` - Run ESLint with `--fix`
 - `pnpm format` - Run Prettier
+- `pnpm check` - Typecheck, ESLint, Prettier and `scripts/check-docs.mjs`. CI runs it with the
+  build on every PR
+- `pnpm shot` - Walk the three steps at 390px and 1280px and save screenshots to `.shots/`
+- `pnpm eval:plan --yes` - One real run on the example photo; checks the plan against the settings
+  and the equipment. It spends credits and needs a dev server started with `MOCK_OPENAI=false`
 
 `pnpm-lock.yaml` is the live lockfile.
+
+`scripts/check-docs.mjs` fails when this file, `README.md` or `mocks.ts` names a model other than
+`MODEL`, when a file in `app/components` or `app/lib` is missing from the file tree below, or when
+a package script is not listed above.
+
+`/dev/tune` (development only) puts sliders over the header, the "Upload here" hint and the
+example-photo nudge, and prints the Tailwind classes for the values you pick.
+
+### Verifying UI changes
+
+After a change to layout or styling, run `pnpm shot` and look at both widths before saying it is
+done. It answers both API routes from `app/lib/mocks.ts` inside the browser, so it never spends
+credits, and it fails on console errors. It reuses the dev server on :3000 or starts one in mock
+mode and stops it. Do not write one-off Playwright scripts for this.
+
+### Git
+
+Shipping (branch, commit, push, PR) follows the `ship` skill. Michele merges on GitHub. The agent
+never merges and never commits or pushes on `main`: a hook in `.claude/settings.json` blocks it.
+A second hook blocks a dev server on any port but 3000, or a second one when :3000 is taken. A
+session-start hook says when local `main` is behind `origin/main`.
+
+When a Vercel build fails, read its log with `vercel inspect <deployment-url> --logs` rather than
+asking for a paste.
 
 ### Mock mode
 
 Set `MOCK_OPENAI=true` in `.env.local` to run the whole flow without spending OpenAI credits.
 Both API routes then return canned data from `app/lib/mocks.ts` after a short delay, so the
 loading states are still visible. The canned data is a real OpenAI run on
-`public/example-equipment.jpg`, the photo behind the "Try it" toast on step 1. The mock plan is
-fixed, so the settings and the confirmed equipment do not change it. The server logs a warning on
-start so a mocked run is never mistaken for a real one.
+`public/example-equipment.jpg`, the photo behind the "Try mine." nudge on step 1 and the "Try it"
+toast. The mock plan is fixed, so the settings and the confirmed equipment do not change it. The
+server logs a warning on start so a mocked run is never mistaken for a real one.
 
 ## Architecture
 
@@ -102,12 +131,17 @@ app/
 │   ├── ui/                 # shadcn primitives
 │   ├── SiteHeader, StepIndicator, StepHeading
 │   ├── StepSettings, StepEquipment, StepPlanSummary
-│   ├── PhotoDropzone, PhotoPreview, UploadHint, PaperSheet, EquipmentBadges
+│   ├── PhotoDropzone, PhotoPreview, UploadHint, ExamplePhotoNudge, PaperSheet, EquipmentBadges
 │   ├── NumberField         # Number input with steppers; clamps on blur, not per keystroke
 │   └── InfoDialog, NewPlanDialog
+├── dev/tune/               # Dev-only sliders for the handwritten text
 └── api/
     ├── equipment/route.ts
     └── plan/route.ts
+scripts/
+├── check-docs.mjs          # Part of pnpm check
+├── shot.mjs                # pnpm shot
+└── eval-plan.mjs           # pnpm eval:plan
 ```
 
 ## Key implementation details

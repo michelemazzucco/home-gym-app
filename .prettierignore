@@ -30,3 +30,7 @@ pnpm-lock.yaml
 
 # Git
 .git/
+# Agent working files
+.upskill/
+.afk/
+.shots/

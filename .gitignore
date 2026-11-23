@@ -37,5 +37,10 @@ next-env.d.ts
 #editor
 .zed/
 
-# claude code
-.claude/
+# claude code: hooks, settings.json and the ship skill are shared
+.claude/settings.local.json
+.claude/worktrees/
+.claude/skills/fitness-coach/
+
+# pnpm shot output
+/.shots/

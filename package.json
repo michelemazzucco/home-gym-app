@@ -7,7 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint --fix .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "check": "next typegen && tsc --noEmit && eslint . && prettier --check . && node scripts/check-docs.mjs",
+    "shot": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/shot.mjs",
+    "eval:plan": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/eval-plan.mjs"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.11",
@@ -40,6 +43,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react-hooks": "^7.0.1",
+    "playwright": "1.63.0",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.8.1"
   }

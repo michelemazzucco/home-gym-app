@@ -8,7 +8,7 @@ if (isMockMode()) {
   )
 }
 
-/** A real gpt-4o-mini run on `public/example-equipment.jpg`, captured as-is. */
+/** A real gpt-5-mini run on `public/example-equipment.jpg`, captured as-is. */
 export const MOCK_EQUIPMENT = [
   'barbell',
   'weight plates',

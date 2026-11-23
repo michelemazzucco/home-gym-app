@@ -39,12 +39,12 @@ Put your OpenAI key in `.env.local`:
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-Then `pnpm dev` and open [http://localhost:3000](http://localhost:3000). The deployed version asks
-for the key in a dialog instead, and never keeps it.
+Then `pnpm dev` and open [http://localhost:3000](http://localhost:3000). The deployed version runs
+on my key, so you can try it without one.
 
 ### No OpenAI credits?
 
 Set `MOCK_OPENAI=true` in `.env.local`. The API routes return canned data and the whole three-step
-flow works without a single call to OpenAI. The fake plan still reacts to your level, sessions per
-week, plan duration and confirmed equipment, so it is good enough to click through the UI. A "Mock
-data" pill shows up next to the step indicator, so you always know what you are looking at.
+flow works without a single call to OpenAI. The canned data is a real run on the example photo, so
+the plan is always the same, whatever you pick in step one. The server prints a warning when it
+starts, so you always know what you are looking at.
